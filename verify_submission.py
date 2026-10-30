@@ -76,7 +76,7 @@ def main():
                 assert (md.parent/link.split('#')[0]).exists(),(str(md),link)
     pptx = ROOT / 'docs/INDOMEME_Checkpoint1_PitchDeck.pptx'
     assert pptx.stat().st_size < 100 * 2**20
-    assert hashlib.sha256(pptx.read_bytes()).hexdigest()=='cb9f25df852ac26dd585651e5831b1db94061f7fc96a33df17ca77b03e7a7d72'
+    assert hashlib.sha256(pptx.read_bytes()).hexdigest()=='ef16029ae6db09094ddbe278effa8c4327afb0b800c5941abc0a787b54bfae91'
     with zipfile.ZipFile(pptx) as package:
         assert package.testzip() is None
         names = package.namelist()

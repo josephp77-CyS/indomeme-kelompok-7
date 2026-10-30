@@ -62,8 +62,8 @@
     },
     {
       "path": "docs/INDOMEME_Checkpoint1_PitchDeck.pptx",
-      "bytes": 2095569,
-      "sha256": "cb9f25df852ac26dd585651e5831b1db94061f7fc96a33df17ca77b03e7a7d72"
+      "bytes": 2091490,
+      "sha256": "ef16029ae6db09094ddbe278effa8c4327afb0b800c5941abc0a787b54bfae91"
     },
     {
       "path": "docs/laporan.docx",
@@ -92,8 +92,8 @@
     },
     {
       "path": "notebooks/eksperimen_indomeme.ipynb",
-      "bytes": 2149390,
-      "sha256": "b3262e774f7db84a387ba4a04b964130cb5bce4f75d29452bfb41eee7405fc06"
+      "bytes": 2169891,
+      "sha256": "d8f5d9e1efbfb2e9cb92d8a8f943cc65612bc2e11000c79a8b5a1f77b05df44f"
     },
     {
       "path": "README.md",
@@ -202,8 +202,8 @@
     },
     {
       "path": "results/audit/provenance/migration_notebook.json",
-      "bytes": 447,
-      "sha256": "4b68549486c8e774e5323a99373d532a6a31d6e17fa92befe2b4112ed7200f15"
+      "bytes": 500,
+      "sha256": "2a2e4ea1dbfd8814ce73a8ac121d6754d55f9730c1877345074af306230cead9"
     },
     {
       "path": "results/audit/provenance/Notebook_Lengkap_Eksperimen_INDOMEME.source.ipynb",
@@ -593,7 +593,7 @@
     {
       "path": "verify_submission.py",
       "bytes": 5359,
-      "sha256": "8cdf30cff3cc9abecddf7683e2e1ea288ea4838b1ef3899c478edf508b2c3282"
+      "sha256": "f32bb42437c2085b5fe4cacc2fdbd6826b0931b67657200b8a8aefed67eb5756"
     }
   ]
 }
