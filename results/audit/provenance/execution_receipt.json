@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "started_at": "2026-10-30T07:22:36.252446+00:00",
+  "hostname": "labkc-comm1",
+  "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+  "input_sha256": "493c8c190daab1e9139acf01a6abbdbcb786843075078778009283bf74c5da5f",
+  "training_started": false,
+  "purpose": "Recompute analysis from retained experimental artifacts, not rerun training",
+  "elapsed_seconds": 17.0,
+  "executed_code_cells": 52,
+  "output_sha256": "e644d5da2388e4bc0c1ef0e3afc10b73cf66ebbfb827b67fc30b7a753e11fc3e",
+  "output_bytes": 2133321,
+  "visual_outputs": 219
+}

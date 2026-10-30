@@ -1,0 +1,159 @@
+{
+  "audited_at": "2026-10-18T16:49:56.760121+07:00",
+  "revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+  "files": {
+    "test-00000-of-00001.parquet": {
+      "bytes": 116022624,
+      "sha256": "ab06c80b83e0128a686f9134da4e7e44611635e8b1af74671f5595a4907ee2e3"
+    },
+    "train-00000-of-00001.parquet": {
+      "bytes": 459666438,
+      "sha256": "dea87a3de2a8bcd4c7179ab5cca14ff320b7c32f028aefdf2635457846d59c4b"
+    }
+  },
+  "splits": {
+    "test": {
+      "rows": 1005,
+      "joint_labels": {
+        "hate|inappropriate": 347,
+        "not hate|appropriate": 572,
+        "not hate|inappropriate": 86
+      },
+      "missing_or_nan": {
+        "topic": 49
+      },
+      "topics": {
+        "social sub-groups": 560,
+        "gender": 159,
+        "individual": 134,
+        "political": 142,
+        "institutions": 92,
+        "none/others": 49,
+        "religion": 43,
+        "national origin": 68
+      },
+      "topics_by_joint_label": {
+        "hate|inappropriate": {
+          "social sub-groups": 121,
+          "individual": 84,
+          "political": 116,
+          "national origin": 52,
+          "religion": 9,
+          "gender": 49,
+          "institutions": 62
+        },
+        "not hate|appropriate": {
+          "social sub-groups": 410,
+          "gender": 62,
+          "institutions": 29,
+          "none/others": 41,
+          "religion": 33,
+          "political": 21,
+          "individual": 41,
+          "national origin": 15
+        },
+        "not hate|inappropriate": {
+          "none/others": 8,
+          "gender": 48,
+          "individual": 9,
+          "political": 5,
+          "religion": 1,
+          "social sub-groups": 29,
+          "institutions": 1,
+          "national origin": 1
+        }
+      },
+      "supplement_csv_rows": 1005,
+      "supplement_field_differences": 0,
+      "supplement_first_differences": [],
+      "supplement_image_paths_match": true
+    },
+    "train": {
+      "rows": 4018,
+      "joint_labels": {
+        "hate|inappropriate": 1386,
+        "not hate|inappropriate": 345,
+        "not hate|appropriate": 2287
+      },
+      "missing_or_nan": {
+        "topic": 179
+      },
+      "topics": {
+        "individual": 531,
+        "gender": 694,
+        "political": 526,
+        "social sub-groups": 2289,
+        "none/others": 179,
+        "national origin": 278,
+        "religion": 198,
+        "institutions": 340
+      },
+      "topics_by_joint_label": {
+        "hate|inappropriate": {
+          "individual": 381,
+          "gender": 275,
+          "political": 427,
+          "social sub-groups": 462,
+          "national origin": 218,
+          "institutions": 211,
+          "religion": 48,
+          "none/others": 2
+        },
+        "not hate|inappropriate": {
+          "gender": 162,
+          "social sub-groups": 162,
+          "institutions": 11,
+          "individual": 13,
+          "national origin": 10,
+          "none/others": 25,
+          "political": 10,
+          "religion": 5
+        },
+        "not hate|appropriate": {
+          "political": 89,
+          "social sub-groups": 1665,
+          "gender": 257,
+          "none/others": 152,
+          "religion": 145,
+          "individual": 137,
+          "institutions": 118,
+          "national origin": 50
+        }
+      },
+      "supplement_csv_rows": 4018,
+      "supplement_field_differences": 0,
+      "supplement_first_differences": [],
+      "supplement_image_paths_match": true
+    }
+  },
+  "image_path_duplicates": {
+    "groups": 0,
+    "cross_split_groups": 0,
+    "rows_in_cross_split_groups": 0
+  },
+  "image_sha256_duplicates": {
+    "groups": 5,
+    "cross_split_groups": 2,
+    "rows_in_cross_split_groups": 4
+  },
+  "pixel_sha256_duplicates": {
+    "groups": 5,
+    "cross_split_groups": 2,
+    "rows_in_cross_split_groups": 4
+  },
+  "total_joint_labels": {
+    "hate|inappropriate": 1733,
+    "not hate|appropriate": 2859,
+    "not hate|inappropriate": 431
+  },
+  "image_errors": [],
+  "checks": {
+    "split_sizes_match_paper": true,
+    "joint_labels_match_table3": true,
+    "topics_match_table4": true,
+    "split_labels_match_table5": true,
+    "matches_supplement_csv": true,
+    "all_images_decode": true,
+    "no_missing_labels": true
+  }
+}

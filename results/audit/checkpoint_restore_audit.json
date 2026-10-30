@@ -1,0 +1,118 @@
+{
+  "passed": true,
+  "checked_at": 1793288939.8080022,
+  "best": [
+    {
+      "id": "E005",
+      "passed": true,
+      "finite_tensors": 202,
+      "selected_epoch": 3,
+      "cpu_weights_only_load": true,
+      "sha256": "6ec24dd8235c453ea8757a821188657e8e167230adeebb12fc32c5388712eae1"
+    },
+    {
+      "id": "E006",
+      "passed": true,
+      "finite_tensors": 202,
+      "selected_epoch": 2,
+      "cpu_weights_only_load": true,
+      "sha256": "22da385d806cce7adea2400c958fc3f6db5a11d53c10664b5dc2db8eaea18f8d"
+    },
+    {
+      "id": "E041",
+      "passed": true,
+      "finite_tensors": 201,
+      "selected_epoch": 2,
+      "cpu_weights_only_load": true,
+      "sha256": "3b5f07f6616a756e475c3e6d64fb024a23103ce21b037a7dda6f9e98ed02b04c"
+    },
+    {
+      "id": "E042",
+      "passed": true,
+      "finite_tensors": 201,
+      "selected_epoch": 2,
+      "cpu_weights_only_load": true,
+      "sha256": "cf3484f459eaed72da23927e657ed9236ffc1db4bbf49ef54775f0f822977bd9"
+    },
+    {
+      "id": "E059",
+      "passed": true,
+      "finite_tensors": 403,
+      "selected_epoch": 2,
+      "cpu_weights_only_load": true,
+      "sha256": "f68f0009cf78199b22c0c4107981e728ff9ea4c7a5e4d4a5fae52e0fd7c66b48"
+    },
+    {
+      "id": "E060",
+      "passed": true,
+      "finite_tensors": 403,
+      "selected_epoch": 2,
+      "cpu_weights_only_load": true,
+      "sha256": "9bf3e98e280452cc78d1ce06937d770359a967727f33cdb00e78db40b9938022"
+    },
+    {
+      "id": "E101",
+      "passed": true,
+      "finite_tensors": 205,
+      "selected_epoch": 5,
+      "cpu_weights_only_load": true,
+      "sha256": "022a1c3a427595eea79aacf68e0a1e0c3a833c691010339e04a75ae4f983f357"
+    },
+    {
+      "id": "E110",
+      "passed": true,
+      "finite_tensors": 405,
+      "selected_epoch": 3,
+      "cpu_weights_only_load": true,
+      "sha256": "1b1faf847df1378b6852eab2b0652bd5dee5dca0b754dcb8b33af7fd2e034b12"
+    }
+  ],
+  "resume": [
+    {
+      "id": "E006",
+      "passed": true,
+      "parts": 11,
+      "sha256": "27dcb6a956a55d6a7123ce01ea74d31cdadbd9e9885d41e6d5de896726b36c15",
+      "bytes": 1056827234,
+      "finite_tensors": 808,
+      "epochs_completed": 4,
+      "cpu_weights_only_load": true,
+      "optimizer_and_scheduler_present": true
+    },
+    {
+      "id": "E059",
+      "passed": true,
+      "parts": 24,
+      "sha256": "41f394755c8ff610d4edc3211428560c557a3df149493f111ffd7cb83392332c",
+      "bytes": 2397946174,
+      "finite_tensors": 1612,
+      "epochs_completed": 4,
+      "cpu_weights_only_load": true,
+      "optimizer_and_scheduler_present": true
+    },
+    {
+      "id": "E101",
+      "passed": true,
+      "parts": 14,
+      "sha256": "ecf88b71722b6198a2850ab2abd59b2118468a0acc59e40731c88af7e2874248",
+      "bytes": 1330522826,
+      "finite_tensors": 820,
+      "epochs_completed": 5,
+      "cpu_weights_only_load": true,
+      "optimizer_and_scheduler_present": true
+    },
+    {
+      "id": "E110",
+      "passed": true,
+      "parts": 24,
+      "sha256": "389dd6ace37b99110083b0c0ffd8e86e798ad0a62892593674d1b5dd100d6bdf",
+      "bytes": 2397967478,
+      "finite_tensors": 1620,
+      "epochs_completed": 5,
+      "cpu_weights_only_load": true,
+      "optimizer_and_scheduler_present": true
+    }
+  ],
+  "restore_input": "Locally staged parts; missing E006 parts recreated from the hash-verified source.",
+  "full_restore_from_drive_tested": false
+}

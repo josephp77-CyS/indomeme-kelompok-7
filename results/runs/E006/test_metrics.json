@@ -1,0 +1,18 @@
+{
+  "appropriate": {
+    "macro_precision": 0.6326437891910477,
+    "macro_recall": 0.6308443288812804,
+    "macro_f1": 0.6314549102267821,
+    "accuracy": 0.6407960199004975,
+    "confusion_matrix_labels_0_1": [
+      [
+        402,
+        170
+      ],
+      [
+        191,
+        242
+      ]
+    ]
+  }
+}

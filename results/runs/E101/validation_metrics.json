@@ -1,0 +1,50 @@
+{
+  "appropriate": {
+    "macro_precision": 0.7885048786096784,
+    "macro_recall": 0.7763310258023914,
+    "macro_f1": 0.7797489646996628,
+    "accuracy": 0.7873134328358209,
+    "confusion_matrix_labels_0_1": [
+      [
+        391,
+        63
+      ],
+      [
+        108,
+        242
+      ]
+    ]
+  },
+  "hate": {
+    "macro_precision": 0.8264800668417283,
+    "macro_recall": 0.8018977256265392,
+    "macro_f1": 0.8117166704505436,
+    "accuracy": 0.8370646766169154,
+    "confusion_matrix_labels_0_1": [
+      [
+        484,
+        47
+      ],
+      [
+        84,
+        189
+      ]
+    ]
+  },
+  "appropriate_constrained": {
+    "macro_precision": 0.7885048786096784,
+    "macro_recall": 0.7763310258023914,
+    "macro_f1": 0.7797489646996628,
+    "accuracy": 0.7873134328358209,
+    "confusion_matrix_labels_0_1": [
+      [
+        391,
+        63
+      ],
+      [
+        108,
+        242
+      ]
+    ]
+  }
+}

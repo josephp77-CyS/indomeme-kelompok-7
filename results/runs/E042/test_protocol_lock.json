@@ -1,0 +1,11 @@
+{
+  "purpose": "Frozen selection before official test evaluation",
+  "runs": [
+    {
+      "run_id": "RQ2__text__-__IndoBERTweet__Caption+OCR+Topic__appropriate__f369557dad2e",
+      "config_sha256": "62307a2cd79deb37af9f3188ddc6e397f3c57219d11b35a2e932dc062aebd05e",
+      "checkpoint_sha256": "cf3484f459eaed72da23927e657ed9236ffc1db4bbf49ef54775f0f822977bd9"
+    }
+  ],
+  "split_sha256": "f8052cf697c55b22dbb222b62874c0acf9fdf2cb73039768e8a1e31a3db3371e"
+}

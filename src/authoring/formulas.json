@@ -1,0 +1,259 @@
+[
+  {
+    "id": "dataset",
+    "latex": "\\mathcal{D}=\\{(I_i,\\tau_i,C_i,O_i,y_i^{h},y_i^{u})\\}_{i=1}^{5023},\\qquad y_i^{h},y_i^{u}\\in\\{0,1\\}",
+    "alt": "Setiap meme memiliki gambar, topik, caption, OCR, dan dua label biner.",
+    "symbols": {
+      "I_i": "gambar meme ke-i",
+      "tau_i": "topik anotasi rilis, dapat kosong",
+      "C_i": "caption deskripsi gambar rilis",
+      "O_i": "teks OCR rilis",
+      "y_h": "0 not hate, 1 hate",
+      "y_u": "0 appropriate, 1 inappropriate; di kode tugas u bernama appropriate"
+    },
+    "sources": [
+      "notebooks/master_workflow.py:78-103"
+    ]
+  },
+  {
+    "id": "input_text",
+    "latex": "S_i=\\operatorname{join}_{\\texttt{[SEP]}}\\!\\left((\\tau_i,C_i,O_i)_{\\mathrm{nonempty}}\\right),\\qquad(\\mathbf{x}_i,\\mathbf{m}_i)=\\operatorname{Tok}_{256}(S_i)",
+    "alt": "Gabungkan topik, caption, lalu OCR yang tidak kosong dengan separator; tokenizer menghasilkan ID token dan attention mask, padding atau truncation hingga 256.",
+    "symbols": {
+      "S_i": "teks gabungan untuk meme i",
+      "x_i": "input_ids sepanjang 256",
+      "m_i": "attention_mask sepanjang 256",
+      "Tok_256": "notasi ringkas untuk AutoTokenizer dengan padding=max_length, truncation=True, max_length=256; special tokens mengikuti tokenizer"
+    },
+    "sources": [
+      "notebooks/master_workflow.py:25-27",
+      "notebooks/master_training.py:55-60",
+      "notebooks/master_training.py:80-95"
+    ]
+  },
+  {
+    "id": "image_preprocess",
+    "latex": "I'_i=\\operatorname{Resize}_{224\\times224}(\\operatorname{RGB}(I_i)),\\qquad X_{i,c}=\\frac{I'_{i,c}/255-0.5}{0.5}",
+    "alt": "Konversi RGB, resize 224 kali 224, bagi nilai piksel dengan 255, lalu normalisasi per channel menggunakan mean dan simpangan baku 0,5.",
+    "symbols": {
+      "I_prime": "gambar hasil resize bilinear",
+      "c": "channel R G B",
+      "X": "tensor pixel_values untuk ViT"
+    },
+    "sources": [
+      "notebooks/master_training.py:47-51",
+      "notebooks/master_training.py:92-95",
+      "C:\\Users\\ACER\\.cache\\huggingface\\hub\\models--google--vit-base-patch32-224-in21k\\snapshots\\98cb6f7099d372694c8547bf7002289b36857dc7\\preprocessor_config.json:2-14",
+      "notebooks/.master_deps/transformers/models/vit/image_processing_vit.py:75-97"
+    ]
+  },
+  {
+    "id": "encoders",
+    "latex": "\\mathbf{h}_i^{t}=\\operatorname{Pooler}_{t}(\\operatorname{IndoBERTweet}(\\mathbf{x}_i,\\mathbf{m}_i)),\\quad \\mathbf{h}_i^{v}=\\operatorname{Pooler}_{v}(\\operatorname{ViT}(X_i)),\\quad \\mathbf{h}_i^{t},\\mathbf{h}_i^{v}\\in\\mathbb{R}^{768}",
+    "alt": "Tiap encoder menghasilkan pooler_output berdimensi 768, bukan mean token atau sekadar CLS mentah.",
+    "symbols": {
+      "h_t": "fitur pooler teks",
+      "h_v": "fitur pooler gambar",
+      "Pooler": "untuk kedua encoder di library 4.46.3, dense lalu tanh pada hidden state token pertama"
+    },
+    "sources": [
+      "notebooks/master_training.py:99-128",
+      "notebooks/.master_deps/transformers/models/bert/modeling_bert.py:737-749",
+      "notebooks/.master_deps/transformers/models/vit/modeling_vit.py:662-674",
+      "C:\\Users\\ACER\\.cache\\huggingface\\hub\\models--indolem--indobertweet-base-uncased\\snapshots\\32e28c05b47e33b6675d2670a1745c50a65e987a\\config.json:14",
+      "C:\\Users\\ACER\\.cache\\huggingface\\hub\\models--google--vit-base-patch32-224-in21k\\snapshots\\98cb6f7099d372694c8547bf7002289b36857dc7\\config.json:9"
+    ]
+  },
+  {
+    "id": "fusion",
+    "latex": "\\mathbf{z}_i=[\\mathbf{h}_i^{t};\\mathbf{h}_i^{v}]\\in\\mathbb{R}^{1536}",
+    "alt": "Fusi menggabungkan dua vektor 768 menjadi satu vektor 1536, dengan urutan teks kemudian gambar.",
+    "symbols": {
+      "z_i": "fitur hasil konkatenasi",
+      "semicolon": "konkatenasi, bukan penjumlahan atau rata-rata"
+    },
+    "sources": [
+      "notebooks/master_training.py:120-128"
+    ]
+  },
+  {
+    "id": "projection",
+    "latex": "\\mathbf{s}_i^{f}=D_{0.3}(W_f\\mathbf{z}_i+\\mathbf{b}_f)\\in\\mathbb{R}^{768},\\qquad \\mathbf{s}_i^{tm}=D_{0.3}(W_{tm}D_{0.3}(\\mathbf{h}_i^{t})+\\mathbf{b}_{tm})\\in\\mathbb{R}^{384}",
+    "alt": "Fusi 1536 ke 768 memakai linear dan dropout. Teks multitask 768 ke 384 memakai dropout sebelum dan sesudah linear. Tidak ada ReLU/GELU di proyeksi.",
+    "symbols": {
+      "D_03": "dropout tambahan probabilitas 0,3 ketika training, identitas saat evaluasi",
+      "W_f": "matriks 768 x 1536",
+      "W_tm": "matriks 384 x 768",
+      "s_f": "fitur fusi untuk satu atau dua head",
+      "s_tm": "fitur teks multitask; dua dropout",
+      "single_task": "gambar saja atau teks saja single-task memakai D_0.3(h) langsung ke head tanpa shared projection"
+    },
+    "sources": [
+      "notebooks/master_training.py:113-132"
+    ]
+  },
+  {
+    "id": "prediction",
+    "latex": "\\boldsymbol{\\ell}_i^{q}=W_q\\mathbf{s}_i+\\mathbf{b}_q,\\qquad p_{i,c}^{q}=\\frac{\\exp(\\ell_{i,c}^{q})}{\\sum_{k=0}^{1}\\exp(\\ell_{i,k}^{q})},\\qquad \\hat y_i^{q}=\\arg\\max_{c\\in\\{0,1\\}}p_{i,c}^{q}",
+    "alt": "Satu head linear menghasilkan dua logit, softmax menghasilkan probabilitas dua kelas, dan kelas dengan probabilitas terbesar menjadi prediksi.",
+    "symbols": {
+      "q": "tugas h untuk hate atau u untuk inappropriate",
+      "c": "kelas 0 atau 1",
+      "ell": "logit, bukan probabilitas",
+      "p": "probabilitas softmax",
+      "s_i": "fitur sesudah cabang dropout/proyeksi yang sesuai",
+      "tie": "argmax NumPy memilih indeks kelas pertama bila nilai sama"
+    },
+    "sources": [
+      "notebooks/master_training.py:117-132",
+      "notebooks/master_training.py:141-160"
+    ]
+  },
+  {
+    "id": "single_loss",
+    "latex": "\\mathcal{L}_{q}=-\\frac{1}{|\\mathcal{B}|}\\sum_{i\\in\\mathcal{B}}\\log p_{i,y_i^{q}}^{q}",
+    "alt": "Cross-entropy single-task adalah rerata negatif log probabilitas label sebenarnya pada microbatch.",
+    "symbols": {
+      "B": "microbatch yang sedang diproses",
+      "q": "salah satu tugas",
+      "L_q": "loss rata-rata tanpa class weight pada deep-learning runner"
+    },
+    "sources": [
+      "notebooks/master_training.py:135-138"
+    ]
+  },
+  {
+    "id": "multitask_loss",
+    "latex": "\\mathcal{L}_{MT}=\\lambda_h\\mathcal{L}_{h}+(1-\\lambda_h)\\mathcal{L}_{u},\\qquad\\lambda_h=0.5",
+    "alt": "Loss multitask adalah rata-rata berbobot dua cross-entropy. Lambda 0,5 menyeimbangkan tugas, bukan kelas. Tidak ada penalty hierarki tambahan.",
+    "symbols": {
+      "lambda_h": "bobot loss hate; nilai eksplisit 0,5",
+      "L_h": "cross-entropy hate",
+      "L_u": "cross-entropy inappropriate",
+      "excluded": "tidak ada +gamma penalty, focal loss, atau hierarchy regularizer di kode ini"
+    },
+    "sources": [
+      "notebooks/master_training.py:135-138",
+      "lab-dashboard/transit/E101/config.json:22",
+      "lab-dashboard/transit/E110/config.json:22"
+    ]
+  },
+  {
+    "id": "hierarchy",
+    "latex": "\\hat y_{i,u}^{con}=\\max(\\hat y_{i,u}^{raw},\\hat y_{i,h}^{raw})",
+    "alt": "Saat evaluasi multitask, prediksi hate satu memaksa prediksi inappropriate menjadi satu. Ini post-processing label, bukan suku loss.",
+    "symbols": {
+      "raw": "hasil argmax masing-masing head",
+      "con": "label inappropriate setelah constraint",
+      "positive": "kelas 1 appropriate pada nama task kode berarti inappropriate"
+    },
+    "sources": [
+      "notebooks/master_training.py:155-160"
+    ]
+  },
+  {
+    "id": "effective_batch",
+    "latex": "B_{\\mathrm{eff}}\\approx bA,\\qquad (b,A)=(2,4)\\ \\mathrm{atau}\\ (1,8),\\qquad B_{\\mathrm{eff}}\\approx8",
+    "alt": "Batch efektif nominal adalah microbatch kali jumlah akumulasi. Historical 2 kali 4 dan lab 1 kali 8 sama-sama sekitar delapan.",
+    "symbols": {
+      "b": "physical batch size",
+      "A": "gradient accumulation steps",
+      "last_window": "window terakhir memakai jumlah microbatch yang benar-benar tersisa; tidak menjamin trajektori optimisasi identik"
+    },
+    "sources": [
+      "notebooks/master_training.py:218-242",
+      "lab-dashboard/transit/E059/config.json:15-16"
+    ]
+  },
+  {
+    "id": "selection_single",
+    "latex": "e^\\star=\\arg\\max_{e\\in\\mathcal{E}}\\operatorname{MacroF1}_{q,val}(e)",
+    "alt": "Checkpoint single-task memakai skor validation tertinggi, dengan epoch pertama dipertahankan bila skor terikat.",
+    "symbols": {
+      "E": "epoch yang benar-benar telah dijalankan, maksimum lima",
+      "q": "tugas model single-task",
+      "e_star": "epoch checkpoint terpilih, bukan jumlah epoch dilatih"
+    },
+    "sources": [
+      "notebooks/master_training.py:228-255"
+    ]
+  },
+  {
+    "id": "selection_multi",
+    "latex": "e^\\star=\\arg\\max_{e\\in\\mathcal{E}}\\frac{\\operatorname{MacroF1}_{h,val}(e)+\\operatorname{MacroF1}_{u,val}^{con}(e)}{2}",
+    "alt": "Checkpoint multitask menggunakan rerata validation macro-F1 hate dan inappropriate constrained, bukan F1 salah satu tugas.",
+    "symbols": {
+      "h": "hate",
+      "u_con": "inappropriate setelah constraint",
+      "distinction": "rerata seleksi adalah np.mean kedua head; lambda pada loss adalah konsep terpisah"
+    },
+    "sources": [
+      "notebooks/master_training.py:243-253"
+    ]
+  },
+  {
+    "id": "precision_recall",
+    "latex": "P_c=\\frac{TP_c}{TP_c+FP_c},\\qquad R_c=\\frac{TP_c}{TP_c+FN_c}",
+    "alt": "Precision mengukur ketepatan prediksi suatu kelas, recall mengukur berapa anggota kelas itu ditemukan.",
+    "symbols": {
+      "TP_c": "benar sebagai kelas c",
+      "FP_c": "bukan c tetapi diprediksi c",
+      "FN_c": "sebenarnya c tetapi diprediksi bukan c",
+      "zero": "denominator nol menghasilkan nol, sesuai zero_division=0"
+    },
+    "sources": [
+      "notebooks/baseline_text.py:89-93"
+    ]
+  },
+  {
+    "id": "f1_macro",
+    "latex": "F1_c=\\frac{2P_cR_c}{P_c+R_c},\\qquad \\operatorname{MacroF1}=\\frac{F1_0+F1_1}{2}",
+    "alt": "Hitung F1 per kelas lebih dahulu, kemudian rata-ratakan kedua kelas dengan bobot sama. Macro-F1 bukan harmonic mean dari macro-P dan macro-R, dan bukan accuracy.",
+    "symbols": {
+      "F1_c": "F1 kelas c; nol bila P_c+R_c nol",
+      "macro_P_R": "MacroP=(P0+P1)/2 dan MacroR=(R0+R1)/2, dihitung terpisah"
+    },
+    "sources": [
+      "notebooks/baseline_text.py:89-93",
+      "output/notebook_lengkap_2026-10-30/source/Notebook_Lengkap_Eksperimen_INDOMEME.source.ipynb:cell25"
+    ]
+  },
+  {
+    "id": "accuracy",
+    "latex": "\\operatorname{Accuracy}=\\frac{1}{N}\\sum_{i=1}^{N}\\mathbf{1}[\\hat y_i=y_i]=\\frac{TN+TP}{TN+FP+FN+TP}",
+    "alt": "Accuracy adalah proporsi prediksi benar dari seluruh data yang diuji.",
+    "symbols": {
+      "N": "jumlah contoh evaluasi, 1005 untuk test core dan 804 untuk baseline validation",
+      "indicator": "satu bila prediksi sama dengan label, nol bila berbeda"
+    },
+    "sources": [
+      "notebooks/baseline_text.py:89-93"
+    ]
+  },
+  {
+    "id": "worked_e059",
+    "latex": "\\begin{aligned} C&=\\begin{bmatrix}573&85\\\\92&255\\end{bmatrix},\\qquad \\operatorname{Accuracy}=\\frac{573+255}{1005}=0.8238806\\\\ F1_1&=\\frac{2(255)}{2(255)+85+92}=0.7423581\\\\ F1_0&=\\frac{2(573)}{2(573)+85+92}=0.8662132\\\\ \\operatorname{MacroF1}&=\\frac{0.7423581+0.8662132}{2}\\approx0.8042856\\end{aligned}",
+    "alt": "Contoh nyata E059 hate: 573 true negative, 85 false positive, 92 false negative, dan 255 true positive. Accuracy 828 dari 1005, macro-F1 sekitar 0,8043.",
+    "symbols": {
+      "C": "baris truth 0,1; kolom prediksi 0,1",
+      "positive": "kelas 1 hate",
+      "rounding": "hitung dengan angka penuh; ekspresi akhir menampilkan pembulatan"
+    },
+    "sources": [
+      "lab-dashboard/transit/E059/test_metrics.json:2-16",
+      "lab-dashboard/transit/E059/test_predictions.csv"
+    ]
+  },
+  {
+    "id": "toy_logits",
+    "latex": "\\begin{aligned}\\boldsymbol{\\ell}^{h}&=(0,1),\\quad \\boldsymbol{\\ell}^{u}=(1,0),\\quad y^h=y^u=1\\\\ p_1^h&=\\frac{e^1}{e^0+e^1}\\approx0.7311,\\quad p_1^u\\approx0.2689\\\\ \\mathcal L_h&\\approx0.3133,\\quad \\mathcal L_u\\approx1.3133,\\quad\\mathcal L_{MT}\\approx0.8133\\\\ (\\hat y_h^{raw},\\hat y_u^{raw})&=(1,0),\\quad \\hat y_u^{con}=\\max(0,1)=1\\end{aligned}",
+    "alt": "Ilustrasi mainan, bukan hasil eksperimen: dua pasang logit buatan menunjukkan softmax, cross-entropy, bobot tugas dan constraint evaluasi.",
+    "symbols": {
+      "toy": "angka logit dibuat untuk penjelasan; tidak berasal dari output model",
+      "loss_vs_constraint": "mengubah label con tidak mengganti logit atau menambah suku loss"
+    },
+    "sources": [
+      "Arithmetic illustration of notebooks/master_training.py:135-160; not empirical evidence"
+    ]
+  }
+]

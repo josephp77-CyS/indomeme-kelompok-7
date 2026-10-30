@@ -1,0 +1,3667 @@
+{
+  "created_utc": "2026-10-29T16:40:14.247915+00:00",
+  "purpose": "Submission evidence recomputed from existing retained predictions, without new training or inference",
+  "sources": [
+    {
+      "title": "Pamungkas et al. 2026. Decoding hate in memes: multimodal and multitask approaches for low-resource Indonesian social media",
+      "url": "https://peerj.com/articles/cs-3736/",
+      "doi": "10.7717/peerj-cs.3736",
+      "access_note": "Publisher page and PDF returned HTTP 403 during final check. Primary article text cached from official browser on 18 October 2026 remains available locally.",
+      "cached_path": "notebooks/runs/presentasi_2026-10-24/workspace/scripts/546797c7108a/paper_text.md"
+    },
+    {
+      "title": "INDOMEME dataset card",
+      "url": "https://huggingface.co/datasets/aiatums/INDOMEME",
+      "live_checked": true,
+      "license": "CC BY 4.0",
+      "revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b"
+    },
+    {
+      "title": "Publisher supplementary dataset",
+      "url": "https://dfzljdn9uc3pi.cloudfront.net/2026/cs-3736/1/INDOMEME_Dataset.zip"
+    },
+    {
+      "title": "Publisher supplementary source code",
+      "url": "https://dfzljdn9uc3pi.cloudfront.net/2026/cs-3736/1/Source_Codes.zip"
+    }
+  ],
+  "dataset": {
+    "total": 5023,
+    "official_train": 4018,
+    "fit": 3214,
+    "validation": 804,
+    "test": 1005,
+    "joint_labels": {
+      "hate|inappropriate": 1733,
+      "not hate|appropriate": 2859,
+      "not hate|inappropriate": 431
+    },
+    "split_joint_labels": {
+      "test": {
+        "hate|inappropriate": 347,
+        "not hate|appropriate": 572,
+        "not hate|inappropriate": 86
+      },
+      "train": {
+        "hate|inappropriate": 1386,
+        "not hate|inappropriate": 345,
+        "not hate|appropriate": 2287
+      }
+    },
+    "missing_topic": {
+      "train": 179,
+      "test": 49,
+      "total": 228
+    },
+    "duplicate_audit": {
+      "image_path_duplicates": {
+        "groups": 0,
+        "cross_split_groups": 0,
+        "rows_in_cross_split_groups": 0
+      },
+      "image_sha256_duplicates": {
+        "groups": 5,
+        "cross_split_groups": 2,
+        "rows_in_cross_split_groups": 4
+      },
+      "pixel_sha256_duplicates": {
+        "groups": 5,
+        "cross_split_groups": 2,
+        "rows_in_cross_split_groups": 4
+      }
+    },
+    "all_images_decode": true,
+    "missing_hate_or_appropriateness_labels": 0,
+    "test_support": {
+      "hate": {
+        "0": 658,
+        "1": 347
+      },
+      "appropriate": {
+        "0": 572,
+        "1": 433
+      }
+    },
+    "topic_counts": {
+      "individual": 665,
+      "gender": 853,
+      "political": 668,
+      "social sub-groups": 2849,
+      "national origin": 346,
+      "institutions": 432,
+      "religion": 241,
+      "none/others": 228
+    },
+    "revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+    "group_split": "First fold StratifiedGroupKFold(5,shuffle=True,random_state=42), stratified on joint label, grouping three exact-image duplicate pairs within official train",
+    "same_fit_validation_ids_across_eight_runs": true
+  },
+  "preprocessing": [
+    "Use published images, OCR, captions and annotated topics; do not regenerate OCR/captions or collect/reannotate memes.",
+    "Verify Parquet SHA-256, decode all 5023 images and cross-check CSV labels/fields against the official supplement.",
+    "Convert image to RGB and use the pinned ViT image processor for the 224-in21k checkpoint.",
+    "For Caption+OCR+Topic, code concatenates nonempty topic, caption and OCR in that order using the tokenizer separator [SEP] for IndoBERTweet.",
+    "Tokenizer pads to max length 256 and truncates longer sequences. No stemming/stop-word removal is applied by the transformer pipeline.",
+    "Missing topic nan becomes empty string for training input and none/others only for statistical tabulation.",
+    "Positive hate label is hate. Positive appropriate-task label is inappropriate. Topic annotations are privileged released inputs, not automatically available at deployment.",
+    "Official test is unchanged. Exact duplicates are grouped only inside train/validation; two exact train/test duplicate groups remain as a known limitation."
+  ],
+  "protocol": {
+    "seed": 42,
+    "max_epochs": 5,
+    "learning_rate": 2e-05,
+    "optimizer": "AdamW",
+    "weight_decay": 0.01,
+    "dropout": 0.3,
+    "max_length": 256,
+    "precision": "FP32",
+    "warmup_steps": 0,
+    "scheduler": "linear",
+    "patience": 2,
+    "multitask_lambda_hate": 0.5,
+    "historical_batch": "physical batch 2 x accumulation 4",
+    "lab_batch": "physical batch 1 x accumulation 8",
+    "single_task_selection": "Highest validation macro-F1",
+    "multitask_selection": "Highest mean(validation hate macro-F1, validation constrained inappropriate macro-F1)",
+    "constraint": "inappropriate_constrained = max(inappropriate_raw, hate_prediction)"
+  },
+  "runs": [
+    {
+      "id": "E005",
+      "config": {
+        "experiment_id": "RQ2__image__ViT__-__-__hate",
+        "rq": "RQ2",
+        "kind": "image",
+        "image": "ViT",
+        "text": "",
+        "variant": "",
+        "task": "hate",
+        "paper_table": 7,
+        "scope": "full",
+        "seed": 42,
+        "epochs": 5,
+        "batch_size": 2,
+        "gradient_accumulation": 4,
+        "learning_rate": 2e-05,
+        "weight_decay": 0.01,
+        "dropout": 0.3,
+        "max_length": 256,
+        "patience": 2,
+        "lambda_hate": 0.5,
+        "max_train": null,
+        "max_validation": null,
+        "precision": "float32",
+        "optimizer": "AdamW",
+        "schedule": "linear, warmup=0",
+        "label_map": {
+          "hate": {
+            "not hate": 0,
+            "hate": 1
+          },
+          "appropriate": {
+            "appropriate": 0,
+            "inappropriate": 1
+          }
+        },
+        "models": {
+          "image": {
+            "id": "google/vit-base-patch32-224-in21k",
+            "revision": "98cb6f7099d372694c8547bf7002289b36857dc7"
+          }
+        },
+        "data_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+        "split_sha256": "f8052cf697c55b22dbb222b62874c0acf9fdf2cb73039768e8a1e31a3db3371e",
+        "script_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+        "support_sha256": {
+          "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+          "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73"
+        },
+        "versions": {
+          "torch": "2.6.0+cu124",
+          "transformers": "4.46.3",
+          "numpy": "2.5.4",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2"
+        },
+        "architecture": "author-code-style pooler/mean; linear-dropout projection for multimodal or dual-head",
+        "selection_metric": "macro-F1",
+        "comparison_policy": "RQ4 appropriate uses constrained predictions; raw scores retained",
+        "deviations": [
+          "validation derived from official train; selection by validation macro-F1",
+          "physical batch 2 x accumulation 4 approximates source batch 8; FP32",
+          "early stopping patience 2, warmup 0; clarify with authors",
+          "multitask lambda is an explicit candidate; validation tuning must be documented",
+          "model revisions pinned on first use; original author training revisions unknown",
+          "pooler_output follows source; article pooled-CLS wording requires clarification",
+          "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+          "unimodal dual-head projection follows author code; article prose omits its dimension",
+          "ViT checkpoint follows article (224-in21k), differs from active source 384",
+          "appropriate positive label is inappropriate; macro metrics unchanged by remapping"
+        ]
+      },
+      "history": [
+        {
+          "epoch": "1",
+          "train_loss": "0.6244355603663092",
+          "selection_macro_f1": "0.6143051360375889",
+          "hate_macro_f1": "0.6143051360375889"
+        },
+        {
+          "epoch": "2",
+          "train_loss": "0.49193398145623807",
+          "selection_macro_f1": "0.6251156718291572",
+          "hate_macro_f1": "0.6251156718291572"
+        },
+        {
+          "epoch": "3",
+          "train_loss": "0.3001801927087744",
+          "selection_macro_f1": "0.6407263091456321",
+          "hate_macro_f1": "0.6407263091456321"
+        },
+        {
+          "epoch": "4",
+          "train_loss": "0.1306439874423975",
+          "selection_macro_f1": "0.6258751466318466",
+          "hate_macro_f1": "0.6258751466318466"
+        },
+        {
+          "epoch": "5",
+          "train_loss": "0.05022680771882821",
+          "selection_macro_f1": "0.6255740072202166",
+          "hate_macro_f1": "0.6255740072202166"
+        }
+      ],
+      "selected_epoch": 3,
+      "epochs_trained": 5,
+      "selection_validation_macro_f1": 0.6407263091456321,
+      "validation": {
+        "hate": {
+          "macro_precision": 0.6420033670033669,
+          "macro_recall": 0.639649427785021,
+          "macro_f1": 0.6407263091456321,
+          "accuracy": 0.6803482587064676,
+          "confusion_matrix_labels_0_1": [
+            [
+              407,
+              124
+            ],
+            [
+              133,
+              140
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.7537037037037037,
+              "recall": 0.7664783427495292,
+              "f1": 0.7600373482726424,
+              "support": 531
+            },
+            {
+              "label": 1,
+              "precision": 0.5303030303030303,
+              "recall": 0.5128205128205128,
+              "f1": 0.521415270018622,
+              "support": 273
+            }
+          ],
+          "rows": 804
+        }
+      },
+      "test": {
+        "hate": {
+          "macro_precision": 0.6425150826187365,
+          "macro_recall": 0.639462873260163,
+          "macro_f1": 0.6408128805675026,
+          "accuracy": 0.6786069651741293,
+          "confusion_matrix_labels_0_1": [
+            [
+              504,
+              154
+            ],
+            [
+              169,
+              178
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.7488855869242199,
+              "recall": 0.7659574468085106,
+              "f1": 0.7573253193087903,
+              "support": 658
+            },
+            {
+              "label": 1,
+              "precision": 0.536144578313253,
+              "recall": 0.5129682997118156,
+              "f1": 0.5243004418262149,
+              "support": 347
+            }
+          ],
+          "rows": 1005
+        }
+      }
+    },
+    {
+      "id": "E006",
+      "config": {
+        "dashboard_id": "E006",
+        "row": 7,
+        "experiment_id": "RQ2__image__ViT__-__-__appropriate",
+        "rq": "RQ2",
+        "kind": "image",
+        "image": "ViT",
+        "text": "",
+        "variant": "",
+        "task": "appropriate",
+        "paper_table": 8,
+        "scope": "full",
+        "seed": 42,
+        "epochs": 5,
+        "batch_size": 1,
+        "gradient_accumulation": 8,
+        "learning_rate": 2e-05,
+        "weight_decay": 0.01,
+        "dropout": 0.3,
+        "max_length": 256,
+        "patience": 2,
+        "lambda_hate": 0.5,
+        "max_train": null,
+        "max_validation": null,
+        "precision": "float32",
+        "optimizer": "AdamW",
+        "schedule": "linear, warmup=0",
+        "label_map": {
+          "hate": {
+            "not hate": 0,
+            "hate": 1
+          },
+          "appropriate": {
+            "appropriate": 0,
+            "inappropriate": 1
+          }
+        },
+        "models": {
+          "image": {
+            "id": "google/vit-base-patch32-224-in21k",
+            "revision": "98cb6f7099d372694c8547bf7002289b36857dc7"
+          }
+        },
+        "data_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+        "split_sha256": "4368e5767d73dfe988f9734dde59a146e125a0cda82c2783ee8eff46acab1a39",
+        "script_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+        "support_sha256": {
+          "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+          "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73"
+        },
+        "versions": {
+          "torch": "2.6.0+cu124",
+          "transformers": "4.46.3",
+          "numpy": "2.5.4",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2"
+        },
+        "architecture": "author-code-style pooler/mean; linear-dropout projection for multimodal or dual-head",
+        "selection_metric": "macro-F1",
+        "comparison_policy": "RQ4 appropriate uses constrained predictions; raw scores retained",
+        "deviations": [
+          "validation derived from official train; selection by validation macro-F1",
+          "early stopping patience 2, warmup 0; clarify with authors",
+          "multitask lambda is an explicit candidate; validation tuning must be documented",
+          "model revisions pinned on first use; original author training revisions unknown",
+          "pooler_output follows source; article pooled-CLS wording requires clarification",
+          "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+          "unimodal dual-head projection follows author code; article prose omits its dimension",
+          "ViT checkpoint follows article (224-in21k), differs from active source 384",
+          "appropriate positive label is inappropriate; macro metrics unchanged by remapping",
+          "Lab adaptation: physical batch 1 x accumulation 8; FP32; separate run identity; calibration required."
+        ],
+        "lab_worker_sha256": "a4be2a7967a641ad427790d7cfe82f655e3f09370974aef693e875936700b3bb",
+        "execution_profile": "kelompok-7-b1-a8-fp32"
+      },
+      "history": [
+        {
+          "epoch": "1",
+          "train_loss": "0.6681178139050925",
+          "selection_macro_f1": "0.6107392599913151",
+          "appropriate_macro_f1": "0.6107392599913151"
+        },
+        {
+          "epoch": "2",
+          "train_loss": "0.5287271202753421",
+          "selection_macro_f1": "0.6347838387966331",
+          "appropriate_macro_f1": "0.6347838387966331"
+        },
+        {
+          "epoch": "3",
+          "train_loss": "0.3305831383305237",
+          "selection_macro_f1": "0.6347208446648536",
+          "appropriate_macro_f1": "0.6347208446648536"
+        },
+        {
+          "epoch": "4",
+          "train_loss": "0.15588183567508465",
+          "selection_macro_f1": "0.6203947779074178",
+          "appropriate_macro_f1": "0.6203947779074178"
+        }
+      ],
+      "selected_epoch": 2,
+      "epochs_trained": 4,
+      "selection_validation_macro_f1": 0.6347838387966331,
+      "validation": {
+        "appropriate": {
+          "macro_precision": 0.6346645477786224,
+          "macro_recall": 0.6349213341724356,
+          "macro_f1": 0.6347838387966332,
+          "accuracy": 0.6405472636815921,
+          "confusion_matrix_labels_0_1": [
+            [
+              308,
+              146
+            ],
+            [
+              143,
+              207
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.6829268292682927,
+              "recall": 0.6784140969162996,
+              "f1": 0.6806629834254144,
+              "support": 454
+            },
+            {
+              "label": 1,
+              "precision": 0.5864022662889519,
+              "recall": 0.5914285714285714,
+              "f1": 0.5889046941678521,
+              "support": 350
+            }
+          ],
+          "rows": 804
+        }
+      },
+      "test": {
+        "appropriate": {
+          "macro_precision": 0.6326437891910477,
+          "macro_recall": 0.6308443288812804,
+          "macro_f1": 0.6314549102267821,
+          "accuracy": 0.6407960199004975,
+          "confusion_matrix_labels_0_1": [
+            [
+              402,
+              170
+            ],
+            [
+              191,
+              242
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.6779089376053963,
+              "recall": 0.7027972027972028,
+              "f1": 0.6901287553648069,
+              "support": 572
+            },
+            {
+              "label": 1,
+              "precision": 0.587378640776699,
+              "recall": 0.558891454965358,
+              "f1": 0.5727810650887574,
+              "support": 433
+            }
+          ],
+          "rows": 1005
+        }
+      }
+    },
+    {
+      "id": "E041",
+      "config": {
+        "experiment_id": "RQ2__text__-__IndoBERTweet__Caption+OCR+Topic__hate",
+        "rq": "RQ2",
+        "kind": "text",
+        "image": "",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "hate",
+        "paper_table": 9,
+        "scope": "full",
+        "seed": 42,
+        "epochs": 5,
+        "batch_size": 2,
+        "gradient_accumulation": 4,
+        "learning_rate": 2e-05,
+        "weight_decay": 0.01,
+        "dropout": 0.3,
+        "max_length": 256,
+        "patience": 2,
+        "lambda_hate": 0.5,
+        "max_train": null,
+        "max_validation": null,
+        "precision": "float32",
+        "optimizer": "AdamW",
+        "schedule": "linear, warmup=0",
+        "label_map": {
+          "hate": {
+            "not hate": 0,
+            "hate": 1
+          },
+          "appropriate": {
+            "appropriate": 0,
+            "inappropriate": 1
+          }
+        },
+        "models": {
+          "text": {
+            "id": "indolem/indobertweet-base-uncased",
+            "revision": "32e28c05b47e33b6675d2670a1745c50a65e987a"
+          }
+        },
+        "data_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+        "split_sha256": "f8052cf697c55b22dbb222b62874c0acf9fdf2cb73039768e8a1e31a3db3371e",
+        "script_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+        "support_sha256": {
+          "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+          "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73"
+        },
+        "versions": {
+          "torch": "2.6.0+cu124",
+          "transformers": "4.46.3",
+          "numpy": "2.5.4",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2"
+        },
+        "architecture": "author-code-style pooler/mean; linear-dropout projection for multimodal or dual-head",
+        "selection_metric": "macro-F1",
+        "comparison_policy": "RQ4 appropriate uses constrained predictions; raw scores retained",
+        "deviations": [
+          "validation derived from official train; selection by validation macro-F1",
+          "physical batch 2 x accumulation 4 approximates source batch 8; FP32",
+          "early stopping patience 2, warmup 0; clarify with authors",
+          "multitask lambda is an explicit candidate; validation tuning must be documented",
+          "model revisions pinned on first use; original author training revisions unknown",
+          "pooler_output follows source; article pooled-CLS wording requires clarification",
+          "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+          "unimodal dual-head projection follows author code; article prose omits its dimension",
+          "ViT checkpoint follows article (224-in21k), differs from active source 384",
+          "appropriate positive label is inappropriate; macro metrics unchanged by remapping"
+        ]
+      },
+      "history": [
+        {
+          "epoch": "1",
+          "train_loss": "0.4845561744586125",
+          "selection_macro_f1": "0.7393641761653649",
+          "hate_macro_f1": "0.7393641761653649"
+        },
+        {
+          "epoch": "2",
+          "train_loss": "0.3738288240951753",
+          "selection_macro_f1": "0.8207647357233008",
+          "hate_macro_f1": "0.8207647357233008"
+        },
+        {
+          "epoch": "3",
+          "train_loss": "0.26623483453619373",
+          "selection_macro_f1": "0.8161217061698759",
+          "hate_macro_f1": "0.8161217061698759"
+        },
+        {
+          "epoch": "4",
+          "train_loss": "0.14898352154436265",
+          "selection_macro_f1": "0.8105052940276891",
+          "hate_macro_f1": "0.8105052940276891"
+        }
+      ],
+      "selected_epoch": 2,
+      "epochs_trained": 4,
+      "selection_validation_macro_f1": 0.8207647357233008,
+      "validation": {
+        "hate": {
+          "macro_precision": 0.8273371510379385,
+          "macro_recall": 0.8154529086732476,
+          "macro_f1": 0.8207647357233007,
+          "accuracy": 0.8420398009950248,
+          "confusion_matrix_labels_0_1": [
+            [
+              477,
+              54
+            ],
+            [
+              73,
+              200
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.8672727272727273,
+              "recall": 0.8983050847457628,
+              "f1": 0.8825161887141535,
+              "support": 531
+            },
+            {
+              "label": 1,
+              "precision": 0.7874015748031497,
+              "recall": 0.7326007326007326,
+              "f1": 0.7590132827324478,
+              "support": 273
+            }
+          ],
+          "rows": 804
+        }
+      },
+      "test": {
+        "hate": {
+          "macro_precision": 0.8107290736380612,
+          "macro_recall": 0.80171990925256,
+          "macro_f1": 0.8058001208265961,
+          "accuracy": 0.826865671641791,
+          "confusion_matrix_labels_0_1": [
+            [
+              581,
+              77
+            ],
+            [
+              97,
+              250
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.8569321533923304,
+              "recall": 0.8829787234042553,
+              "f1": 0.8697604790419162,
+              "support": 658
+            },
+            {
+              "label": 1,
+              "precision": 0.764525993883792,
+              "recall": 0.7204610951008645,
+              "f1": 0.7418397626112759,
+              "support": 347
+            }
+          ],
+          "rows": 1005
+        }
+      }
+    },
+    {
+      "id": "E042",
+      "config": {
+        "experiment_id": "RQ2__text__-__IndoBERTweet__Caption+OCR+Topic__appropriate",
+        "rq": "RQ2",
+        "kind": "text",
+        "image": "",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "appropriate",
+        "paper_table": 10,
+        "scope": "full",
+        "seed": 42,
+        "epochs": 5,
+        "batch_size": 2,
+        "gradient_accumulation": 4,
+        "learning_rate": 2e-05,
+        "weight_decay": 0.01,
+        "dropout": 0.3,
+        "max_length": 256,
+        "patience": 2,
+        "lambda_hate": 0.5,
+        "max_train": null,
+        "max_validation": null,
+        "precision": "float32",
+        "optimizer": "AdamW",
+        "schedule": "linear, warmup=0",
+        "label_map": {
+          "hate": {
+            "not hate": 0,
+            "hate": 1
+          },
+          "appropriate": {
+            "appropriate": 0,
+            "inappropriate": 1
+          }
+        },
+        "models": {
+          "text": {
+            "id": "indolem/indobertweet-base-uncased",
+            "revision": "32e28c05b47e33b6675d2670a1745c50a65e987a"
+          }
+        },
+        "data_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+        "split_sha256": "f8052cf697c55b22dbb222b62874c0acf9fdf2cb73039768e8a1e31a3db3371e",
+        "script_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+        "support_sha256": {
+          "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+          "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73"
+        },
+        "versions": {
+          "torch": "2.6.0+cu124",
+          "transformers": "4.46.3",
+          "numpy": "2.5.4",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2"
+        },
+        "architecture": "author-code-style pooler/mean; linear-dropout projection for multimodal or dual-head",
+        "selection_metric": "macro-F1",
+        "comparison_policy": "RQ4 appropriate uses constrained predictions; raw scores retained",
+        "deviations": [
+          "validation derived from official train; selection by validation macro-F1",
+          "physical batch 2 x accumulation 4 approximates source batch 8; FP32",
+          "early stopping patience 2, warmup 0; clarify with authors",
+          "multitask lambda is an explicit candidate; validation tuning must be documented",
+          "model revisions pinned on first use; original author training revisions unknown",
+          "pooler_output follows source; article pooled-CLS wording requires clarification",
+          "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+          "unimodal dual-head projection follows author code; article prose omits its dimension",
+          "ViT checkpoint follows article (224-in21k), differs from active source 384",
+          "appropriate positive label is inappropriate; macro metrics unchanged by remapping"
+        ]
+      },
+      "history": [
+        {
+          "epoch": "1",
+          "train_loss": "0.5339445229793603",
+          "selection_macro_f1": "0.7588933788626615",
+          "appropriate_macro_f1": "0.7588933788626615"
+        },
+        {
+          "epoch": "2",
+          "train_loss": "0.41120300282809397",
+          "selection_macro_f1": "0.7923553719008265",
+          "appropriate_macro_f1": "0.7923553719008265"
+        },
+        {
+          "epoch": "3",
+          "train_loss": "0.2793572394385373",
+          "selection_macro_f1": "0.7775538032845201",
+          "appropriate_macro_f1": "0.7775538032845201"
+        },
+        {
+          "epoch": "4",
+          "train_loss": "0.158770523138426",
+          "selection_macro_f1": "0.7769879981248591",
+          "appropriate_macro_f1": "0.7769879981248591"
+        }
+      ],
+      "selected_epoch": 2,
+      "epochs_trained": 4,
+      "selection_validation_macro_f1": 0.7923553719008265,
+      "validation": {
+        "appropriate": {
+          "macro_precision": 0.8067892123976922,
+          "macro_recall": 0.7877910635619887,
+          "macro_f1": 0.7923553719008264,
+          "accuracy": 0.8009950248756219,
+          "confusion_matrix_labels_0_1": [
+            [
+              404,
+              50
+            ],
+            [
+              110,
+              240
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.7859922178988327,
+              "recall": 0.8898678414096917,
+              "f1": 0.8347107438016528,
+              "support": 454
+            },
+            {
+              "label": 1,
+              "precision": 0.8275862068965517,
+              "recall": 0.6857142857142857,
+              "f1": 0.75,
+              "support": 350
+            }
+          ],
+          "rows": 804
+        }
+      },
+      "test": {
+        "appropriate": {
+          "macro_precision": 0.8113548801369863,
+          "macro_recall": 0.793659862077876,
+          "macro_f1": 0.7984131119878906,
+          "accuracy": 0.8069651741293532,
+          "confusion_matrix_labels_0_1": [
+            [
+              509,
+              63
+            ],
+            [
+              131,
+              302
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.7953125,
+              "recall": 0.8898601398601399,
+              "f1": 0.8399339933993399,
+              "support": 572
+            },
+            {
+              "label": 1,
+              "precision": 0.8273972602739726,
+              "recall": 0.6974595842956121,
+              "f1": 0.7568922305764412,
+              "support": 433
+            }
+          ],
+          "rows": 1005
+        }
+      }
+    },
+    {
+      "id": "E059",
+      "config": {
+        "dashboard_id": "E059",
+        "row": 60,
+        "experiment_id": "RQ2__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__hate",
+        "rq": "RQ2",
+        "kind": "multimodal",
+        "image": "ViT",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "hate",
+        "paper_table": 11,
+        "scope": "full",
+        "seed": 42,
+        "epochs": 5,
+        "batch_size": 1,
+        "gradient_accumulation": 8,
+        "learning_rate": 2e-05,
+        "weight_decay": 0.01,
+        "dropout": 0.3,
+        "max_length": 256,
+        "patience": 2,
+        "lambda_hate": 0.5,
+        "max_train": null,
+        "max_validation": null,
+        "precision": "float32",
+        "optimizer": "AdamW",
+        "schedule": "linear, warmup=0",
+        "label_map": {
+          "hate": {
+            "not hate": 0,
+            "hate": 1
+          },
+          "appropriate": {
+            "appropriate": 0,
+            "inappropriate": 1
+          }
+        },
+        "models": {
+          "image": {
+            "id": "google/vit-base-patch32-224-in21k",
+            "revision": "98cb6f7099d372694c8547bf7002289b36857dc7"
+          },
+          "text": {
+            "id": "indolem/indobertweet-base-uncased",
+            "revision": "32e28c05b47e33b6675d2670a1745c50a65e987a"
+          }
+        },
+        "data_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+        "split_sha256": "4368e5767d73dfe988f9734dde59a146e125a0cda82c2783ee8eff46acab1a39",
+        "script_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+        "support_sha256": {
+          "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+          "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73"
+        },
+        "versions": {
+          "torch": "2.6.0+cu124",
+          "transformers": "4.46.3",
+          "numpy": "2.5.4",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2"
+        },
+        "architecture": "author-code-style pooler/mean; linear-dropout projection for multimodal or dual-head",
+        "selection_metric": "macro-F1",
+        "comparison_policy": "RQ4 appropriate uses constrained predictions; raw scores retained",
+        "deviations": [
+          "validation derived from official train; selection by validation macro-F1",
+          "early stopping patience 2, warmup 0; clarify with authors",
+          "multitask lambda is an explicit candidate; validation tuning must be documented",
+          "model revisions pinned on first use; original author training revisions unknown",
+          "pooler_output follows source; article pooled-CLS wording requires clarification",
+          "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+          "unimodal dual-head projection follows author code; article prose omits its dimension",
+          "ViT checkpoint follows article (224-in21k), differs from active source 384",
+          "appropriate positive label is inappropriate; macro metrics unchanged by remapping",
+          "Lab adaptation: physical batch 1 x accumulation 8; FP32; separate run identity; calibration required."
+        ],
+        "lab_worker_sha256": "a4be2a7967a641ad427790d7cfe82f655e3f09370974aef693e875936700b3bb",
+        "execution_profile": "kelompok-7-b1-a8-fp32"
+      },
+      "history": [
+        {
+          "epoch": "1",
+          "train_loss": "0.4856028136625995",
+          "selection_macro_f1": "0.8016414743663547",
+          "hate_macro_f1": "0.8016414743663547"
+        },
+        {
+          "epoch": "2",
+          "train_loss": "0.32629143821690454",
+          "selection_macro_f1": "0.8292910447761194",
+          "hate_macro_f1": "0.8292910447761194"
+        },
+        {
+          "epoch": "3",
+          "train_loss": "0.18922778745318866",
+          "selection_macro_f1": "0.8197471078827011",
+          "hate_macro_f1": "0.8197471078827011"
+        },
+        {
+          "epoch": "4",
+          "train_loss": "0.07727160723172033",
+          "selection_macro_f1": "0.8096741103132644",
+          "hate_macro_f1": "0.8096741103132644"
+        }
+      ],
+      "selected_epoch": 2,
+      "epochs_trained": 4,
+      "selection_validation_macro_f1": 0.8292910447761194,
+      "validation": {
+        "hate": {
+          "macro_precision": 0.8325379701018393,
+          "macro_recall": 0.8263901823223857,
+          "macro_f1": 0.8292910447761194,
+          "accuracy": 0.8482587064676617,
+          "confusion_matrix_labels_0_1": [
+            [
+              475,
+              56
+            ],
+            [
+              66,
+              207
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.878003696857671,
+              "recall": 0.8945386064030132,
+              "f1": 0.8861940298507462,
+              "support": 531
+            },
+            {
+              "label": 1,
+              "precision": 0.7870722433460076,
+              "recall": 0.7582417582417582,
+              "f1": 0.7723880597014925,
+              "support": 273
+            }
+          ],
+          "rows": 804
+        }
+      },
+      "test": {
+        "hate": {
+          "macro_precision": 0.805827067669173,
+          "macro_recall": 0.8028454928479455,
+          "macro_f1": 0.8042856152650288,
+          "accuracy": 0.8238805970149253,
+          "confusion_matrix_labels_0_1": [
+            [
+              573,
+              85
+            ],
+            [
+              92,
+              255
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.8616541353383459,
+              "recall": 0.8708206686930091,
+              "f1": 0.8662131519274376,
+              "support": 658
+            },
+            {
+              "label": 1,
+              "precision": 0.75,
+              "recall": 0.7348703170028819,
+              "f1": 0.7423580786026202,
+              "support": 347
+            }
+          ],
+          "rows": 1005
+        }
+      }
+    },
+    {
+      "id": "E060",
+      "config": {
+        "experiment_id": "RQ2__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__appropriate",
+        "rq": "RQ2",
+        "kind": "multimodal",
+        "image": "ViT",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "appropriate",
+        "paper_table": 12,
+        "scope": "full",
+        "seed": 42,
+        "epochs": 5,
+        "batch_size": 2,
+        "gradient_accumulation": 4,
+        "learning_rate": 2e-05,
+        "weight_decay": 0.01,
+        "dropout": 0.3,
+        "max_length": 256,
+        "patience": 2,
+        "lambda_hate": 0.5,
+        "max_train": null,
+        "max_validation": null,
+        "precision": "float32",
+        "optimizer": "AdamW",
+        "schedule": "linear, warmup=0",
+        "label_map": {
+          "hate": {
+            "not hate": 0,
+            "hate": 1
+          },
+          "appropriate": {
+            "appropriate": 0,
+            "inappropriate": 1
+          }
+        },
+        "models": {
+          "image": {
+            "id": "google/vit-base-patch32-224-in21k",
+            "revision": "98cb6f7099d372694c8547bf7002289b36857dc7"
+          },
+          "text": {
+            "id": "indolem/indobertweet-base-uncased",
+            "revision": "32e28c05b47e33b6675d2670a1745c50a65e987a"
+          }
+        },
+        "data_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+        "split_sha256": "f8052cf697c55b22dbb222b62874c0acf9fdf2cb73039768e8a1e31a3db3371e",
+        "script_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+        "support_sha256": {
+          "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+          "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73"
+        },
+        "versions": {
+          "torch": "2.6.0+cu124",
+          "transformers": "4.46.3",
+          "numpy": "2.5.4",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2"
+        },
+        "architecture": "author-code-style pooler/mean; linear-dropout projection for multimodal or dual-head",
+        "selection_metric": "macro-F1",
+        "comparison_policy": "RQ4 appropriate uses constrained predictions; raw scores retained",
+        "deviations": [
+          "validation derived from official train; selection by validation macro-F1",
+          "physical batch 2 x accumulation 4 approximates source batch 8; FP32",
+          "early stopping patience 2, warmup 0; clarify with authors",
+          "multitask lambda is an explicit candidate; validation tuning must be documented",
+          "model revisions pinned on first use; original author training revisions unknown",
+          "pooler_output follows source; article pooled-CLS wording requires clarification",
+          "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+          "unimodal dual-head projection follows author code; article prose omits its dimension",
+          "ViT checkpoint follows article (224-in21k), differs from active source 384",
+          "appropriate positive label is inappropriate; macro metrics unchanged by remapping"
+        ]
+      },
+      "history": [
+        {
+          "epoch": "1",
+          "train_loss": "0.5370487800040691",
+          "selection_macro_f1": "0.767561352212622",
+          "appropriate_macro_f1": "0.767561352212622"
+        },
+        {
+          "epoch": "2",
+          "train_loss": "0.36443671449530907",
+          "selection_macro_f1": "0.7848897948783284",
+          "appropriate_macro_f1": "0.7848897948783284"
+        },
+        {
+          "epoch": "3",
+          "train_loss": "0.1870196317109571",
+          "selection_macro_f1": "0.7701697672785128",
+          "appropriate_macro_f1": "0.7701697672785128"
+        },
+        {
+          "epoch": "4",
+          "train_loss": "0.07108028156885109",
+          "selection_macro_f1": "0.7701697672785128",
+          "appropriate_macro_f1": "0.7701697672785128"
+        }
+      ],
+      "selected_epoch": 2,
+      "epochs_trained": 4,
+      "selection_validation_macro_f1": 0.7848897948783284,
+      "validation": {
+        "appropriate": {
+          "macro_precision": 0.7902011025700754,
+          "macro_recall": 0.7822529893014474,
+          "macro_f1": 0.7848897948783284,
+          "accuracy": 0.7910447761194029,
+          "confusion_matrix_labels_0_1": [
+            [
+              386,
+              68
+            ],
+            [
+              100,
+              250
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.7942386831275721,
+              "recall": 0.8502202643171806,
+              "f1": 0.8212765957446809,
+              "support": 454
+            },
+            {
+              "label": 1,
+              "precision": 0.7861635220125787,
+              "recall": 0.7142857142857143,
+              "f1": 0.748502994011976,
+              "support": 350
+            }
+          ],
+          "rows": 804
+        }
+      },
+      "test": {
+        "appropriate": {
+          "macro_precision": 0.8167495854063018,
+          "macro_recall": 0.8100098515802904,
+          "macro_f1": 0.8125468212511148,
+          "accuracy": 0.817910447761194,
+          "confusion_matrix_labels_0_1": [
+            [
+              496,
+              76
+            ],
+            [
+              107,
+              326
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.8225538971807629,
+              "recall": 0.8671328671328671,
+              "f1": 0.8442553191489361,
+              "support": 572
+            },
+            {
+              "label": 1,
+              "precision": 0.8109452736318408,
+              "recall": 0.7528868360277137,
+              "f1": 0.7808383233532934,
+              "support": 433
+            }
+          ],
+          "rows": 1005
+        }
+      }
+    },
+    {
+      "id": "E101",
+      "config": {
+        "dashboard_id": "E101",
+        "row": 102,
+        "experiment_id": "RQ4__text__-__IndoBERTweet__Caption+OCR+Topic__both",
+        "rq": "RQ4",
+        "kind": "text",
+        "image": "",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "both",
+        "paper_table": 15,
+        "scope": "full",
+        "seed": 42,
+        "epochs": 5,
+        "batch_size": 1,
+        "gradient_accumulation": 8,
+        "learning_rate": 2e-05,
+        "weight_decay": 0.01,
+        "dropout": 0.3,
+        "max_length": 256,
+        "patience": 2,
+        "lambda_hate": 0.5,
+        "max_train": null,
+        "max_validation": null,
+        "precision": "float32",
+        "optimizer": "AdamW",
+        "schedule": "linear, warmup=0",
+        "label_map": {
+          "hate": {
+            "not hate": 0,
+            "hate": 1
+          },
+          "appropriate": {
+            "appropriate": 0,
+            "inappropriate": 1
+          }
+        },
+        "models": {
+          "text": {
+            "id": "indolem/indobertweet-base-uncased",
+            "revision": "32e28c05b47e33b6675d2670a1745c50a65e987a"
+          }
+        },
+        "data_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+        "split_sha256": "4368e5767d73dfe988f9734dde59a146e125a0cda82c2783ee8eff46acab1a39",
+        "script_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+        "support_sha256": {
+          "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+          "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73"
+        },
+        "versions": {
+          "torch": "2.6.0+cu124",
+          "transformers": "4.46.3",
+          "numpy": "2.5.4",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2"
+        },
+        "architecture": "author-code-style pooler/mean; linear-dropout projection for multimodal or dual-head",
+        "selection_metric": "mean(hate macro-F1, constrained inappropriate macro-F1)",
+        "comparison_policy": "RQ4 appropriate uses constrained predictions; raw scores retained",
+        "deviations": [
+          "validation derived from official train; selection by validation macro-F1",
+          "early stopping patience 2, warmup 0; clarify with authors",
+          "multitask lambda is an explicit candidate; validation tuning must be documented",
+          "model revisions pinned on first use; original author training revisions unknown",
+          "pooler_output follows source; article pooled-CLS wording requires clarification",
+          "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+          "unimodal dual-head projection follows author code; article prose omits its dimension",
+          "ViT checkpoint follows article (224-in21k), differs from active source 384",
+          "appropriate positive label is inappropriate; macro metrics unchanged by remapping",
+          "Lab adaptation: physical batch 1 x accumulation 8; FP32; separate run identity; calibration required."
+        ],
+        "lab_worker_sha256": "a4be2a7967a641ad427790d7cfe82f655e3f09370974aef693e875936700b3bb",
+        "execution_profile": "kelompok-7-b1-a8-fp32"
+      },
+      "history": [
+        {
+          "epoch": "1",
+          "train_loss": "0.5159070036126568",
+          "selection_macro_f1": "0.7676240137763792",
+          "appropriate_macro_f1": "0.7506602641056422",
+          "hate_macro_f1": "0.7842307454109716",
+          "appropriate_constrained_macro_f1": "0.7510172821417869"
+        },
+        {
+          "epoch": "2",
+          "train_loss": "0.39904896702470205",
+          "selection_macro_f1": "0.7864338291129291",
+          "appropriate_macro_f1": "0.7626613958980415",
+          "hate_macro_f1": "0.8071754057150978",
+          "appropriate_constrained_macro_f1": "0.7656922525107603"
+        },
+        {
+          "epoch": "3",
+          "train_loss": "0.29659815785702837",
+          "selection_macro_f1": "0.793027221108995",
+          "appropriate_macro_f1": "0.7789036415870797",
+          "hate_macro_f1": "0.8071508006309103",
+          "appropriate_constrained_macro_f1": "0.7789036415870797"
+        },
+        {
+          "epoch": "4",
+          "train_loss": "0.1929832806667445",
+          "selection_macro_f1": "0.787882261003005",
+          "appropriate_macro_f1": "0.7724276595329347",
+          "hate_macro_f1": "0.8033368624730751",
+          "appropriate_constrained_macro_f1": "0.7724276595329347"
+        },
+        {
+          "epoch": "5",
+          "train_loss": "0.13684881777533311",
+          "selection_macro_f1": "0.7957328175751033",
+          "appropriate_macro_f1": "0.7797489646996628",
+          "hate_macro_f1": "0.8117166704505436",
+          "appropriate_constrained_macro_f1": "0.7797489646996628"
+        }
+      ],
+      "selected_epoch": 5,
+      "epochs_trained": 5,
+      "selection_validation_macro_f1": 0.7957328175751033,
+      "validation": {
+        "hate": {
+          "macro_precision": 0.8264800668417283,
+          "macro_recall": 0.8018977256265392,
+          "macro_f1": 0.8117166704505434,
+          "accuracy": 0.8370646766169154,
+          "confusion_matrix_labels_0_1": [
+            [
+              484,
+              47
+            ],
+            [
+              84,
+              189
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.852112676056338,
+              "recall": 0.911487758945386,
+              "f1": 0.8808007279344859,
+              "support": 531
+            },
+            {
+              "label": 1,
+              "precision": 0.8008474576271186,
+              "recall": 0.6923076923076923,
+              "f1": 0.742632612966601,
+              "support": 273
+            }
+          ],
+          "rows": 804
+        },
+        "appropriate": {
+          "macro_precision": 0.7885048786096784,
+          "macro_recall": 0.7763310258023914,
+          "macro_f1": 0.7797489646996627,
+          "accuracy": 0.7873134328358209,
+          "confusion_matrix_labels_0_1": [
+            [
+              391,
+              63
+            ],
+            [
+              108,
+              242
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.7835671342685371,
+              "recall": 0.8612334801762115,
+              "f1": 0.8205666316894019,
+              "support": 454
+            },
+            {
+              "label": 1,
+              "precision": 0.7934426229508197,
+              "recall": 0.6914285714285714,
+              "f1": 0.7389312977099236,
+              "support": 350
+            }
+          ],
+          "rows": 804
+        }
+      },
+      "test": {
+        "hate": {
+          "macro_precision": 0.8123074242535397,
+          "macro_recall": 0.7983146903988156,
+          "macro_f1": 0.8043399452192126,
+          "accuracy": 0.826865671641791,
+          "confusion_matrix_labels_0_1": [
+            [
+              586,
+              72
+            ],
+            [
+              102,
+              245
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.8517441860465116,
+              "recall": 0.8905775075987842,
+              "f1": 0.8707280832095096,
+              "support": 658
+            },
+            {
+              "label": 1,
+              "precision": 0.7728706624605678,
+              "recall": 0.7060518731988472,
+              "f1": 0.7379518072289156,
+              "support": 347
+            }
+          ],
+          "rows": 1005
+        },
+        "appropriate": {
+          "macro_precision": 0.8024586776859504,
+          "macro_recall": 0.7955272210468516,
+          "macro_f1": 0.7980653603837456,
+          "accuracy": 0.8039800995024876,
+          "confusion_matrix_labels_0_1": [
+            [
+              490,
+              82
+            ],
+            [
+              115,
+              318
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.8099173553719008,
+              "recall": 0.8566433566433567,
+              "f1": 0.832625318606627,
+              "support": 572
+            },
+            {
+              "label": 1,
+              "precision": 0.795,
+              "recall": 0.7344110854503464,
+              "f1": 0.7635054021608643,
+              "support": 433
+            }
+          ],
+          "rows": 1005
+        }
+      }
+    },
+    {
+      "id": "E110",
+      "config": {
+        "dashboard_id": "E110",
+        "row": 111,
+        "experiment_id": "RQ4__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__both",
+        "rq": "RQ4",
+        "kind": "multimodal",
+        "image": "ViT",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "both",
+        "paper_table": 16,
+        "scope": "full",
+        "seed": 42,
+        "epochs": 5,
+        "batch_size": 1,
+        "gradient_accumulation": 8,
+        "learning_rate": 2e-05,
+        "weight_decay": 0.01,
+        "dropout": 0.3,
+        "max_length": 256,
+        "patience": 2,
+        "lambda_hate": 0.5,
+        "max_train": null,
+        "max_validation": null,
+        "precision": "float32",
+        "optimizer": "AdamW",
+        "schedule": "linear, warmup=0",
+        "label_map": {
+          "hate": {
+            "not hate": 0,
+            "hate": 1
+          },
+          "appropriate": {
+            "appropriate": 0,
+            "inappropriate": 1
+          }
+        },
+        "models": {
+          "image": {
+            "id": "google/vit-base-patch32-224-in21k",
+            "revision": "98cb6f7099d372694c8547bf7002289b36857dc7"
+          },
+          "text": {
+            "id": "indolem/indobertweet-base-uncased",
+            "revision": "32e28c05b47e33b6675d2670a1745c50a65e987a"
+          }
+        },
+        "data_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+        "split_sha256": "4368e5767d73dfe988f9734dde59a146e125a0cda82c2783ee8eff46acab1a39",
+        "script_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+        "support_sha256": {
+          "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+          "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73"
+        },
+        "versions": {
+          "torch": "2.6.0+cu124",
+          "transformers": "4.46.3",
+          "numpy": "2.5.4",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2"
+        },
+        "architecture": "author-code-style pooler/mean; linear-dropout projection for multimodal or dual-head",
+        "selection_metric": "mean(hate macro-F1, constrained inappropriate macro-F1)",
+        "comparison_policy": "RQ4 appropriate uses constrained predictions; raw scores retained",
+        "deviations": [
+          "validation derived from official train; selection by validation macro-F1",
+          "early stopping patience 2, warmup 0; clarify with authors",
+          "multitask lambda is an explicit candidate; validation tuning must be documented",
+          "model revisions pinned on first use; original author training revisions unknown",
+          "pooler_output follows source; article pooled-CLS wording requires clarification",
+          "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+          "unimodal dual-head projection follows author code; article prose omits its dimension",
+          "ViT checkpoint follows article (224-in21k), differs from active source 384",
+          "appropriate positive label is inappropriate; macro metrics unchanged by remapping",
+          "Lab adaptation: physical batch 1 x accumulation 8; FP32; separate run identity; calibration required."
+        ],
+        "lab_worker_sha256": "a4be2a7967a641ad427790d7cfe82f655e3f09370974aef693e875936700b3bb",
+        "execution_profile": "kelompok-7-b1-a8-fp32"
+      },
+      "history": [
+        {
+          "epoch": "1",
+          "train_loss": "0.5111490867599641",
+          "selection_macro_f1": "0.7862123626372621",
+          "appropriate_macro_f1": "0.7687162891046386",
+          "hate_macro_f1": "0.8034290350564232",
+          "appropriate_constrained_macro_f1": "0.7689956902181011"
+        },
+        {
+          "epoch": "2",
+          "train_loss": "0.34933567780615354",
+          "selection_macro_f1": "0.8003708638331997",
+          "appropriate_macro_f1": "0.7818360804705051",
+          "hate_macro_f1": "0.8174106269390949",
+          "appropriate_constrained_macro_f1": "0.7833311007273043"
+        },
+        {
+          "epoch": "3",
+          "train_loss": "0.22387349455611283",
+          "selection_macro_f1": "0.8099301511077595",
+          "appropriate_macro_f1": "0.790830520242285",
+          "hate_macro_f1": "0.8276533387685107",
+          "appropriate_constrained_macro_f1": "0.7922069634470084"
+        },
+        {
+          "epoch": "4",
+          "train_loss": "0.1274417601103443",
+          "selection_macro_f1": "0.8056235059463797",
+          "appropriate_macro_f1": "0.790198706218912",
+          "hate_macro_f1": "0.8196461521762727",
+          "appropriate_constrained_macro_f1": "0.7916008597164867"
+        },
+        {
+          "epoch": "5",
+          "train_loss": "0.07897289467260996",
+          "selection_macro_f1": "0.802489370475091",
+          "appropriate_macro_f1": "0.7821388267248139",
+          "hate_macro_f1": "0.822839914225368",
+          "appropriate_constrained_macro_f1": "0.7821388267248139"
+        }
+      ],
+      "selected_epoch": 3,
+      "epochs_trained": 5,
+      "selection_validation_macro_f1": 0.8099301511077595,
+      "validation": {
+        "hate": {
+          "macro_precision": 0.8347811740062983,
+          "macro_recall": 0.8219407710933135,
+          "macro_f1": 0.8276533387685108,
+          "accuracy": 0.8482587064676617,
+          "confusion_matrix_labels_0_1": [
+            [
+              480,
+              51
+            ],
+            [
+              71,
+              202
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.8711433756805808,
+              "recall": 0.903954802259887,
+              "f1": 0.8872458410351202,
+              "support": 531
+            },
+            {
+              "label": 1,
+              "precision": 0.7984189723320159,
+              "recall": 0.73992673992674,
+              "f1": 0.7680608365019013,
+              "support": 273
+            }
+          ],
+          "rows": 804
+        },
+        "appropriate": {
+          "macro_precision": 0.7986611204991552,
+          "macro_recall": 0.7891881686595343,
+          "macro_f1": 0.7922069634470084,
+          "accuracy": 0.7985074626865671,
+          "confusion_matrix_labels_0_1": [
+            [
+              391,
+              63
+            ],
+            [
+              99,
+              251
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.7979591836734694,
+              "recall": 0.8612334801762115,
+              "f1": 0.8283898305084745,
+              "support": 454
+            },
+            {
+              "label": 1,
+              "precision": 0.7993630573248408,
+              "recall": 0.7171428571428572,
+              "f1": 0.7560240963855422,
+              "support": 350
+            }
+          ],
+          "rows": 804
+        }
+      },
+      "test": {
+        "hate": {
+          "macro_precision": 0.806936026936027,
+          "macro_recall": 0.7994402739942013,
+          "macro_f1": 0.8028846207120466,
+          "accuracy": 0.8238805970149253,
+          "confusion_matrix_labels_0_1": [
+            [
+              578,
+              80
+            ],
+            [
+              97,
+              250
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.8562962962962963,
+              "recall": 0.878419452887538,
+              "f1": 0.8672168042010503,
+              "support": 658
+            },
+            {
+              "label": 1,
+              "precision": 0.7575757575757576,
+              "recall": 0.7204610951008645,
+              "f1": 0.7385524372230428,
+              "support": 347
+            }
+          ],
+          "rows": 1005
+        },
+        "appropriate": {
+          "macro_precision": 0.8140210858212632,
+          "macro_recall": 0.8088228169059577,
+          "macro_f1": 0.8108844312394407,
+          "accuracy": 0.8159203980099502,
+          "confusion_matrix_labels_0_1": [
+            [
+              492,
+              80
+            ],
+            [
+              105,
+              328
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.8241206030150754,
+              "recall": 0.8601398601398601,
+              "f1": 0.8417450812660394,
+              "support": 572
+            },
+            {
+              "label": 1,
+              "precision": 0.803921568627451,
+              "recall": 0.7575057736720554,
+              "f1": 0.7800237812128419,
+              "support": 433
+            }
+          ],
+          "rows": 1005
+        }
+      }
+    }
+  ],
+  "outcomes": [
+    {
+      "id": "E005",
+      "task": "hate",
+      "image_encoder": "ViT",
+      "text_encoder": "",
+      "variant": "",
+      "origin": "local_2026-10-23",
+      "epochs_trained": 5,
+      "selected_epoch": 3,
+      "selection_validation_macro_f1": 0.6407263091456321,
+      "policy": "raw",
+      "macro_precision": 0.6425150826187365,
+      "macro_recall": 0.639462873260163,
+      "macro_f1": 0.6408128805675027,
+      "raw_macro_f1": 0.6408128805675027,
+      "accuracy": 0.6786069651741293,
+      "paper_macro_f1": 0.63,
+      "delta_percentage_points": 1.0812880567502736,
+      "validation_macro_f1": 0.6407263091456321,
+      "validation": {
+        "macro_precision": 0.6420033670033669,
+        "macro_recall": 0.639649427785021,
+        "macro_f1": 0.6407263091456321,
+        "accuracy": 0.6803482587064676,
+        "confusion_matrix_labels_0_1": [
+          [
+            407,
+            124
+          ],
+          [
+            133,
+            140
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7537037037037037,
+            "recall": 0.7664783427495292,
+            "f1": 0.7600373482726424,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.5303030303030303,
+            "recall": 0.5128205128205128,
+            "f1": 0.521415270018622,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "test": {
+        "macro_precision": 0.6425150826187365,
+        "macro_recall": 0.639462873260163,
+        "macro_f1": 0.6408128805675026,
+        "accuracy": 0.6786069651741293,
+        "confusion_matrix_labels_0_1": [
+          [
+            504,
+            154
+          ],
+          [
+            169,
+            178
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7488855869242199,
+            "recall": 0.7659574468085106,
+            "f1": 0.7573253193087903,
+            "support": 658
+          },
+          {
+            "label": 1,
+            "precision": 0.536144578313253,
+            "recall": 0.5129682997118156,
+            "f1": 0.5243004418262149,
+            "support": 347
+          }
+        ],
+        "rows": 1005
+      },
+      "raw_test": {
+        "macro_precision": 0.6425150826187365,
+        "macro_recall": 0.639462873260163,
+        "macro_f1": 0.6408128805675026,
+        "accuracy": 0.6786069651741293,
+        "confusion_matrix_labels_0_1": [
+          [
+            504,
+            154
+          ],
+          [
+            169,
+            178
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7488855869242199,
+            "recall": 0.7659574468085106,
+            "f1": 0.7573253193087903,
+            "support": 658
+          },
+          {
+            "label": 1,
+            "precision": 0.536144578313253,
+            "recall": 0.5129682997118156,
+            "f1": 0.5243004418262149,
+            "support": 347
+          }
+        ],
+        "rows": 1005
+      },
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1009879063039334.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6912701725959778
+          },
+          {
+            "image_path": "1018563468837560.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.7757464051246643
+          },
+          {
+            "image_path": "1020425740269819.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.861383318901062
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1001507855343505.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.06284824013710022
+          },
+          {
+            "image_path": "10030062560388920.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.0984487533569336
+          },
+          {
+            "image_path": "1007401798184026.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.10447809845209122
+          }
+        ]
+      },
+      "joint_label_subgroups": [
+        {
+          "joint_label": "hate | inappropriate",
+          "rows": 347,
+          "correct": 178,
+          "errors": 169
+        },
+        {
+          "joint_label": "not hate | inappropriate",
+          "rows": 86,
+          "correct": 60,
+          "errors": 26
+        },
+        {
+          "joint_label": "not hate | appropriate",
+          "rows": 572,
+          "correct": 444,
+          "errors": 128
+        }
+      ]
+    },
+    {
+      "id": "E006",
+      "task": "appropriate",
+      "image_encoder": "ViT",
+      "text_encoder": "",
+      "variant": "",
+      "origin": "lab_2026-10-28",
+      "epochs_trained": 4,
+      "selected_epoch": 2,
+      "selection_validation_macro_f1": 0.6347838387966331,
+      "policy": "raw",
+      "macro_precision": 0.6326437891910477,
+      "macro_recall": 0.6308443288812804,
+      "macro_f1": 0.6314549102267821,
+      "raw_macro_f1": 0.6314549102267821,
+      "accuracy": 0.6407960199004975,
+      "paper_macro_f1": 0.63,
+      "delta_percentage_points": 0.14549102267821246,
+      "validation_macro_f1": 0.6347838387966332,
+      "validation": {
+        "macro_precision": 0.6346645477786224,
+        "macro_recall": 0.6349213341724356,
+        "macro_f1": 0.6347838387966332,
+        "accuracy": 0.6405472636815921,
+        "confusion_matrix_labels_0_1": [
+          [
+            308,
+            146
+          ],
+          [
+            143,
+            207
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.6829268292682927,
+            "recall": 0.6784140969162996,
+            "f1": 0.6806629834254144,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.5864022662889519,
+            "recall": 0.5914285714285714,
+            "f1": 0.5889046941678521,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "test": {
+        "macro_precision": 0.6326437891910477,
+        "macro_recall": 0.6308443288812804,
+        "macro_f1": 0.6314549102267821,
+        "accuracy": 0.6407960199004975,
+        "confusion_matrix_labels_0_1": [
+          [
+            402,
+            170
+          ],
+          [
+            191,
+            242
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.6779089376053963,
+            "recall": 0.7027972027972028,
+            "f1": 0.6901287553648069,
+            "support": 572
+          },
+          {
+            "label": 1,
+            "precision": 0.587378640776699,
+            "recall": 0.558891454965358,
+            "f1": 0.5727810650887574,
+            "support": 433
+          }
+        ],
+        "rows": 1005
+      },
+      "raw_test": {
+        "macro_precision": 0.6326437891910477,
+        "macro_recall": 0.6308443288812804,
+        "macro_f1": 0.6314549102267821,
+        "accuracy": 0.6407960199004975,
+        "confusion_matrix_labels_0_1": [
+          [
+            402,
+            170
+          ],
+          [
+            191,
+            242
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.6779089376053963,
+            "recall": 0.7027972027972028,
+            "f1": 0.6901287553648069,
+            "support": 572
+          },
+          {
+            "label": 1,
+            "precision": 0.587378640776699,
+            "recall": 0.558891454965358,
+            "f1": 0.5727810650887574,
+            "support": 433
+          }
+        ],
+        "rows": 1005
+      },
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1018494587129601.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5134057998657227
+          },
+          {
+            "image_path": "1018563468837560.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.7018408179283142
+          },
+          {
+            "image_path": "1020425740269819.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.8395127058029175
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1001507855343505.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.28429362177848816
+          },
+          {
+            "image_path": "10030062560388920.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.19541020691394806
+          },
+          {
+            "image_path": "1003541394914516.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.4936625063419342
+          }
+        ]
+      },
+      "joint_label_subgroups": [
+        {
+          "joint_label": "hate | inappropriate",
+          "rows": 347,
+          "correct": 207,
+          "errors": 140
+        },
+        {
+          "joint_label": "not hate | inappropriate",
+          "rows": 86,
+          "correct": 35,
+          "errors": 51
+        },
+        {
+          "joint_label": "not hate | appropriate",
+          "rows": 572,
+          "correct": 402,
+          "errors": 170
+        }
+      ]
+    },
+    {
+      "id": "E041",
+      "task": "hate",
+      "image_encoder": "",
+      "text_encoder": "IndoBERTweet",
+      "variant": "Caption+OCR+Topic",
+      "origin": "local_2026-10-23",
+      "epochs_trained": 4,
+      "selected_epoch": 2,
+      "selection_validation_macro_f1": 0.8207647357233008,
+      "policy": "raw",
+      "macro_precision": 0.8107290736380612,
+      "macro_recall": 0.80171990925256,
+      "macro_f1": 0.805800120826596,
+      "raw_macro_f1": 0.805800120826596,
+      "accuracy": 0.826865671641791,
+      "paper_macro_f1": 0.8,
+      "delta_percentage_points": 0.5800120826595978,
+      "validation_macro_f1": 0.8207647357233007,
+      "validation": {
+        "macro_precision": 0.8273371510379385,
+        "macro_recall": 0.8154529086732476,
+        "macro_f1": 0.8207647357233007,
+        "accuracy": 0.8420398009950248,
+        "confusion_matrix_labels_0_1": [
+          [
+            477,
+            54
+          ],
+          [
+            73,
+            200
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8672727272727273,
+            "recall": 0.8983050847457628,
+            "f1": 0.8825161887141535,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.7874015748031497,
+            "recall": 0.7326007326007326,
+            "f1": 0.7590132827324478,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "test": {
+        "macro_precision": 0.8107290736380612,
+        "macro_recall": 0.80171990925256,
+        "macro_f1": 0.8058001208265961,
+        "accuracy": 0.826865671641791,
+        "confusion_matrix_labels_0_1": [
+          [
+            581,
+            77
+          ],
+          [
+            97,
+            250
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8569321533923304,
+            "recall": 0.8829787234042553,
+            "f1": 0.8697604790419162,
+            "support": 658
+          },
+          {
+            "label": 1,
+            "precision": 0.764525993883792,
+            "recall": 0.7204610951008645,
+            "f1": 0.7418397626112759,
+            "support": 347
+          }
+        ],
+        "rows": 1005
+      },
+      "raw_test": {
+        "macro_precision": 0.8107290736380612,
+        "macro_recall": 0.80171990925256,
+        "macro_f1": 0.8058001208265961,
+        "accuracy": 0.826865671641791,
+        "confusion_matrix_labels_0_1": [
+          [
+            581,
+            77
+          ],
+          [
+            97,
+            250
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8569321533923304,
+            "recall": 0.8829787234042553,
+            "f1": 0.8697604790419162,
+            "support": 658
+          },
+          {
+            "label": 1,
+            "precision": 0.764525993883792,
+            "recall": 0.7204610951008645,
+            "f1": 0.7418397626112759,
+            "support": 347
+          }
+        ],
+        "rows": 1005
+      },
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1018563468837560.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.8344502449035645
+          },
+          {
+            "image_path": "1019254657053594.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.861187756061554
+          },
+          {
+            "image_path": "1030872669007324.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6584756970405579
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "10030062560388920.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.06821741908788681
+          },
+          {
+            "image_path": "1010091771207146.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.022370677441358566
+          },
+          {
+            "image_path": "1026441909518233.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.1480017900466919
+          }
+        ]
+      },
+      "joint_label_subgroups": [
+        {
+          "joint_label": "hate | inappropriate",
+          "rows": 347,
+          "correct": 250,
+          "errors": 97
+        },
+        {
+          "joint_label": "not hate | inappropriate",
+          "rows": 86,
+          "correct": 66,
+          "errors": 20
+        },
+        {
+          "joint_label": "not hate | appropriate",
+          "rows": 572,
+          "correct": 515,
+          "errors": 57
+        }
+      ]
+    },
+    {
+      "id": "E042",
+      "task": "appropriate",
+      "image_encoder": "",
+      "text_encoder": "IndoBERTweet",
+      "variant": "Caption+OCR+Topic",
+      "origin": "local_2026-10-23",
+      "epochs_trained": 4,
+      "selected_epoch": 2,
+      "selection_validation_macro_f1": 0.7923553719008265,
+      "policy": "raw",
+      "macro_precision": 0.8113548801369863,
+      "macro_recall": 0.793659862077876,
+      "macro_f1": 0.7984131119878906,
+      "raw_macro_f1": 0.7984131119878906,
+      "accuracy": 0.8069651741293532,
+      "paper_macro_f1": 0.788,
+      "delta_percentage_points": 1.0413111987890522,
+      "validation_macro_f1": 0.7923553719008264,
+      "validation": {
+        "macro_precision": 0.8067892123976922,
+        "macro_recall": 0.7877910635619887,
+        "macro_f1": 0.7923553719008264,
+        "accuracy": 0.8009950248756219,
+        "confusion_matrix_labels_0_1": [
+          [
+            404,
+            50
+          ],
+          [
+            110,
+            240
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7859922178988327,
+            "recall": 0.8898678414096917,
+            "f1": 0.8347107438016528,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.8275862068965517,
+            "recall": 0.6857142857142857,
+            "f1": 0.75,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "test": {
+        "macro_precision": 0.8113548801369863,
+        "macro_recall": 0.793659862077876,
+        "macro_f1": 0.7984131119878906,
+        "accuracy": 0.8069651741293532,
+        "confusion_matrix_labels_0_1": [
+          [
+            509,
+            63
+          ],
+          [
+            131,
+            302
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7953125,
+            "recall": 0.8898601398601399,
+            "f1": 0.8399339933993399,
+            "support": 572
+          },
+          {
+            "label": 1,
+            "precision": 0.8273972602739726,
+            "recall": 0.6974595842956121,
+            "f1": 0.7568922305764412,
+            "support": 433
+          }
+        ],
+        "rows": 1005
+      },
+      "raw_test": {
+        "macro_precision": 0.8113548801369863,
+        "macro_recall": 0.793659862077876,
+        "macro_f1": 0.7984131119878906,
+        "accuracy": 0.8069651741293532,
+        "confusion_matrix_labels_0_1": [
+          [
+            509,
+            63
+          ],
+          [
+            131,
+            302
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7953125,
+            "recall": 0.8898601398601399,
+            "f1": 0.8399339933993399,
+            "support": 572
+          },
+          {
+            "label": 1,
+            "precision": 0.8273972602739726,
+            "recall": 0.6974595842956121,
+            "f1": 0.7568922305764412,
+            "support": 433
+          }
+        ],
+        "rows": 1005
+      },
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1018563468837560.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.8389252424240112
+          },
+          {
+            "image_path": "1019254657053594.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.7775245308876038
+          },
+          {
+            "image_path": "1035902948572129.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.8676807284355164
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1001507855343505.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.2660350799560547
+          },
+          {
+            "image_path": "10030062560388920.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.056759245693683624
+          },
+          {
+            "image_path": "1003541394914516.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.04642565920948982
+          }
+        ]
+      },
+      "joint_label_subgroups": [
+        {
+          "joint_label": "hate | inappropriate",
+          "rows": 347,
+          "correct": 254,
+          "errors": 93
+        },
+        {
+          "joint_label": "not hate | inappropriate",
+          "rows": 86,
+          "correct": 48,
+          "errors": 38
+        },
+        {
+          "joint_label": "not hate | appropriate",
+          "rows": 572,
+          "correct": 509,
+          "errors": 63
+        }
+      ]
+    },
+    {
+      "id": "E059",
+      "task": "hate",
+      "image_encoder": "ViT",
+      "text_encoder": "IndoBERTweet",
+      "variant": "Caption+OCR+Topic",
+      "origin": "lab_2026-10-28",
+      "epochs_trained": 4,
+      "selected_epoch": 2,
+      "selection_validation_macro_f1": 0.8292910447761194,
+      "policy": "raw",
+      "macro_precision": 0.805827067669173,
+      "macro_recall": 0.8028454928479455,
+      "macro_f1": 0.8042856152650288,
+      "raw_macro_f1": 0.8042856152650288,
+      "accuracy": 0.8238805970149253,
+      "paper_macro_f1": 0.82,
+      "delta_percentage_points": -1.571438473497111,
+      "validation_macro_f1": 0.8292910447761194,
+      "validation": {
+        "macro_precision": 0.8325379701018393,
+        "macro_recall": 0.8263901823223857,
+        "macro_f1": 0.8292910447761194,
+        "accuracy": 0.8482587064676617,
+        "confusion_matrix_labels_0_1": [
+          [
+            475,
+            56
+          ],
+          [
+            66,
+            207
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.878003696857671,
+            "recall": 0.8945386064030132,
+            "f1": 0.8861940298507462,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.7870722433460076,
+            "recall": 0.7582417582417582,
+            "f1": 0.7723880597014925,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "test": {
+        "macro_precision": 0.805827067669173,
+        "macro_recall": 0.8028454928479455,
+        "macro_f1": 0.8042856152650288,
+        "accuracy": 0.8238805970149253,
+        "confusion_matrix_labels_0_1": [
+          [
+            573,
+            85
+          ],
+          [
+            92,
+            255
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8616541353383459,
+            "recall": 0.8708206686930091,
+            "f1": 0.8662131519274376,
+            "support": 658
+          },
+          {
+            "label": 1,
+            "precision": 0.75,
+            "recall": 0.7348703170028819,
+            "f1": 0.7423580786026202,
+            "support": 347
+          }
+        ],
+        "rows": 1005
+      },
+      "raw_test": {
+        "macro_precision": 0.805827067669173,
+        "macro_recall": 0.8028454928479455,
+        "macro_f1": 0.8042856152650288,
+        "accuracy": 0.8238805970149253,
+        "confusion_matrix_labels_0_1": [
+          [
+            573,
+            85
+          ],
+          [
+            92,
+            255
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8616541353383459,
+            "recall": 0.8708206686930091,
+            "f1": 0.8662131519274376,
+            "support": 658
+          },
+          {
+            "label": 1,
+            "precision": 0.75,
+            "recall": 0.7348703170028819,
+            "f1": 0.7423580786026202,
+            "support": 347
+          }
+        ],
+        "rows": 1005
+      },
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1018563468837560.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.9647189974784851
+          },
+          {
+            "image_path": "1019254657053594.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.8026564121246338
+          },
+          {
+            "image_path": "1030872669007324.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.8500428795814514
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "10030062560388920.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.10084984451532364
+          },
+          {
+            "image_path": "1010091771207146.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.020390620455145836
+          },
+          {
+            "image_path": "1026441909518233.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.1432366520166397
+          }
+        ]
+      },
+      "joint_label_subgroups": [
+        {
+          "joint_label": "hate | inappropriate",
+          "rows": 347,
+          "correct": 255,
+          "errors": 92
+        },
+        {
+          "joint_label": "not hate | inappropriate",
+          "rows": 86,
+          "correct": 62,
+          "errors": 24
+        },
+        {
+          "joint_label": "not hate | appropriate",
+          "rows": 572,
+          "correct": 511,
+          "errors": 61
+        }
+      ]
+    },
+    {
+      "id": "E060",
+      "task": "appropriate",
+      "image_encoder": "ViT",
+      "text_encoder": "IndoBERTweet",
+      "variant": "Caption+OCR+Topic",
+      "origin": "local_2026-10-23",
+      "epochs_trained": 4,
+      "selected_epoch": 2,
+      "selection_validation_macro_f1": 0.7848897948783284,
+      "policy": "raw",
+      "macro_precision": 0.8167495854063018,
+      "macro_recall": 0.8100098515802904,
+      "macro_f1": 0.8125468212511148,
+      "raw_macro_f1": 0.8125468212511148,
+      "accuracy": 0.817910447761194,
+      "paper_macro_f1": 0.809,
+      "delta_percentage_points": 0.3546821251114718,
+      "validation_macro_f1": 0.7848897948783284,
+      "validation": {
+        "macro_precision": 0.7902011025700754,
+        "macro_recall": 0.7822529893014474,
+        "macro_f1": 0.7848897948783284,
+        "accuracy": 0.7910447761194029,
+        "confusion_matrix_labels_0_1": [
+          [
+            386,
+            68
+          ],
+          [
+            100,
+            250
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7942386831275721,
+            "recall": 0.8502202643171806,
+            "f1": 0.8212765957446809,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.7861635220125787,
+            "recall": 0.7142857142857143,
+            "f1": 0.748502994011976,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "test": {
+        "macro_precision": 0.8167495854063018,
+        "macro_recall": 0.8100098515802904,
+        "macro_f1": 0.8125468212511148,
+        "accuracy": 0.817910447761194,
+        "confusion_matrix_labels_0_1": [
+          [
+            496,
+            76
+          ],
+          [
+            107,
+            326
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8225538971807629,
+            "recall": 0.8671328671328671,
+            "f1": 0.8442553191489361,
+            "support": 572
+          },
+          {
+            "label": 1,
+            "precision": 0.8109452736318408,
+            "recall": 0.7528868360277137,
+            "f1": 0.7808383233532934,
+            "support": 433
+          }
+        ],
+        "rows": 1005
+      },
+      "raw_test": {
+        "macro_precision": 0.8167495854063018,
+        "macro_recall": 0.8100098515802904,
+        "macro_f1": 0.8125468212511148,
+        "accuracy": 0.817910447761194,
+        "confusion_matrix_labels_0_1": [
+          [
+            496,
+            76
+          ],
+          [
+            107,
+            326
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8225538971807629,
+            "recall": 0.8671328671328671,
+            "f1": 0.8442553191489361,
+            "support": 572
+          },
+          {
+            "label": 1,
+            "precision": 0.8109452736318408,
+            "recall": 0.7528868360277137,
+            "f1": 0.7808383233532934,
+            "support": 433
+          }
+        ],
+        "rows": 1005
+      },
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1018563468837560.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.9443212747573853
+          },
+          {
+            "image_path": "1019254657053594.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.8915087580680847
+          },
+          {
+            "image_path": "1035902948572129.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.9506605863571167
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "10030062560388920.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.07993858307600021
+          },
+          {
+            "image_path": "1003541394914516.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.04630902037024498
+          },
+          {
+            "image_path": "1010091771207146.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.06856145709753036
+          }
+        ]
+      },
+      "joint_label_subgroups": [
+        {
+          "joint_label": "hate | inappropriate",
+          "rows": 347,
+          "correct": 275,
+          "errors": 72
+        },
+        {
+          "joint_label": "not hate | inappropriate",
+          "rows": 86,
+          "correct": 51,
+          "errors": 35
+        },
+        {
+          "joint_label": "not hate | appropriate",
+          "rows": 572,
+          "correct": 496,
+          "errors": 76
+        }
+      ]
+    },
+    {
+      "id": "E101",
+      "task": "hate",
+      "image_encoder": "",
+      "text_encoder": "IndoBERTweet",
+      "variant": "Caption+OCR+Topic",
+      "origin": "lab_2026-10-28",
+      "epochs_trained": 5,
+      "selected_epoch": 5,
+      "selection_validation_macro_f1": 0.7957328175751033,
+      "policy": "raw",
+      "macro_precision": 0.8123074242535397,
+      "macro_recall": 0.7983146903988156,
+      "macro_f1": 0.8043399452192126,
+      "raw_macro_f1": 0.8043399452192126,
+      "accuracy": 0.826865671641791,
+      "paper_macro_f1": 0.811,
+      "delta_percentage_points": -0.6660054780787461,
+      "validation_macro_f1": 0.8117166704505434,
+      "validation": {
+        "macro_precision": 0.8264800668417283,
+        "macro_recall": 0.8018977256265392,
+        "macro_f1": 0.8117166704505434,
+        "accuracy": 0.8370646766169154,
+        "confusion_matrix_labels_0_1": [
+          [
+            484,
+            47
+          ],
+          [
+            84,
+            189
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.852112676056338,
+            "recall": 0.911487758945386,
+            "f1": 0.8808007279344859,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.8008474576271186,
+            "recall": 0.6923076923076923,
+            "f1": 0.742632612966601,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "test": {
+        "macro_precision": 0.8123074242535397,
+        "macro_recall": 0.7983146903988156,
+        "macro_f1": 0.8043399452192126,
+        "accuracy": 0.826865671641791,
+        "confusion_matrix_labels_0_1": [
+          [
+            586,
+            72
+          ],
+          [
+            102,
+            245
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8517441860465116,
+            "recall": 0.8905775075987842,
+            "f1": 0.8707280832095096,
+            "support": 658
+          },
+          {
+            "label": 1,
+            "precision": 0.7728706624605678,
+            "recall": 0.7060518731988472,
+            "f1": 0.7379518072289156,
+            "support": 347
+          }
+        ],
+        "rows": 1005
+      },
+      "raw_test": {
+        "macro_precision": 0.8123074242535397,
+        "macro_recall": 0.7983146903988156,
+        "macro_f1": 0.8043399452192126,
+        "accuracy": 0.826865671641791,
+        "confusion_matrix_labels_0_1": [
+          [
+            586,
+            72
+          ],
+          [
+            102,
+            245
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8517441860465116,
+            "recall": 0.8905775075987842,
+            "f1": 0.8707280832095096,
+            "support": 658
+          },
+          {
+            "label": 1,
+            "precision": 0.7728706624605678,
+            "recall": 0.7060518731988472,
+            "f1": 0.7379518072289156,
+            "support": 347
+          }
+        ],
+        "rows": 1005
+      },
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1018563468837560.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.9428870677947998
+          },
+          {
+            "image_path": "1019254657053594.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.9857326149940491
+          },
+          {
+            "image_path": "1030872669007324.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.9666368365287781
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1001507855343505.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.029180483892560005
+          },
+          {
+            "image_path": "10030062560388920.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.0064084492623806
+          },
+          {
+            "image_path": "1010091771207146.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.0030852772761136293
+          }
+        ]
+      },
+      "joint_label_subgroups": [
+        {
+          "joint_label": "hate | inappropriate",
+          "rows": 347,
+          "correct": 245,
+          "errors": 102
+        },
+        {
+          "joint_label": "not hate | inappropriate",
+          "rows": 86,
+          "correct": 68,
+          "errors": 18
+        },
+        {
+          "joint_label": "not hate | appropriate",
+          "rows": 572,
+          "correct": 518,
+          "errors": 54
+        }
+      ]
+    },
+    {
+      "id": "E101",
+      "task": "appropriate",
+      "image_encoder": "",
+      "text_encoder": "IndoBERTweet",
+      "variant": "Caption+OCR+Topic",
+      "origin": "lab_2026-10-28",
+      "epochs_trained": 5,
+      "selected_epoch": 5,
+      "selection_validation_macro_f1": 0.7957328175751033,
+      "policy": "constrained",
+      "macro_precision": 0.8024586776859504,
+      "macro_recall": 0.7955272210468516,
+      "macro_f1": 0.7980653603837458,
+      "raw_macro_f1": 0.7990196878673109,
+      "accuracy": 0.8039800995024876,
+      "paper_macro_f1": 0.815,
+      "delta_percentage_points": -1.6934639616254188,
+      "validation_macro_f1": 0.7797489646996627,
+      "validation": {
+        "macro_precision": 0.7885048786096784,
+        "macro_recall": 0.7763310258023914,
+        "macro_f1": 0.7797489646996627,
+        "accuracy": 0.7873134328358209,
+        "confusion_matrix_labels_0_1": [
+          [
+            391,
+            63
+          ],
+          [
+            108,
+            242
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7835671342685371,
+            "recall": 0.8612334801762115,
+            "f1": 0.8205666316894019,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.7934426229508197,
+            "recall": 0.6914285714285714,
+            "f1": 0.7389312977099236,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "test": {
+        "macro_precision": 0.8024586776859504,
+        "macro_recall": 0.7955272210468516,
+        "macro_f1": 0.7980653603837456,
+        "accuracy": 0.8039800995024876,
+        "confusion_matrix_labels_0_1": [
+          [
+            490,
+            82
+          ],
+          [
+            115,
+            318
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8099173553719008,
+            "recall": 0.8566433566433567,
+            "f1": 0.832625318606627,
+            "support": 572
+          },
+          {
+            "label": 1,
+            "precision": 0.795,
+            "recall": 0.7344110854503464,
+            "f1": 0.7635054021608643,
+            "support": 433
+          }
+        ],
+        "rows": 1005
+      },
+      "raw_test": {
+        "macro_precision": 0.8036117521526589,
+        "macro_recall": 0.7964013469209774,
+        "macro_f1": 0.799019687867311,
+        "accuracy": 0.8049751243781095,
+        "confusion_matrix_labels_0_1": [
+          [
+            491,
+            81
+          ],
+          [
+            115,
+            318
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8102310231023102,
+            "recall": 0.8583916083916084,
+            "f1": 0.8336162988115451,
+            "support": 572
+          },
+          {
+            "label": 1,
+            "precision": 0.7969924812030075,
+            "recall": 0.7344110854503464,
+            "f1": 0.7644230769230769,
+            "support": 433
+          }
+        ],
+        "rows": 1005
+      },
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1018494587129601.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6884232759475708
+          },
+          {
+            "image_path": "1018563468837560.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.9882197380065918
+          },
+          {
+            "image_path": "1019254657053594.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.9969197511672974
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1001507855343505.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.04310879483819008
+          },
+          {
+            "image_path": "10030062560388920.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.0069993725046515465
+          },
+          {
+            "image_path": "1003541394914516.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.024952733889222145
+          }
+        ]
+      },
+      "joint_label_subgroups": [
+        {
+          "joint_label": "hate | inappropriate",
+          "rows": 347,
+          "correct": 271,
+          "errors": 76
+        },
+        {
+          "joint_label": "not hate | inappropriate",
+          "rows": 86,
+          "correct": 47,
+          "errors": 39
+        },
+        {
+          "joint_label": "not hate | appropriate",
+          "rows": 572,
+          "correct": 490,
+          "errors": 82
+        }
+      ]
+    },
+    {
+      "id": "E110",
+      "task": "hate",
+      "image_encoder": "ViT",
+      "text_encoder": "IndoBERTweet",
+      "variant": "Caption+OCR+Topic",
+      "origin": "lab_2026-10-28",
+      "epochs_trained": 5,
+      "selected_epoch": 3,
+      "selection_validation_macro_f1": 0.8099301511077595,
+      "policy": "raw",
+      "macro_precision": 0.806936026936027,
+      "macro_recall": 0.7994402739942013,
+      "macro_f1": 0.8028846207120466,
+      "raw_macro_f1": 0.8028846207120466,
+      "accuracy": 0.8238805970149253,
+      "paper_macro_f1": 0.801,
+      "delta_percentage_points": 0.18846207120465364,
+      "validation_macro_f1": 0.8276533387685108,
+      "validation": {
+        "macro_precision": 0.8347811740062983,
+        "macro_recall": 0.8219407710933135,
+        "macro_f1": 0.8276533387685108,
+        "accuracy": 0.8482587064676617,
+        "confusion_matrix_labels_0_1": [
+          [
+            480,
+            51
+          ],
+          [
+            71,
+            202
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8711433756805808,
+            "recall": 0.903954802259887,
+            "f1": 0.8872458410351202,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.7984189723320159,
+            "recall": 0.73992673992674,
+            "f1": 0.7680608365019013,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "test": {
+        "macro_precision": 0.806936026936027,
+        "macro_recall": 0.7994402739942013,
+        "macro_f1": 0.8028846207120466,
+        "accuracy": 0.8238805970149253,
+        "confusion_matrix_labels_0_1": [
+          [
+            578,
+            80
+          ],
+          [
+            97,
+            250
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8562962962962963,
+            "recall": 0.878419452887538,
+            "f1": 0.8672168042010503,
+            "support": 658
+          },
+          {
+            "label": 1,
+            "precision": 0.7575757575757576,
+            "recall": 0.7204610951008645,
+            "f1": 0.7385524372230428,
+            "support": 347
+          }
+        ],
+        "rows": 1005
+      },
+      "raw_test": {
+        "macro_precision": 0.806936026936027,
+        "macro_recall": 0.7994402739942013,
+        "macro_f1": 0.8028846207120466,
+        "accuracy": 0.8238805970149253,
+        "confusion_matrix_labels_0_1": [
+          [
+            578,
+            80
+          ],
+          [
+            97,
+            250
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8562962962962963,
+            "recall": 0.878419452887538,
+            "f1": 0.8672168042010503,
+            "support": 658
+          },
+          {
+            "label": 1,
+            "precision": 0.7575757575757576,
+            "recall": 0.7204610951008645,
+            "f1": 0.7385524372230428,
+            "support": 347
+          }
+        ],
+        "rows": 1005
+      },
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1018494587129601.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.9236936569213867
+          },
+          {
+            "image_path": "1018563468837560.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.986473560333252
+          },
+          {
+            "image_path": "1030872669007324.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.8225457072257996
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "10030062560388920.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.026505956426262856
+          },
+          {
+            "image_path": "1010091771207146.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.006578653119504452
+          },
+          {
+            "image_path": "1026441909518233.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.030363408848643303
+          }
+        ]
+      },
+      "joint_label_subgroups": [
+        {
+          "joint_label": "hate | inappropriate",
+          "rows": 347,
+          "correct": 250,
+          "errors": 97
+        },
+        {
+          "joint_label": "not hate | inappropriate",
+          "rows": 86,
+          "correct": 66,
+          "errors": 20
+        },
+        {
+          "joint_label": "not hate | appropriate",
+          "rows": 572,
+          "correct": 512,
+          "errors": 60
+        }
+      ]
+    },
+    {
+      "id": "E110",
+      "task": "appropriate",
+      "image_encoder": "ViT",
+      "text_encoder": "IndoBERTweet",
+      "variant": "Caption+OCR+Topic",
+      "origin": "lab_2026-10-28",
+      "epochs_trained": 5,
+      "selected_epoch": 3,
+      "selection_validation_macro_f1": 0.8099301511077595,
+      "policy": "constrained",
+      "macro_precision": 0.8140210858212632,
+      "macro_recall": 0.8088228169059577,
+      "macro_f1": 0.8108844312394405,
+      "raw_macro_f1": 0.8108844312394405,
+      "accuracy": 0.8159203980099502,
+      "paper_macro_f1": 0.803,
+      "delta_percentage_points": 0.7884431239440493,
+      "validation_macro_f1": 0.7922069634470084,
+      "validation": {
+        "macro_precision": 0.7986611204991552,
+        "macro_recall": 0.7891881686595343,
+        "macro_f1": 0.7922069634470084,
+        "accuracy": 0.7985074626865671,
+        "confusion_matrix_labels_0_1": [
+          [
+            391,
+            63
+          ],
+          [
+            99,
+            251
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7979591836734694,
+            "recall": 0.8612334801762115,
+            "f1": 0.8283898305084745,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.7993630573248408,
+            "recall": 0.7171428571428572,
+            "f1": 0.7560240963855422,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "test": {
+        "macro_precision": 0.8140210858212632,
+        "macro_recall": 0.8088228169059577,
+        "macro_f1": 0.8108844312394407,
+        "accuracy": 0.8159203980099502,
+        "confusion_matrix_labels_0_1": [
+          [
+            492,
+            80
+          ],
+          [
+            105,
+            328
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8241206030150754,
+            "recall": 0.8601398601398601,
+            "f1": 0.8417450812660394,
+            "support": 572
+          },
+          {
+            "label": 1,
+            "precision": 0.803921568627451,
+            "recall": 0.7575057736720554,
+            "f1": 0.7800237812128419,
+            "support": 433
+          }
+        ],
+        "rows": 1005
+      },
+      "raw_test": {
+        "macro_precision": 0.8140210858212632,
+        "macro_recall": 0.8088228169059577,
+        "macro_f1": 0.8108844312394407,
+        "accuracy": 0.8159203980099502,
+        "confusion_matrix_labels_0_1": [
+          [
+            492,
+            80
+          ],
+          [
+            105,
+            328
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8241206030150754,
+            "recall": 0.8601398601398601,
+            "f1": 0.8417450812660394,
+            "support": 572
+          },
+          {
+            "label": 1,
+            "precision": 0.803921568627451,
+            "recall": 0.7575057736720554,
+            "f1": 0.7800237812128419,
+            "support": 433
+          }
+        ],
+        "rows": 1005
+      },
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1018494587129601.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.9747810363769531
+          },
+          {
+            "image_path": "1018563468837560.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.9919856786727905
+          },
+          {
+            "image_path": "1019254657053594.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6359968185424805
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "10030062560388920.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.02372952178120613
+          },
+          {
+            "image_path": "1003541394914516.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.10338309407234192
+          },
+          {
+            "image_path": "1010091771207146.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.009578977711498737
+          }
+        ]
+      },
+      "joint_label_subgroups": [
+        {
+          "joint_label": "hate | inappropriate",
+          "rows": 347,
+          "correct": 278,
+          "errors": 69
+        },
+        {
+          "joint_label": "not hate | inappropriate",
+          "rows": 86,
+          "correct": 50,
+          "errors": 36
+        },
+        {
+          "joint_label": "not hate | appropriate",
+          "rows": 572,
+          "correct": 492,
+          "errors": 80
+        }
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "task": "hate",
+      "a": "E041",
+      "b": "E059",
+      "n": 1005,
+      "both_correct": 809,
+      "both_wrong": 155,
+      "a_only_correct": 22,
+      "b_only_correct": 19,
+      "disagreement": 41,
+      "b_minus_a_macro_f1_pp": -0.1514505561567181
+    },
+    {
+      "task": "appropriate",
+      "a": "E042",
+      "b": "E060",
+      "n": 1005,
+      "b_only_correct": 33,
+      "both_wrong": 161,
+      "both_correct": 789,
+      "a_only_correct": 22,
+      "disagreement": 55,
+      "b_minus_a_macro_f1_pp": 1.4133709263224215
+    },
+    {
+      "task": "hate",
+      "a": "E041",
+      "b": "E101",
+      "n": 1005,
+      "a_only_correct": 37,
+      "both_wrong": 137,
+      "both_correct": 794,
+      "b_only_correct": 37,
+      "disagreement": 74,
+      "b_minus_a_macro_f1_pp": -0.14601756073834293
+    },
+    {
+      "task": "appropriate",
+      "a": "E042",
+      "b": "E101",
+      "n": 1005,
+      "both_wrong": 151,
+      "both_correct": 765,
+      "a_only_correct": 46,
+      "b_only_correct": 43,
+      "disagreement": 89,
+      "b_minus_a_macro_f1_pp": -0.0347751604144797
+    },
+    {
+      "task": "hate",
+      "a": "E059",
+      "b": "E110",
+      "n": 1005,
+      "both_correct": 793,
+      "both_wrong": 142,
+      "a_only_correct": 35,
+      "b_only_correct": 35,
+      "disagreement": 70,
+      "b_minus_a_macro_f1_pp": -0.14009945529822598
+    },
+    {
+      "task": "appropriate",
+      "a": "E060",
+      "b": "E110",
+      "n": 1005,
+      "both_correct": 777,
+      "both_wrong": 140,
+      "a_only_correct": 45,
+      "b_only_correct": 43,
+      "disagreement": 88,
+      "b_minus_a_macro_f1_pp": -0.16623900116742307
+    }
+  ],
+  "hierarchy_constraint_audit": [
+    {
+      "id": "E101",
+      "split": "validation",
+      "changed": 0,
+      "became_correct": 0,
+      "became_incorrect": 0
+    },
+    {
+      "id": "E101",
+      "split": "test",
+      "changed": 1,
+      "became_correct": 0,
+      "became_incorrect": 1
+    },
+    {
+      "id": "E110",
+      "split": "validation",
+      "changed": 1,
+      "became_correct": 1,
+      "became_incorrect": 0
+    },
+    {
+      "id": "E110",
+      "split": "test",
+      "changed": 0,
+      "became_correct": 0,
+      "became_incorrect": 0
+    }
+  ],
+  "validation_candidates": {
+    "hate": {
+      "id": "E059",
+      "validation_macro_f1": 0.8292910447761194,
+      "test_macro_f1": 0.8042856152650288,
+      "runner_up": "E110",
+      "margin_percentage_points": 0.1637706007608597,
+      "selection_basis": "Highest per-task validation macro-F1 among the eight fixed configurations at each run's already selected checkpoint. Test is descriptive only."
+    },
+    "appropriate": {
+      "id": "E042",
+      "validation_macro_f1": 0.7923553719008264,
+      "test_macro_f1": 0.7984131119878906,
+      "runner_up": "E110",
+      "margin_percentage_points": 0.014840845381802747,
+      "selection_basis": "Highest per-task validation macro-F1 among the eight fixed configurations at each run's already selected checkpoint. Test is descriptive only."
+    }
+  },
+  "limitations": [
+    "Eight prespecified supervised configurations out of 90, not complete paper/grid reproduction. RQ3/API and novel models are excluded.",
+    "One seed, no confidence intervals or significance claim, no hyperparameter/lambda sweep.",
+    "Batch/accumulation, validation construction, early stopping, ViT checkpoint and pooling details deviate from or require clarification against the author source.",
+    "Provided topic annotation is privileged input; results do not describe an end-to-end system predicting topics for new memes.",
+    "Two exact-image groups cross official train/test split (four rows, two test memes). Original split retained for comparability; near-duplicate search was not performed.",
+    "Quantitative errors do not establish semantic causes such as sarcasm, OCR quality or cultural context without manual annotation.",
+    "Cross-configuration candidate selection is an explicit submission interpretation of the prespecified validation evidence, not a new training decision or test-based model search."
+  ],
+  "input_provenance": [
+    {
+      "path": "framework/riset/hasil_lab_2026-10-28/core_results.csv",
+      "bytes": 2274,
+      "sha256": "9b5c345097200e403be68c1209f969e1b718decd1e41bca5eb7cac8647f7b8dc"
+    },
+    {
+      "path": "audit/2026-10-18/dataset_audit.json",
+      "bytes": 4401,
+      "sha256": "1c76fa1b275f034e927b829c09df5c619f3e401b5ac3cd5a49f40806be4ced9d"
+    }
+  ]
+}

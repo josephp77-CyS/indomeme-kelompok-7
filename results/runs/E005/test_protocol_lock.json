@@ -1,0 +1,11 @@
+{
+  "purpose": "Frozen selection before official test evaluation",
+  "runs": [
+    {
+      "run_id": "RQ2__image__ViT__-__-__hate__68f0e71edabc",
+      "config_sha256": "ec4a41f7372ce5f5c0845cc56c0054c137eeab86efbbd4599af285f6d7a78738",
+      "checkpoint_sha256": "6ec24dd8235c453ea8757a821188657e8e167230adeebb12fc32c5388712eae1"
+    }
+  ],
+  "split_sha256": "f8052cf697c55b22dbb222b62874c0acf9fdf2cb73039768e8a1e31a3db3371e"
+}

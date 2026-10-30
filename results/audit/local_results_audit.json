@@ -1,0 +1,298 @@
+{
+  "passed": true,
+  "checked_at": 1793271016.5411847,
+  "configurations": 8,
+  "outcomes": 10,
+  "local_lab_artifacts_hashed": 48,
+  "results": [
+    {
+      "id": "E005",
+      "passed": true,
+      "run_id": "RQ2__image__ViT__-__-__hate__68f0e71edabc",
+      "test": {
+        "hate": {
+          "macro_precision": 0.6425150826187365,
+          "macro_recall": 0.639462873260163,
+          "macro_f1": 0.6408128805675027,
+          "accuracy": 0.6786069651741293,
+          "confusion_matrix_labels_0_1": [
+            [
+              504,
+              154
+            ],
+            [
+              169,
+              178
+            ]
+          ]
+        }
+      },
+      "validation_metrics_recomputed": true,
+      "selected_epoch": 3,
+      "epochs_trained": 5,
+      "best_checkpoint_sha256": "6ec24dd8235c453ea8757a821188657e8e167230adeebb12fc32c5388712eae1",
+      "source": "D:\\IS LAB PROJ\\notebooks\\runs\\local_full_2026-10-23\\runs\\RQ2__image__ViT__-__-__hate__68f0e71edabc"
+    },
+    {
+      "id": "E006",
+      "passed": true,
+      "run_id": "RQ2__image__ViT__-__-__appropriate__5987b0691760",
+      "test": {
+        "appropriate": {
+          "macro_precision": 0.6326437891910477,
+          "macro_recall": 0.6308443288812804,
+          "macro_f1": 0.6314549102267821,
+          "accuracy": 0.6407960199004975,
+          "confusion_matrix_labels_0_1": [
+            [
+              402,
+              170
+            ],
+            [
+              191,
+              242
+            ]
+          ]
+        }
+      },
+      "validation_metrics_recomputed": true,
+      "selected_epoch": 2,
+      "epochs_trained": 4,
+      "best_checkpoint_sha256": "22da385d806cce7adea2400c958fc3f6db5a11d53c10664b5dc2db8eaea18f8d",
+      "source": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E006"
+    },
+    {
+      "id": "E041",
+      "passed": true,
+      "run_id": "RQ2__text__-__IndoBERTweet__Caption+OCR+Topic__hate__b9e0ab78cc4d",
+      "test": {
+        "hate": {
+          "macro_precision": 0.8107290736380612,
+          "macro_recall": 0.80171990925256,
+          "macro_f1": 0.805800120826596,
+          "accuracy": 0.826865671641791,
+          "confusion_matrix_labels_0_1": [
+            [
+              581,
+              77
+            ],
+            [
+              97,
+              250
+            ]
+          ]
+        }
+      },
+      "validation_metrics_recomputed": true,
+      "selected_epoch": 2,
+      "epochs_trained": 4,
+      "best_checkpoint_sha256": "3b5f07f6616a756e475c3e6d64fb024a23103ce21b037a7dda6f9e98ed02b04c",
+      "source": "D:\\IS LAB PROJ\\notebooks\\runs\\local_suite_2026-10-23\\E041\\runs\\RQ2__text__-__IndoBERTweet__Caption+OCR+Topic__hate__b9e0ab78cc4d"
+    },
+    {
+      "id": "E042",
+      "passed": true,
+      "run_id": "RQ2__text__-__IndoBERTweet__Caption+OCR+Topic__appropriate__f369557dad2e",
+      "test": {
+        "appropriate": {
+          "macro_precision": 0.8113548801369863,
+          "macro_recall": 0.793659862077876,
+          "macro_f1": 0.7984131119878906,
+          "accuracy": 0.8069651741293532,
+          "confusion_matrix_labels_0_1": [
+            [
+              509,
+              63
+            ],
+            [
+              131,
+              302
+            ]
+          ]
+        }
+      },
+      "validation_metrics_recomputed": true,
+      "selected_epoch": 2,
+      "epochs_trained": 4,
+      "best_checkpoint_sha256": "cf3484f459eaed72da23927e657ed9236ffc1db4bbf49ef54775f0f822977bd9",
+      "source": "D:\\IS LAB PROJ\\notebooks\\runs\\local_suite_2026-10-23\\E042\\runs\\RQ2__text__-__IndoBERTweet__Caption+OCR+Topic__appropriate__f369557dad2e"
+    },
+    {
+      "id": "E059",
+      "passed": true,
+      "run_id": "RQ2__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__hate__814050361203",
+      "test": {
+        "hate": {
+          "macro_precision": 0.805827067669173,
+          "macro_recall": 0.8028454928479455,
+          "macro_f1": 0.8042856152650288,
+          "accuracy": 0.8238805970149253,
+          "confusion_matrix_labels_0_1": [
+            [
+              573,
+              85
+            ],
+            [
+              92,
+              255
+            ]
+          ]
+        }
+      },
+      "validation_metrics_recomputed": true,
+      "selected_epoch": 2,
+      "epochs_trained": 4,
+      "best_checkpoint_sha256": "f68f0009cf78199b22c0c4107981e728ff9ea4c7a5e4d4a5fae52e0fd7c66b48",
+      "source": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E059"
+    },
+    {
+      "id": "E060",
+      "passed": true,
+      "run_id": "RQ2__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__appropriate__c48c7095d0be",
+      "test": {
+        "appropriate": {
+          "macro_precision": 0.8167495854063018,
+          "macro_recall": 0.8100098515802904,
+          "macro_f1": 0.8125468212511148,
+          "accuracy": 0.817910447761194,
+          "confusion_matrix_labels_0_1": [
+            [
+              496,
+              76
+            ],
+            [
+              107,
+              326
+            ]
+          ]
+        }
+      },
+      "validation_metrics_recomputed": true,
+      "selected_epoch": 2,
+      "epochs_trained": 4,
+      "best_checkpoint_sha256": "9bf3e98e280452cc78d1ce06937d770359a967727f33cdb00e78db40b9938022",
+      "source": "D:\\IS LAB PROJ\\notebooks\\runs\\local_suite_2026-10-23\\E060\\runs\\RQ2__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__appropriate__c48c7095d0be"
+    },
+    {
+      "id": "E101",
+      "passed": true,
+      "run_id": "RQ4__text__-__IndoBERTweet__Caption+OCR+Topic__both__c53b3ac79c1b",
+      "test": {
+        "appropriate": {
+          "macro_precision": 0.8036117521526589,
+          "macro_recall": 0.7964013469209774,
+          "macro_f1": 0.7990196878673109,
+          "accuracy": 0.8049751243781095,
+          "confusion_matrix_labels_0_1": [
+            [
+              491,
+              81
+            ],
+            [
+              115,
+              318
+            ]
+          ]
+        },
+        "appropriate_constrained": {
+          "macro_precision": 0.8024586776859504,
+          "macro_recall": 0.7955272210468516,
+          "macro_f1": 0.7980653603837458,
+          "accuracy": 0.8039800995024876,
+          "confusion_matrix_labels_0_1": [
+            [
+              490,
+              82
+            ],
+            [
+              115,
+              318
+            ]
+          ]
+        },
+        "hate": {
+          "macro_precision": 0.8123074242535397,
+          "macro_recall": 0.7983146903988156,
+          "macro_f1": 0.8043399452192126,
+          "accuracy": 0.826865671641791,
+          "confusion_matrix_labels_0_1": [
+            [
+              586,
+              72
+            ],
+            [
+              102,
+              245
+            ]
+          ]
+        }
+      },
+      "validation_metrics_recomputed": true,
+      "selected_epoch": 5,
+      "epochs_trained": 5,
+      "best_checkpoint_sha256": "022a1c3a427595eea79aacf68e0a1e0c3a833c691010339e04a75ae4f983f357",
+      "source": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E101"
+    },
+    {
+      "id": "E110",
+      "passed": true,
+      "run_id": "RQ4__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__both__0fae85afca54",
+      "test": {
+        "appropriate": {
+          "macro_precision": 0.8140210858212632,
+          "macro_recall": 0.8088228169059577,
+          "macro_f1": 0.8108844312394405,
+          "accuracy": 0.8159203980099502,
+          "confusion_matrix_labels_0_1": [
+            [
+              492,
+              80
+            ],
+            [
+              105,
+              328
+            ]
+          ]
+        },
+        "appropriate_constrained": {
+          "macro_precision": 0.8140210858212632,
+          "macro_recall": 0.8088228169059577,
+          "macro_f1": 0.8108844312394405,
+          "accuracy": 0.8159203980099502,
+          "confusion_matrix_labels_0_1": [
+            [
+              492,
+              80
+            ],
+            [
+              105,
+              328
+            ]
+          ]
+        },
+        "hate": {
+          "macro_precision": 0.806936026936027,
+          "macro_recall": 0.7994402739942013,
+          "macro_f1": 0.8028846207120466,
+          "accuracy": 0.8238805970149253,
+          "confusion_matrix_labels_0_1": [
+            [
+              578,
+              80
+            ],
+            [
+              97,
+              250
+            ]
+          ]
+        }
+      },
+      "validation_metrics_recomputed": true,
+      "selected_epoch": 3,
+      "epochs_trained": 5,
+      "best_checkpoint_sha256": "1b1faf847df1378b6852eab2b0652bd5dee5dca0b754dcb8b33af7fd2e034b12",
+      "source": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E110"
+    }
+  ],
+  "limits": "One seed; official cross-split image duplicates and documented protocol adaptations remain."
+}

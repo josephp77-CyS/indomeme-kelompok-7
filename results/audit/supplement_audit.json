@@ -1,0 +1,67 @@
+{
+  "train": {
+    "rows": 4018,
+    "duplicate_paths": 0,
+    "labels": {
+      "hate|inappropriate": 1386,
+      "not hate|inappropriate": 345,
+      "not hate|appropriate": 2287
+    }
+  },
+  "test": {
+    "rows": 1005,
+    "duplicate_paths": 0,
+    "labels": {
+      "hate|inappropriate": 347,
+      "not hate|appropriate": 572,
+      "not hate|inappropriate": 86
+    }
+  },
+  "total_labels": {
+    "hate|inappropriate": 1733,
+    "not hate|inappropriate": 431,
+    "not hate|appropriate": 2859
+  },
+  "topics_by_joint_label": {
+    "hate|inappropriate": {
+      "individual": 465,
+      "gender": 324,
+      "political": 543,
+      "social sub-groups": 583,
+      "national origin": 270,
+      "institutions": 273,
+      "religion": 57,
+      "none/others": 2
+    },
+    "not hate|inappropriate": {
+      "gender": 210,
+      "social sub-groups": 191,
+      "institutions": 12,
+      "individual": 22,
+      "national origin": 11,
+      "none/others": 33,
+      "political": 15,
+      "religion": 6
+    },
+    "not hate|appropriate": {
+      "political": 110,
+      "social sub-groups": 2075,
+      "gender": 319,
+      "none/others": 193,
+      "religion": 178,
+      "individual": 178,
+      "institutions": 147,
+      "national origin": 65
+    }
+  },
+  "all_topics": {
+    "individual": 665,
+    "gender": 853,
+    "political": 668,
+    "social sub-groups": 2849,
+    "national origin": 346,
+    "institutions": 432,
+    "religion": 241,
+    "none/others": 228
+  }
+}

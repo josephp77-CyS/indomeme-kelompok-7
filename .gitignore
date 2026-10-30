@@ -1,0 +1,10 @@
+__pycache__/
+.venv/
+workspaces/
+results/analysis_runs/
+notebooks/*.rerun.*
+*.pt
+*.part
+*.parquet
+*_predictions.csv
+*_ids.csv

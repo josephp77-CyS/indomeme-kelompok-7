@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "plan_sha256": "d4391bf04f859269a19a88a7a154de82a1a330bfa0a4fb2ca3484d0a3333e623",
+  "split_sha256": "4368e5767d73dfe988f9734dde59a146e125a0cda82c2783ee8eff46acab1a39",
+  "raw_sha256": {
+    "train-00000-of-00001.parquet": "dea87a3de2a8bcd4c7179ab5cca14ff320b7c32f028aefdf2635457846d59c4b",
+    "test-00000-of-00001.parquet": "ab06c80b83e0128a686f9134da4e7e44611635e8b1af74671f5595a4907ee2e3"
+  },
+  "models": {
+    "google/vit-base-patch32-224-in21k": "98cb6f7099d372694c8547bf7002289b36857dc7",
+    "indolem/indobertweet-base-uncased": "32e28c05b47e33b6675d2670a1745c50a65e987a"
+  },
+  "torch": "2.6.0+cu124",
+  "fit_rows": 3214,
+  "validation_rows": 804,
+  "test_rows": 1005,
+  "updated_at": 1793160661.2346022
+}

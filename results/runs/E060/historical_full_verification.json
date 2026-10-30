@@ -1,0 +1,116 @@
+{
+  "passed": true,
+  "run_id": "RQ2__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__appropriate__c48c7095d0be",
+  "fit_rows": 3214,
+  "validation_rows": 804,
+  "test_rows": 1005,
+  "scores": {
+    "appropriate": {
+      "macro_precision": 0.8167495854063018,
+      "macro_recall": 0.8100098515802904,
+      "macro_f1": 0.8125468212511148,
+      "accuracy": 0.817910447761194,
+      "confusion_matrix_labels_0_1": [
+        [
+          496,
+          76
+        ],
+        [
+          107,
+          326
+        ]
+      ]
+    }
+  },
+  "epochs_completed": 4,
+  "config": {
+    "experiment_id": "RQ2__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__appropriate",
+    "rq": "RQ2",
+    "kind": "multimodal",
+    "image": "ViT",
+    "text": "IndoBERTweet",
+    "variant": "Caption+OCR+Topic",
+    "task": "appropriate",
+    "paper_table": 12,
+    "scope": "full",
+    "seed": 42,
+    "epochs": 5,
+    "batch_size": 2,
+    "gradient_accumulation": 4,
+    "learning_rate": 2e-05,
+    "weight_decay": 0.01,
+    "dropout": 0.3,
+    "max_length": 256,
+    "patience": 2,
+    "lambda_hate": 0.5,
+    "max_train": null,
+    "max_validation": null,
+    "precision": "float32",
+    "optimizer": "AdamW",
+    "schedule": "linear, warmup=0",
+    "label_map": {
+      "hate": {
+        "not hate": 0,
+        "hate": 1
+      },
+      "appropriate": {
+        "appropriate": 0,
+        "inappropriate": 1
+      }
+    },
+    "models": {
+      "image": {
+        "id": "google/vit-base-patch32-224-in21k",
+        "revision": "98cb6f7099d372694c8547bf7002289b36857dc7"
+      },
+      "text": {
+        "id": "indolem/indobertweet-base-uncased",
+        "revision": "32e28c05b47e33b6675d2670a1745c50a65e987a"
+      }
+    },
+    "data_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+    "split_sha256": "f8052cf697c55b22dbb222b62874c0acf9fdf2cb73039768e8a1e31a3db3371e",
+    "script_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+    "support_sha256": {
+      "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+      "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73"
+    },
+    "versions": {
+      "torch": "2.6.0+cu124",
+      "transformers": "4.46.3",
+      "numpy": "2.5.4",
+      "pandas": "2.3.3",
+      "scikit-learn": "1.7.2"
+    },
+    "architecture": "author-code-style pooler/mean; linear-dropout projection for multimodal or dual-head",
+    "selection_metric": "macro-F1",
+    "comparison_policy": "RQ4 appropriate uses constrained predictions; raw scores retained",
+    "deviations": [
+      "validation derived from official train; selection by validation macro-F1",
+      "physical batch 2 x accumulation 4 approximates source batch 8; FP32",
+      "early stopping patience 2, warmup 0; clarify with authors",
+      "multitask lambda is an explicit candidate; validation tuning must be documented",
+      "model revisions pinned on first use; original author training revisions unknown",
+      "pooler_output follows source; article pooled-CLS wording requires clarification",
+      "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+      "unimodal dual-head projection follows author code; article prose omits its dimension",
+      "ViT checkpoint follows article (224-in21k), differs from active source 384",
+      "appropriate positive label is inappropriate; macro metrics unchanged by remapping"
+    ]
+  },
+  "test_protocol_locked": true,
+  "condition_completed": true,
+  "completed_utc": "2026-10-23T17:22:16.971268+00:00",
+  "limitations": [
+    "validation derived from official train; selection by validation macro-F1",
+    "physical batch 2 x accumulation 4 approximates source batch 8; FP32",
+    "early stopping patience 2, warmup 0; clarify with authors",
+    "multitask lambda is an explicit candidate; validation tuning must be documented",
+    "model revisions pinned on first use; original author training revisions unknown",
+    "pooler_output follows source; article pooled-CLS wording requires clarification",
+    "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+    "unimodal dual-head projection follows author code; article prose omits its dimension",
+    "ViT checkpoint follows article (224-in21k), differs from active source 384",
+    "appropriate positive label is inappropriate; macro metrics unchanged by remapping"
+  ]
+}

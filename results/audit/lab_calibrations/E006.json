@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "id": "E006",
+  "config_sha256": "5987b06917609d890a27c21fcedd2342f8e27e46b0bddbd8991182180bc260f1",
+  "plan_sha256": "d4391bf04f859269a19a88a7a154de82a1a330bfa0a4fb2ca3484d0a3333e623",
+  "gpu_uuid": "GPU-24a9fffc-77a7-e8dd-d49b-d6f06cb1966a",
+  "gpu_index": 1,
+  "gpu_name": "NVIDIA GeForce RTX 3060",
+  "peak_allocated_mib": 1697.5966796875,
+  "peak_reserved_mib": 1914.0,
+  "seconds": 25.1764192719711,
+  "sample_id": "2304323296603616.jpeg",
+  "input_length": null,
+  "optimizer_steps": 1,
+  "accumulation_steps": 8,
+  "checkpoint_atomic_save_and_load": true,
+  "test_evaluated": false,
+  "updated_at": 1793161047.0131137
+}

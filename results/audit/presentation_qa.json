@@ -1,0 +1,23 @@
+{
+  "slides": 20,
+  "main_slides": 16,
+  "appendix_slides": 4,
+  "notes": 20,
+  "content_font_families": [
+    "Arial"
+  ],
+  "external_relationships": 0,
+  "ole_objects": 0,
+  "embedded_chart_workbooks": 2,
+  "native_chart_slides": [
+    9,
+    10
+  ],
+  "all_final_slides_individually_rendered_and_viewed": true,
+  "package_layout_font_chart_finalizer": "passed with zero findings and warnings",
+  "artifact_tool_exact_final_import": "passed",
+  "canva_actual_import_tested": false,
+  "sha256": "e5c33efcc6fff402a3c691fe5fec68cb1eea414d4e1dde73a413c44b081308bd",
+  "bytes": 106484,
+  "chart_precision": "Chart workbook values rounded to six decimals. Presentation labels use three or four decimals; full-precision source metrics remain in CSV."
+}

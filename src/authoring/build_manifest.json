@@ -1,0 +1,60 @@
+{
+  "word_count_source": 4704,
+  "figures": [
+    {
+      "file": "figures/alur_data_dan_eksperimen.png",
+      "pixels": [
+        3780,
+        3060
+      ],
+      "sha256": "57c6fa341ba80e80c28fc8213b0c1b3cf9c14195b04d482347212fc4ff0acd21"
+    },
+    {
+      "file": "figures/arsitektur_model.png",
+      "pixels": [
+        3840,
+        2640
+      ],
+      "sha256": "f3a6c41ae9cf8fbd039f59228b765453f4da5d72a22fa3c6f40cfac5c9c93b9f"
+    },
+    {
+      "file": "figures/skor_seimbang_macro_f1.png",
+      "pixels": [
+        3780,
+        2280
+      ],
+      "sha256": "285652b0c24ed03b0eaea80e19a0bb721860a7923ec4326fce19930c7beef343"
+    },
+    {
+      "file": "figures/jumlah_prediksi_benar.png",
+      "pixels": [
+        3780,
+        2640
+      ],
+      "sha256": "bea3679ff1fcacb58c1619f85e3c9a23d79ace6b81c977928b771839807e08b5"
+    }
+  ],
+  "equation_ids": [
+    "image_preprocess",
+    "input_text",
+    "encoders",
+    "fusion",
+    "projection",
+    "prediction",
+    "single_loss",
+    "multitask_loss",
+    "hierarchy",
+    "effective_batch",
+    "selection_single",
+    "selection_multi",
+    "precision_recall",
+    "f1_macro",
+    "accuracy",
+    "worked_e059"
+  ],
+  "output_files": {
+    ".md": "93af6d1c907bd3556b1badb104116f681ef99185694a3841260f47f5264b0f17",
+    ".docx": "2199b21e4841a0c03ec19fd5d7948c975582c5794666871a3bc55458386012a4",
+    ".html": "10a8dd38d6cd6078864b9b97838074ee63c646d604edf2e792f5c38b2ef7ec4a"
+  }
+}

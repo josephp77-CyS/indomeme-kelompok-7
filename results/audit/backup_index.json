@@ -1,0 +1,166 @@
+{
+  "status": "upload_complete_size_verified",
+  "checked_at": 1793289270.4398727,
+  "root_folder_id": "1xXrSuGL89PohMh4soz6Nt7KnNNVnWxJo",
+  "method": "best.pt intact; last.pt split into 96 MiB pieces",
+  "conditions": [
+    {
+      "id": "E005",
+      "folder_id": "1WlQ_PzEl14MhYho3wX_gLYg1CXOpXPsL",
+      "raw_files": 13,
+      "resume_parts": 0,
+      "original_artifact_bytes": 352474821,
+      "receipt_path": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E005\\drive_backup.json",
+      "receipt_bytes": 5707,
+      "receipt_sha256": "1b557bfbbdc9375294bfadc96ed8ae5cbca88b39e4cab43e16ea53582efe68a8",
+      "receipt_drive_id": "1DmP84RIZMn1AS7H-grgNbj0r2xerQanO",
+      "receipt_drive_url": "https://drive.google.com/file/d/1DmP84RIZMn1AS7H-grgNbj0r2xerQanO/view?usp=drivesdk"
+    },
+    {
+      "id": "E006",
+      "folder_id": "1GdPhsMcq_CkCh2G3LGYggEwV8-SvuC2S",
+      "raw_files": 15,
+      "resume_parts": 11,
+      "original_artifact_bytes": 1409307260,
+      "receipt_path": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E006\\drive_backup.json",
+      "receipt_bytes": 11324,
+      "receipt_sha256": "8044eff07242803ac5965d941edfd9b65157977e925e19e1da830b21bb8c4683",
+      "receipt_drive_id": "1Lok4jlaJARPr0I69nS0OU_2T50FQhtB6",
+      "receipt_drive_url": "https://drive.google.com/file/d/1Lok4jlaJARPr0I69nS0OU_2T50FQhtB6/view?usp=drivesdk"
+    },
+    {
+      "id": "E041",
+      "folder_id": "1svcPciMaITvEyUvsbn3ecWDeDVJ7Qnsk",
+      "raw_files": 13,
+      "resume_parts": 0,
+      "original_artifact_bytes": 442524317,
+      "receipt_path": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E041\\drive_backup.json",
+      "receipt_bytes": 5731,
+      "receipt_sha256": "8b0748f5f475d7281699f817aabb851bc259e7391fd8d81b74846f4eee90b297",
+      "receipt_drive_id": "1uPwnG1KUKizk0AMswkVrO84SXfV7bHLp",
+      "receipt_drive_url": "https://drive.google.com/file/d/1uPwnG1KUKizk0AMswkVrO84SXfV7bHLp/view?usp=drivesdk"
+    },
+    {
+      "id": "E042",
+      "folder_id": "1D0z8yQcjmSVF0HGO_3ea1KneIYl6mChK",
+      "raw_files": 13,
+      "resume_parts": 0,
+      "original_artifact_bytes": 442536748,
+      "receipt_path": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E042\\drive_backup.json",
+      "receipt_bytes": 5738,
+      "receipt_sha256": "0c32274bd5ee0f91c86d9cad0878050b3290499ab6fdaa6c10d0387987e9f4d1",
+      "receipt_drive_id": "1Fe5P8ZSK0VBFt0xauOQddegqHz-r7jVU",
+      "receipt_drive_url": "https://drive.google.com/file/d/1Fe5P8ZSK0VBFt0xauOQddegqHz-r7jVU/view?usp=drivesdk"
+    },
+    {
+      "id": "E059",
+      "folder_id": "1WRxAXi_Jw7ryn2QfOnw6CpdB22-kUYEI",
+      "raw_files": 15,
+      "resume_parts": 24,
+      "original_artifact_bytes": 3197455042,
+      "receipt_path": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E059\\drive_backup.json",
+      "receipt_bytes": 16757,
+      "receipt_sha256": "3daf8b231f598e7f5a9a77e2c1966c64c0db2d25dcb7d3becc623d8407182d56",
+      "receipt_drive_id": "1mJ6CLHYJ0j1dg_l_5V5ba0gKAUUlC1H_",
+      "receipt_drive_url": "https://drive.google.com/file/d/1mJ6CLHYJ0j1dg_l_5V5ba0gKAUUlC1H_/view?usp=drivesdk"
+    },
+    {
+      "id": "E060",
+      "folder_id": "12SJ590IwDHGn-RzaY8IebGK_o3DXV6H6",
+      "raw_files": 13,
+      "resume_parts": 0,
+      "original_artifact_bytes": 799528132,
+      "receipt_path": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E060\\drive_backup.json",
+      "receipt_bytes": 5746,
+      "receipt_sha256": "5ceb47268f4f2c7013d1a8346843dd6122b23ddbeb5d2333e0745c1d44dab934",
+      "receipt_drive_id": "1TtIA0030e8McgrtR8HVLUvuOOEMf2n5Z",
+      "receipt_drive_url": "https://drive.google.com/file/d/1TtIA0030e8McgrtR8HVLUvuOOEMf2n5Z/view?usp=drivesdk"
+    },
+    {
+      "id": "E101",
+      "folder_id": "1Ri0kFoQ3gPrkgL14TRvV-zKNaP7dJSNE",
+      "raw_files": 15,
+      "resume_parts": 14,
+      "original_artifact_bytes": 1774339086,
+      "receipt_path": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E101\\drive_backup.json",
+      "receipt_bytes": 12590,
+      "receipt_sha256": "ea684deaf9572d785a429bb13e9759ea48f49c66f66a8ef2d4b9c9aa533a8b2f",
+      "receipt_drive_id": "1QNk_oc0oi6MM8q0NVO9sO-dIBe8TZs79",
+      "receipt_drive_url": "https://drive.google.com/file/d/1QNk_oc0oi6MM8q0NVO9sO-dIBe8TZs79/view?usp=drivesdk"
+    },
+    {
+      "id": "E110",
+      "folder_id": "1nR1bxtlHBEKkfhLu1eXx1eZLSN3tnD3x",
+      "raw_files": 15,
+      "resume_parts": 24,
+      "original_artifact_bytes": 3197598492,
+      "receipt_path": "D:\\IS LAB PROJ\\lab-dashboard\\transit\\E110\\drive_backup.json",
+      "receipt_bytes": 16758,
+      "receipt_sha256": "29c6d8add6997acd92907ddf3f40a262e91ef582b326900c1eb0d0b5cc30edc0",
+      "receipt_drive_id": "1VQ6QPES-bGPZaPC8roq7mdO6WFYgUmPv",
+      "receipt_drive_url": "https://drive.google.com/file/d/1VQ6QPES-bGPZaPC8roq7mdO6WFYgUmPv/view?usp=drivesdk"
+    }
+  ],
+  "verification_note": "Eight configurations and ten task outcomes independently checked. Eight best models and four resume checkpoints present. All 73 Drive resume parts and all declared support files passed SHA-256. Eight intact best models have verified Drive sizes and local SHA-256/CPU audits; cloud SHA-256 remains unchecked. Local restore of all four resume checkpoints passed. Server recheck unavailable: TCP port 2001 unreachable.",
+  "source_package": {
+    "github_commit": "99947d4508ff5424057bb2d5b86453ebe3635927",
+    "verified_at": "2026-10-29T04:16:35.156Z",
+    "files": [
+      {
+        "name": "IS-LAB-Kelompok-7-source-99947d4.zip",
+        "drive_id": "1OFXG0zV3bfIw1-RT9ESpbwgYCb8pi99e",
+        "drive_url": "https://drive.google.com/file/d/1OFXG0zV3bfIw1-RT9ESpbwgYCb8pi99e/view?usp=drivesdk",
+        "bytes": 99539,
+        "sha256": "8591baa7faff875ad47238817541d4ba3701654b35d01c86d91b014bf65d55d3",
+        "verified": true
+      },
+      {
+        "name": "source-99947d4-manifest.json",
+        "drive_id": "10GqIgxDbhINUV7NVNGqpNBG1E7izFLrV",
+        "drive_url": "https://drive.google.com/file/d/10GqIgxDbhINUV7NVNGqpNBG1E7izFLrV/view?usp=drivesdk",
+        "bytes": 5852,
+        "sha256": "0f3957e71d3ce44e82b98f633f50f4dc1b595f689bb9bfe5d91d964ee6b5aa5e",
+        "verified": true
+      }
+    ]
+  },
+  "configurations": 8,
+  "task_outcomes": 10,
+  "best_checkpoints": 8,
+  "resume_checkpoints": 4,
+  "resume_parts_drive_sha256_verified": 73,
+  "local_metrics_audit_passed": true,
+  "local_cpu_checkpoint_audit_passed": true,
+  "local_checkpoint_restore_tested": true,
+  "full_restore_from_drive_tested": false,
+  "audit_evidence": [
+    {
+      "name": "IS-LAB-Kelompok-7-source-5e8e654.zip",
+      "drive_id": "1r7yA5jM8Sa8-5i7XwzXuIaY_iWnfX_Uj",
+      "drive_url": "https://drive.google.com/file/d/1r7yA5jM8Sa8-5i7XwzXuIaY_iWnfX_Uj/view?usp=drivesdk"
+    },
+    {
+      "name": "source-5e8e654-manifest.json",
+      "drive_id": "197rL7jIcHjUpKOyd3RG09DkacMfccp0a",
+      "drive_url": "https://drive.google.com/file/d/197rL7jIcHjUpKOyd3RG09DkacMfccp0a/view?usp=drivesdk"
+    },
+    {
+      "name": "local_results_audit_2026-10-29.json",
+      "drive_id": "17t_tGbC1jWnrXEJH9lh8rpddfX6MgH_R",
+      "drive_url": "https://drive.google.com/file/d/17t_tGbC1jWnrXEJH9lh8rpddfX6MgH_R/view?usp=drivesdk"
+    },
+    {
+      "name": "checkpoint_restore_audit_2026-10-29.json",
+      "drive_id": "1UMhpo7WCL6bdgg9svivvPDUdA2tcPMki",
+      "drive_url": "https://drive.google.com/file/d/1UMhpo7WCL6bdgg9svivvPDUdA2tcPMki/view?usp=drivesdk"
+    },
+    {
+      "name": "cloud_sha256_proofs_2026-10-29.json",
+      "drive_id": "15b5xP8SrFZSJuRRcujPTMdHP2pr9aKlg",
+      "drive_url": "https://drive.google.com/file/d/15b5xP8SrFZSJuRRcujPTMdHP2pr9aKlg/view?usp=drivesdk"
+    }
+  ],
+  "latest_audit_scripts_github_commit": "5e8e654d73bf34488e2af26dd7eb198b5efffe2a",
+  "cloud_verified_support_files": 104,
+  "cloud_best_model_sha256_verified": false
+}

@@ -1,0 +1,7 @@
+{
+  "original_executed_notebook_sha256": "e644d5da2388e4bc0c1ef0e3afc10b73cf66ebbfb827b67fc30b7a753e11fc3e",
+  "submission_notebook_sha256": "b3262e774f7db84a387ba4a04b964130cb5bce4f75d29452bfb41eee7405fc06",
+  "code_cells_sha256": "df4d34551730836f668d4c79ec032fa5897eb4cd7529edbe944c3c595eaccb5e",
+  "code_and_outputs_changed": false,
+  "change": "Added full team identities in opening Markdown; original lab execution receipts retained"
+}

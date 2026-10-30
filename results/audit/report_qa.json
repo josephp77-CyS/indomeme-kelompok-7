@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "notebook_code_cells": 8,
+  "full_predictions_mode_passed": true,
+  "aggregate_only_mode_passed": true,
+  "training_started": false,
+  "docx_title_border_removed": true,
+  "render_engine": "Microsoft Word 2024 ExportAsFixedFormat and bundled Poppler",
+  "canonical_renderer_failure": "soffice.exe missing; no LibreOffice bundled on Windows",
+  "visual_review_pages": 15
+}

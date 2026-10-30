@@ -1,0 +1,104 @@
+{
+  "file": "arsitektur_model.png",
+  "size_inches": [
+    12.8,
+    8.8
+  ],
+  "png_dpi": 300,
+  "width_doc_inches": 6.4,
+  "height_doc_inches": 4.4,
+  "minimum_visible_font_points_at_doc_width": 10,
+  "caption": "Arsitektur aktual model pada eksperimen inti. Diagram utama memperlihatkan model gabungan. ViT dan IndoBERTweet masing-masing menghasilkan vektor ringkasan pooler_output sepanjang 768 angka. Concatenation menyatukan keduanya menjadi 1.536 angka. Proyeksi Linear mengecilkan vektor menjadi 768 angka, diikuti Dropout 0,3, lalu satu atau dua head klasifikasi. Pilihan satu dan dua tugas adalah konfigurasi run yang berbeda, bukan empat head yang berjalan bersamaan. Setiap head Linear menghasilkan dua logit untuk dua kelas pada satu tugas. Kedua encoder ikut dilatih lanjut. Tidak ada ReLU/GELU di antara proyeksi bersama dan head. Varian gambar/teks satu tugas memakai Dropout lalu satu head tanpa proyeksi bersama. Varian teks dua tugas memakai Dropout sebelum proyeksi 768 menjadi 384, serta Dropout kedua sesudah proyeksi dan dua head 384 menjadi 2. Teks diperkaya berasal dari topik anotasi, caption, dan OCR rilis; urutan input aktualnya topic [SEP] caption [SEP] OCR, dengan panjang maksimum 256 token. Fungsi loss multitask berbobot 0,5 untuk tiap tugas dijelaskan pada teks; aturan hubungan label diterapkan pada prediksi, bukan sebagai penalti tambahan pada loss.",
+  "source_code": "notebooks\\master_training.py",
+  "source_code_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+  "source_functions": [
+    "MemeClassifier.__init__",
+    "MemeClassifier.forward",
+    "total_loss"
+  ],
+  "reviewer_confirmation": "research_evidence confirmed hidden_size=768 in pinned cached model configs and all branch/dropout details.",
+  "encoder_revisions": {
+    "ViT": "98cb6f7099d372694c8547bf7002289b36857dc7",
+    "IndoBERTweet": "32e28c05b47e33b6675d2670a1745c50a65e987a"
+  },
+  "assertions": {
+    "all_text_inside_canvas": true,
+    "all_box_labels_inside_boxes": true,
+    "title_subtitle_nonoverlapping": true,
+    "source_code_patterns_match": true
+  },
+  "reused_figures": [
+    {
+      "file": "alur_data_dan_eksperimen.png",
+      "sha256": "57c6fa341ba80e80c28fc8213b0c1b3cf9c14195b04d482347212fc4ff0acd21",
+      "unchanged": true
+    },
+    {
+      "file": "alur_data_dan_eksperimen.svg",
+      "sha256": "9ad52146a04a0ba8e6b9e5cfcd37290f7b19722559ce39e4b7466f0694678816",
+      "unchanged": true
+    },
+    {
+      "file": "jumlah_prediksi_benar.png",
+      "sha256": "bea3679ff1fcacb58c1619f85e3c9a23d79ace6b81c977928b771839807e08b5",
+      "unchanged": true
+    },
+    {
+      "file": "jumlah_prediksi_benar.svg",
+      "sha256": "c46d41450ea5dd1303efd5ddd6a9a9a304bf27a789344845c361cefb646f56e0",
+      "unchanged": true
+    },
+    {
+      "file": "skor_seimbang_macro_f1.png",
+      "sha256": "285652b0c24ed03b0eaea80e19a0bb721860a7923ec4326fce19930c7beef343",
+      "unchanged": true
+    },
+    {
+      "file": "skor_seimbang_macro_f1.svg",
+      "sha256": "ea7988c78aa2d6819da482e5eca1e9587e6ed3ef834ace801db0a85ad75ccede",
+      "unchanged": true
+    }
+  ],
+  "files": [
+    {
+      "name": "alur_data_dan_eksperimen.png",
+      "sha256": "57c6fa341ba80e80c28fc8213b0c1b3cf9c14195b04d482347212fc4ff0acd21",
+      "bytes": 430042
+    },
+    {
+      "name": "alur_data_dan_eksperimen.svg",
+      "sha256": "9ad52146a04a0ba8e6b9e5cfcd37290f7b19722559ce39e4b7466f0694678816",
+      "bytes": 15440
+    },
+    {
+      "name": "arsitektur_model.png",
+      "sha256": "f3a6c41ae9cf8fbd039f59228b765453f4da5d72a22fa3c6f40cfac5c9c93b9f",
+      "bytes": 575093
+    },
+    {
+      "name": "arsitektur_model.svg",
+      "sha256": "509f600de4def866516808002827fca47aea82ae42881c1833bfd805074a2e01",
+      "bytes": 15051
+    },
+    {
+      "name": "jumlah_prediksi_benar.png",
+      "sha256": "bea3679ff1fcacb58c1619f85e3c9a23d79ace6b81c977928b771839807e08b5",
+      "bytes": 402624
+    },
+    {
+      "name": "jumlah_prediksi_benar.svg",
+      "sha256": "c46d41450ea5dd1303efd5ddd6a9a9a304bf27a789344845c361cefb646f56e0",
+      "bytes": 13805
+    },
+    {
+      "name": "skor_seimbang_macro_f1.png",
+      "sha256": "285652b0c24ed03b0eaea80e19a0bb721860a7923ec4326fce19930c7beef343",
+      "bytes": 362115
+    },
+    {
+      "name": "skor_seimbang_macro_f1.svg",
+      "sha256": "ea7988c78aa2d6819da482e5eca1e9587e6ed3ef834ace801db0a85ad75ccede",
+      "bytes": 14327
+    }
+  ]
+}

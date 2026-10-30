@@ -1,0 +1,318 @@
+{
+  "schema": 1,
+  "group": "kelompok-7",
+  "name": "Reproduksi inti INDOMEME",
+  "active_ids": [
+    "E005",
+    "E006",
+    "E041",
+    "E042",
+    "E059",
+    "E060",
+    "E101",
+    "E110"
+  ],
+  "remaining_order": [
+    "E059",
+    "E101",
+    "E006",
+    "E110"
+  ],
+  "conditions": [
+    {
+      "id": "E005",
+      "spec": {
+        "dashboard_id": "E005",
+        "row": 6,
+        "experiment_id": "RQ2__image__ViT__-__-__hate",
+        "rq": "RQ2",
+        "kind": "image",
+        "image": "ViT",
+        "text": "",
+        "variant": "",
+        "task": "hate",
+        "paper_table": 7
+      },
+      "paper_macro_f1": {
+        "hate": 0.63
+      },
+      "status": "test_complete",
+      "previous_failure": null,
+      "scores": {
+        "hate": {
+          "macro_precision": 0.6425150826187365,
+          "macro_recall": 0.639462873260163,
+          "macro_f1": 0.6408128805675027,
+          "accuracy": 0.6786069651741293,
+          "confusion_matrix_labels_0_1": [
+            [
+              504,
+              154
+            ],
+            [
+              169,
+              178
+            ]
+          ]
+        }
+      },
+      "completed_at": "2026-10-23T14:40:04.938787+00:00",
+      "epochs_completed": 5,
+      "evidence": "historical/E005.json",
+      "evidence_sha256": "bd2d7130dfe70e360f01414843da00547179628000b4dd6402120d9d15f4d803",
+      "origin": "verified local result, 23 October 2026"
+    },
+    {
+      "id": "E006",
+      "spec": {
+        "dashboard_id": "E006",
+        "row": 7,
+        "experiment_id": "RQ2__image__ViT__-__-__appropriate",
+        "rq": "RQ2",
+        "kind": "image",
+        "image": "ViT",
+        "text": "",
+        "variant": "",
+        "task": "appropriate",
+        "paper_table": 8
+      },
+      "paper_macro_f1": {
+        "appropriate": 0.63
+      },
+      "status": "not_started",
+      "previous_failure": null
+    },
+    {
+      "id": "E041",
+      "spec": {
+        "dashboard_id": "E041",
+        "row": 42,
+        "experiment_id": "RQ2__text__-__IndoBERTweet__Caption+OCR+Topic__hate",
+        "rq": "RQ2",
+        "kind": "text",
+        "image": "",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "hate",
+        "paper_table": 9
+      },
+      "paper_macro_f1": {
+        "hate": 0.8
+      },
+      "status": "test_complete",
+      "previous_failure": null,
+      "scores": {
+        "hate": {
+          "macro_precision": 0.8107290736380612,
+          "macro_recall": 0.80171990925256,
+          "macro_f1": 0.805800120826596,
+          "accuracy": 0.826865671641791,
+          "confusion_matrix_labels_0_1": [
+            [
+              581,
+              77
+            ],
+            [
+              97,
+              250
+            ]
+          ]
+        }
+      },
+      "completed_at": "2026-10-23T17:38:48.656060+00:00",
+      "epochs_completed": 4,
+      "evidence": "historical/E041.json",
+      "evidence_sha256": "2c44ab5f903d6be0fd8fafc95ac248025aeaab276d348372f137b99067dadb63",
+      "origin": "verified local result, 23 October 2026"
+    },
+    {
+      "id": "E042",
+      "spec": {
+        "dashboard_id": "E042",
+        "row": 43,
+        "experiment_id": "RQ2__text__-__IndoBERTweet__Caption+OCR+Topic__appropriate",
+        "rq": "RQ2",
+        "kind": "text",
+        "image": "",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "appropriate",
+        "paper_table": 10
+      },
+      "paper_macro_f1": {
+        "appropriate": 0.788
+      },
+      "status": "test_complete",
+      "previous_failure": null,
+      "scores": {
+        "appropriate": {
+          "macro_precision": 0.8113548801369863,
+          "macro_recall": 0.793659862077876,
+          "macro_f1": 0.7984131119878906,
+          "accuracy": 0.8069651741293532,
+          "confusion_matrix_labels_0_1": [
+            [
+              509,
+              63
+            ],
+            [
+              131,
+              302
+            ]
+          ]
+        }
+      },
+      "completed_at": "2026-10-23T17:55:36.184327+00:00",
+      "epochs_completed": 4,
+      "evidence": "historical/E042.json",
+      "evidence_sha256": "8302d251e468cee6bd79fe8af7dcefa00153705a3b1bfee93bf81281e1a56fce",
+      "origin": "verified local result, 23 October 2026"
+    },
+    {
+      "id": "E059",
+      "spec": {
+        "dashboard_id": "E059",
+        "row": 60,
+        "experiment_id": "RQ2__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__hate",
+        "rq": "RQ2",
+        "kind": "multimodal",
+        "image": "ViT",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "hate",
+        "paper_table": 11
+      },
+      "paper_macro_f1": {
+        "hate": 0.82
+      },
+      "status": "retry_required",
+      "previous_failure": "CUDA out of memory; no resume checkpoint found"
+    },
+    {
+      "id": "E060",
+      "spec": {
+        "dashboard_id": "E060",
+        "row": 61,
+        "experiment_id": "RQ2__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__appropriate",
+        "rq": "RQ2",
+        "kind": "multimodal",
+        "image": "ViT",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "appropriate",
+        "paper_table": 12
+      },
+      "paper_macro_f1": {
+        "appropriate": 0.809
+      },
+      "status": "test_complete",
+      "previous_failure": null,
+      "scores": {
+        "appropriate": {
+          "macro_precision": 0.8167495854063018,
+          "macro_recall": 0.8100098515802904,
+          "macro_f1": 0.8125468212511148,
+          "accuracy": 0.817910447761194,
+          "confusion_matrix_labels_0_1": [
+            [
+              496,
+              76
+            ],
+            [
+              107,
+              326
+            ]
+          ]
+        }
+      },
+      "completed_at": "2026-10-23T17:22:16.971268+00:00",
+      "epochs_completed": 4,
+      "evidence": "historical/E060.json",
+      "evidence_sha256": "6f67a4717857c841ee4b762559bf6937aec694628322ba67ac2101b219f76cbd",
+      "origin": "verified local result, 23 October 2026"
+    },
+    {
+      "id": "E101",
+      "spec": {
+        "dashboard_id": "E101",
+        "row": 102,
+        "experiment_id": "RQ4__text__-__IndoBERTweet__Caption+OCR+Topic__both",
+        "rq": "RQ4",
+        "kind": "text",
+        "image": "",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "both",
+        "paper_table": 15
+      },
+      "paper_macro_f1": {
+        "hate": 0.811,
+        "appropriate": 0.815
+      },
+      "status": "retry_required",
+      "previous_failure": "CUDA out of memory; no resume checkpoint found"
+    },
+    {
+      "id": "E110",
+      "spec": {
+        "dashboard_id": "E110",
+        "row": 111,
+        "experiment_id": "RQ4__multimodal__ViT__IndoBERTweet__Caption+OCR+Topic__both",
+        "rq": "RQ4",
+        "kind": "multimodal",
+        "image": "ViT",
+        "text": "IndoBERTweet",
+        "variant": "Caption+OCR+Topic",
+        "task": "both",
+        "paper_table": 16
+      },
+      "paper_macro_f1": {
+        "hate": 0.801,
+        "appropriate": 0.803
+      },
+      "status": "not_started",
+      "previous_failure": null
+    }
+  ],
+  "excluded": [
+    "E063",
+    "E064",
+    "all RQ3 / zero-shot / API conditions"
+  ],
+  "model_revisions": {
+    "google/vit-base-patch32-224-in21k": "98cb6f7099d372694c8547bf7002289b36857dc7",
+    "indolem/indobertweet-base-uncased": "32e28c05b47e33b6675d2670a1745c50a65e987a"
+  },
+  "protocol": {
+    "seed": 42,
+    "epochs": 5,
+    "batch_size": 1,
+    "gradient_accumulation": 8,
+    "learning_rate": 2e-05,
+    "max_length": 256,
+    "lambda_hate": 0.5,
+    "precision": "float32",
+    "fit_rows": 3214,
+    "validation_rows": 804,
+    "test_rows": 1005,
+    "split_sha256": "4368e5767d73dfe988f9734dde59a146e125a0cda82c2783ee8eff46acab1a39",
+    "split_hash_policy": "LF-canonical CSV, identical rows/assignments to the historical Windows manifest"
+  },
+  "execution": {
+    "max_parallel": 1,
+    "minimum_free_vram_mib": 10240,
+    "maximum_other_gpu_utilization": 10,
+    "disk_reserve_gib": 12,
+    "prepare_disk_minimum_gib": 50,
+    "ram_available_minimum_gib": 8,
+    "retention": "Keep best.pt, last.pt, and all evidence; no automatic deletion of research artifacts",
+    "advance": "One explicit stage at a time; stop on failure; calibration required per condition and GPU"
+  },
+  "adaptation": "New run identity: physical batch 1 x accumulation 8, FP32; reuse the existing scientific implementation unchanged.",
+  "source_sha256": {
+    "master_training.py": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+    "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+    "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73",
+    "paper_tables_official.json": "0817d88788d38c7d141ad02ce575edcd0d5812e3da61feb1e3e7df27859e8a52"
+  }
+}

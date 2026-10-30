@@ -1,0 +1,2437 @@
+{
+  "scope_counts": {
+    "core_configurations": 8,
+    "core_test_outcomes": 10,
+    "historical_extra_completed_configurations": 1,
+    "historical_extra_test_outcomes": 1,
+    "historical_partial_configurations": 1,
+    "conventional_validation_trials": 14
+  },
+  "interpretation": "Inventory of recorded empirical results and operational attempts. Validation, test, calibration, partial and failed results must be displayed separately. No new model training or inference is represented.",
+  "core_reference": "Existing eight core runs and research_facts.json; historical extra E001 must not silently change the prespecified core count.",
+  "baseline_trials": [
+    {
+      "trial_id": "B01",
+      "task": "hate",
+      "variant": "Majority",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.3302238805970149,
+        "macro_recall": 0.5,
+        "macro_f1": 0.39775280898876403,
+        "accuracy": 0.6604477611940298,
+        "confusion_matrix_labels_0_1": [
+          [
+            531,
+            0
+          ],
+          [
+            273,
+            0
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.6604477611940298,
+            "recall": 1.0,
+            "f1": 0.7955056179775281,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.007485100002668332,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "hate",
+        "variant": "Majority"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.0
+          },
+          {
+            "image_path": "10028998933828616.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.0
+          },
+          {
+            "image_path": "1005662505024622.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.0
+          }
+        ]
+      },
+      "insight": "Baseline mayoritas memprediksi kelas 0; accuracy dipengaruhi distribusi kelas dan recall kelas positif bernilai nol. Ini validation, bukan test."
+    },
+    {
+      "trial_id": "B02",
+      "task": "hate",
+      "variant": "OCR",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.7263561555206599,
+        "macro_recall": 0.731690155418969,
+        "macro_f1": 0.7287486368593239,
+        "accuracy": 0.753731343283582,
+        "confusion_matrix_labels_0_1": [
+          [
+            425,
+            106
+          ],
+          [
+            92,
+            181
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8220502901353965,
+            "recall": 0.800376647834275,
+            "f1": 0.8110687022900762,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.6306620209059234,
+            "recall": 0.663003663003663,
+            "f1": 0.6464285714285715,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.277235000001383,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "hate",
+        "variant": "OCR"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1003786335117124.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5097773044070945
+          },
+          {
+            "image_path": "1015554067273684.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5516057731307834
+          },
+          {
+            "image_path": "1015929580664581.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5040417930445888
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.4779714002370494
+          },
+          {
+            "image_path": "10028998933828616.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.40523683326540044
+          },
+          {
+            "image_path": "1008906851325638.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.4001898787884111
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +33.0996 poin persentase terhadap Majority. Varian ini tidak memakai anotasi topik. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    },
+    {
+      "trial_id": "B03",
+      "task": "hate",
+      "variant": "Caption",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.7314962392246496,
+        "macro_recall": 0.7354566337617185,
+        "macro_f1": 0.7333342451514073,
+        "accuracy": 0.7587064676616916,
+        "confusion_matrix_labels_0_1": [
+          [
+            429,
+            102
+          ],
+          [
+            92,
+            181
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8234165067178503,
+            "recall": 0.807909604519774,
+            "f1": 0.8155893536121672,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.6395759717314488,
+            "recall": 0.663003663003663,
+            "f1": 0.6510791366906474,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.29622740000195336,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "hate",
+        "variant": "Caption"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "10007163152657541.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5476735059433951
+          },
+          {
+            "image_path": "1007367488109132.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5674443203710212
+          },
+          {
+            "image_path": "1011980094297748.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6726313628594749
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.30719609551066385
+          },
+          {
+            "image_path": "1014177377411353.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.2915250173269571
+          },
+          {
+            "image_path": "1019493313546426.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.37126549042400436
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +0.4586 poin persentase terhadap OCR. Varian ini tidak memakai anotasi topik. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    },
+    {
+      "trial_id": "B04",
+      "task": "hate",
+      "variant": "Caption+OCR",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.756036549352048,
+        "macro_recall": 0.7541855507957202,
+        "macro_f1": 0.7550867816370471,
+        "accuracy": 0.7810945273631841,
+        "confusion_matrix_labels_0_1": [
+          [
+            445,
+            86
+          ],
+          [
+            90,
+            183
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8317757009345794,
+            "recall": 0.8380414312617702,
+            "f1": 0.8348968105065666,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.6802973977695167,
+            "recall": 0.6703296703296703,
+            "f1": 0.6752767527675276,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.6469745000067633,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "hate",
+        "variant": "Caption+OCR"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "10007163152657541.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.519577626771653
+          },
+          {
+            "image_path": "1011980094297748.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6339642111153296
+          },
+          {
+            "image_path": "1015554067273684.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5282587895509817
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.27620667441098007
+          },
+          {
+            "image_path": "1008906851325638.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.47764434181890203
+          },
+          {
+            "image_path": "1014177377411353.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.32136080349954316
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +2.1753 poin persentase terhadap Caption. Varian ini tidak memakai anotasi topik. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    },
+    {
+      "trial_id": "B05",
+      "task": "hate",
+      "variant": "Caption+Topic",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.779324069261701,
+        "macro_recall": 0.7817615529479937,
+        "macro_f1": 0.7805040117993087,
+        "accuracy": 0.8022388059701493,
+        "confusion_matrix_labels_0_1": [
+          [
+            449,
+            82
+          ],
+          [
+            77,
+            196
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8536121673003803,
+            "recall": 0.8455743879472694,
+            "f1": 0.8495742667928098,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.7050359712230215,
+            "recall": 0.717948717948718,
+            "f1": 0.7114337568058076,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.33803259999695,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "hate",
+        "variant": "Caption+Topic"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1012961894349537.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5902109433473853
+          },
+          {
+            "image_path": "1015554067273684.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.7230088359481982
+          },
+          {
+            "image_path": "10226711980337261.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5476908718783251
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.23160544870796076
+          },
+          {
+            "image_path": "1014177377411353.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.25433189870639716
+          },
+          {
+            "image_path": "1034570022038755.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.31623396244195706
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +4.7170 poin persentase terhadap Caption. Varian ini memakai topik anotasi rilis sebagai input istimewa; tidak mewakili prediksi topik otomatis. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    },
+    {
+      "trial_id": "B06",
+      "task": "hate",
+      "variant": "OCR+Topic",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.7675548027522614,
+        "macro_recall": 0.7626083897270338,
+        "macro_f1": 0.7649253731343284,
+        "accuracy": 0.7910447761194029,
+        "confusion_matrix_labels_0_1": [
+          [
+            452,
+            79
+          ],
+          [
+            89,
+            184
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8354898336414048,
+            "recall": 0.8512241054613936,
+            "f1": 0.8432835820895523,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.6996197718631179,
+            "recall": 0.673992673992674,
+            "f1": 0.6865671641791045,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.3156576000037603,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "hate",
+        "variant": "OCR+Topic"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1015554067273684.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6895713171534475
+          },
+          {
+            "image_path": "10226711980337261.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5908404282445776
+          },
+          {
+            "image_path": "10226835553266507.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5296833301934317
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.35144692985535436
+          },
+          {
+            "image_path": "1014177377411353.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.4037470046808077
+          },
+          {
+            "image_path": "1047970220698735.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.4365366691779645
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +3.6177 poin persentase terhadap OCR. Varian ini memakai topik anotasi rilis sebagai input istimewa; tidak mewakili prediksi topik otomatis. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    },
+    {
+      "trial_id": "B07",
+      "task": "hate",
+      "variant": "Caption+OCR+Topic",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.7880774032459426,
+        "macro_recall": 0.7865213882163035,
+        "macro_f1": 0.7872850361839545,
+        "accuracy": 0.8097014925373134,
+        "confusion_matrix_labels_0_1": [
+          [
+            456,
+            75
+          ],
+          [
+            78,
+            195
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.8539325842696629,
+            "recall": 0.8587570621468926,
+            "f1": 0.856338028169014,
+            "support": 531
+          },
+          {
+            "label": 1,
+            "precision": 0.7222222222222222,
+            "recall": 0.7142857142857143,
+            "f1": 0.7182320441988951,
+            "support": 273
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.6874861000032979,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "hate",
+        "variant": "Caption+OCR+Topic"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1012961894349537.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5153227315468868
+          },
+          {
+            "image_path": "1015554067273684.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6845818510740371
+          },
+          {
+            "image_path": "10226711980337261.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5989089271608484
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.20062680844374486
+          },
+          {
+            "image_path": "1014177377411353.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.278852826518638
+          },
+          {
+            "image_path": "1034570022038755.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.40721598169910195
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +3.2198 poin persentase terhadap Caption+OCR. Varian ini memakai topik anotasi rilis sebagai input istimewa; tidak mewakili prediksi topik otomatis. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    },
+    {
+      "trial_id": "B08",
+      "task": "appropriate",
+      "variant": "Majority",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.28233830845771146,
+        "macro_recall": 0.5,
+        "macro_f1": 0.3608903020667727,
+        "accuracy": 0.5646766169154229,
+        "confusion_matrix_labels_0_1": [
+          [
+            454,
+            0
+          ],
+          [
+            350,
+            0
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.5646766169154229,
+            "recall": 1.0,
+            "f1": 0.7217806041335454,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.005199899998842739,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "appropriate",
+        "variant": "Majority"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.0
+          },
+          {
+            "image_path": "10028998933828616.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.0
+          },
+          {
+            "image_path": "1005662505024622.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.0
+          }
+        ]
+      },
+      "insight": "Baseline mayoritas memprediksi kelas 0; accuracy dipengaruhi distribusi kelas dan recall kelas positif bernilai nol. Ini validation, bukan test."
+    },
+    {
+      "trial_id": "B09",
+      "task": "appropriate",
+      "variant": "OCR",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.6823759766425567,
+        "macro_recall": 0.6820075519194462,
+        "macro_f1": 0.6821819086661196,
+        "accuracy": 0.6878109452736318,
+        "confusion_matrix_labels_0_1": [
+          [
+            330,
+            124
+          ],
+          [
+            127,
+            223
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7221006564551422,
+            "recall": 0.7268722466960352,
+            "f1": 0.7244785949506037,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.6426512968299711,
+            "recall": 0.6371428571428571,
+            "f1": 0.6398852223816356,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.29452409999794327,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "appropriate",
+        "variant": "OCR"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1011980094297748.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5065693124641897
+          },
+          {
+            "image_path": "1015554067273684.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5436820521624705
+          },
+          {
+            "image_path": "1015929580664581.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5878946717318371
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "10028998933828616.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.4249698398536138
+          },
+          {
+            "image_path": "1008906851325638.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.3902831254257048
+          },
+          {
+            "image_path": "1027329446094679.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.495144100879635
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +32.1292 poin persentase terhadap Majority. Varian ini tidak memakai anotasi topik. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    },
+    {
+      "trial_id": "B10",
+      "task": "appropriate",
+      "variant": "Caption",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.7152944226962554,
+        "macro_recall": 0.7142416614222782,
+        "macro_f1": 0.7147115179902066,
+        "accuracy": 0.7201492537313433,
+        "confusion_matrix_labels_0_1": [
+          [
+            345,
+            109
+          ],
+          [
+            116,
+            234
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7483731019522777,
+            "recall": 0.7599118942731278,
+            "f1": 0.7540983606557378,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.6822157434402333,
+            "recall": 0.6685714285714286,
+            "f1": 0.6753246753246754,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.36597769999934826,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "appropriate",
+        "variant": "Caption"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "10007163152657541.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5858243603962197
+          },
+          {
+            "image_path": "1007367488109132.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.60725418346996
+          },
+          {
+            "image_path": "1011980094297748.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.7365126275412641
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.3534325775429966
+          },
+          {
+            "image_path": "1014177377411353.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.3598918812647967
+          },
+          {
+            "image_path": "1019493313546426.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.3859043514266996
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +3.2530 poin persentase terhadap OCR. Varian ini tidak memakai anotasi topik. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    },
+    {
+      "trial_id": "B11",
+      "task": "appropriate",
+      "variant": "Caption+OCR",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.7389144050104384,
+        "macro_recall": 0.7340654499685337,
+        "macro_f1": 0.7357341907824223,
+        "accuracy": 0.7425373134328358,
+        "confusion_matrix_labels_0_1": [
+          [
+            363,
+            91
+          ],
+          [
+            116,
+            234
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7578288100208769,
+            "recall": 0.7995594713656388,
+            "f1": 0.7781350482315113,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.72,
+            "recall": 0.6685714285714286,
+            "f1": 0.6933333333333334,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.7954419999950915,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "appropriate",
+        "variant": "Caption+OCR"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "10007163152657541.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5671079808287913
+          },
+          {
+            "image_path": "1011980094297748.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6670756240276416
+          },
+          {
+            "image_path": "1015929580664581.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5642431511108466
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.3665956997857814
+          },
+          {
+            "image_path": "1014177377411353.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.4033975453968643
+          },
+          {
+            "image_path": "1019493313546426.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.47290315521349563
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +2.1023 poin persentase terhadap Caption. Varian ini tidak memakai anotasi topik. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    },
+    {
+      "trial_id": "B12",
+      "task": "appropriate",
+      "variant": "Caption+Topic",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.7457705787629061,
+        "macro_recall": 0.7449276274386407,
+        "macro_f1": 0.7453190131356033,
+        "accuracy": 0.75,
+        "confusion_matrix_labels_0_1": [
+          [
+            356,
+            98
+          ],
+          [
+            103,
+            247
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.775599128540305,
+            "recall": 0.7841409691629956,
+            "f1": 0.7798466593647316,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.7159420289855073,
+            "recall": 0.7057142857142857,
+            "f1": 0.7107913669064749,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.3666930000035791,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "appropriate",
+        "variant": "Caption+Topic"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1011980094297748.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5660246405258531
+          },
+          {
+            "image_path": "1012961894349537.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6566314000238391
+          },
+          {
+            "image_path": "1015554067273684.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6490458373835777
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.33187981022207913
+          },
+          {
+            "image_path": "1014177377411353.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.3950064408667166
+          },
+          {
+            "image_path": "1034570022038755.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.2895842252585559
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +3.0607 poin persentase terhadap Caption. Varian ini memakai topik anotasi rilis sebagai input istimewa; tidak mewakili prediksi topik otomatis. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    },
+    {
+      "trial_id": "B13",
+      "task": "appropriate",
+      "variant": "OCR+Topic",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.7516684938357087,
+        "macro_recall": 0.7470421648835746,
+        "macro_f1": 0.7487049550442894,
+        "accuracy": 0.7549751243781094,
+        "confusion_matrix_labels_0_1": [
+          [
+            367,
+            87
+          ],
+          [
+            110,
+            240
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7693920335429769,
+            "recall": 0.8083700440528634,
+            "f1": 0.7883995703544575,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.7339449541284404,
+            "recall": 0.6857142857142857,
+            "f1": 0.7090103397341212,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.36736699999892153,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "appropriate",
+        "variant": "OCR+Topic"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1012961894349537.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5027432844739521
+          },
+          {
+            "image_path": "1015554067273684.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6391562192430053
+          },
+          {
+            "image_path": "10226711980337261.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.7220674751155544
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.4807770489087953
+          },
+          {
+            "image_path": "1034570022038755.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.485252848025642
+          },
+          {
+            "image_path": "1047970220698735.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.4365646797294466
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +6.6523 poin persentase terhadap OCR. Varian ini memakai topik anotasi rilis sebagai input istimewa; tidak mewakili prediksi topik otomatis. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    },
+    {
+      "trial_id": "B14",
+      "task": "appropriate",
+      "variant": "Caption+OCR+Topic",
+      "evaluation": "validation",
+      "rows": 804,
+      "metrics": {
+        "macro_precision": 0.7574218452396069,
+        "macro_recall": 0.7551667715544368,
+        "macro_f1": 0.7561172901921133,
+        "accuracy": 0.7611940298507462,
+        "confusion_matrix_labels_0_1": [
+          [
+            364,
+            90
+          ],
+          [
+            102,
+            248
+          ]
+        ],
+        "per_class": [
+          {
+            "label": 0,
+            "precision": 0.7811158798283262,
+            "recall": 0.801762114537445,
+            "f1": 0.791304347826087,
+            "support": 454
+          },
+          {
+            "label": 1,
+            "precision": 0.7337278106508875,
+            "recall": 0.7085714285714285,
+            "f1": 0.7209302325581395,
+            "support": 350
+          }
+        ],
+        "rows": 804
+      },
+      "seconds": 0.7014910999932908,
+      "predictions_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "prediction_filter": {
+        "task": "appropriate",
+        "variant": "Caption+OCR+Topic"
+      },
+      "config_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "split_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "error_examples": {
+        "false_positive": [
+          {
+            "image_path": "1011980094297748.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5059985307728649
+          },
+          {
+            "image_path": "1012961894349537.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.5659559058035474
+          },
+          {
+            "image_path": "1015554067273684.jpeg",
+            "truth": 0,
+            "prediction": 1,
+            "probability_positive": 0.6316018031057676
+          }
+        ],
+        "false_negative": [
+          {
+            "image_path": "1000970594176012.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.30090410519094946
+          },
+          {
+            "image_path": "1014177377411353.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.38440231862120583
+          },
+          {
+            "image_path": "1034570022038755.jpeg",
+            "truth": 1,
+            "prediction": 0,
+            "probability_positive": 0.3521762828218499
+          }
+        ]
+      },
+      "insight": "Pada validation yang sama, macro-F1 berbeda +2.0383 poin persentase terhadap Caption+OCR. Varian ini memakai topik anotasi rilis sebagai input istimewa; tidak mewakili prediksi topik otomatis. Tidak menyimpulkan hasil test atau signifikansi dari satu seed ini."
+    }
+  ],
+  "baseline_replays": [
+    {
+      "label": "mentoring_2026-10-18",
+      "conditions": 14,
+      "evaluation": "validation",
+      "same_metrics_as_initial": true,
+      "files": {
+        "config.json": "evidence/baseline_replays/mentoring_2026-10-18/config.json",
+        "metrics.json": "evidence/baseline_replays/mentoring_2026-10-18/metrics.json",
+        "metrics.csv": "evidence/baseline_replays/mentoring_2026-10-18/metrics.csv",
+        "predictions.csv": "evidence/baseline_replays/mentoring_2026-10-18/predictions.csv",
+        "completion.json": "evidence/baseline_replays/mentoring_2026-10-18/completion.json",
+        "split_manifest.csv": "evidence/baseline_replays/mentoring_2026-10-18/split_manifest.csv"
+      },
+      "insight": "Re-execution of the same prespecified 14 conditions; not 14 new independent configurations or new test results."
+    },
+    {
+      "label": "presentation_2026-10-23",
+      "conditions": 14,
+      "evaluation": "validation",
+      "same_metrics_as_initial": true,
+      "files": {
+        "config.json": "evidence/baseline_replays/presentation_2026-10-23/config.json",
+        "metrics.json": "evidence/baseline_replays/presentation_2026-10-23/metrics.json",
+        "metrics.csv": "evidence/baseline_replays/presentation_2026-10-23/metrics.csv",
+        "predictions.csv": "evidence/baseline_replays/presentation_2026-10-23/predictions.csv",
+        "completion.json": "evidence/baseline_replays/presentation_2026-10-23/completion.json",
+        "split_manifest.csv": "evidence/baseline_replays/presentation_2026-10-23/split_manifest.csv"
+      },
+      "insight": "Re-execution of the same prespecified 14 conditions; not 14 new independent configurations or new test results."
+    }
+  ],
+  "supplementary_supervised": [
+    {
+      "id": "E001",
+      "run_id": "RQ2__image__SwinV2__-__-__hate__7bfd12deea55",
+      "status": "completed_test_historical_outside_core",
+      "config": {
+        "experiment_id": "RQ2__image__SwinV2__-__-__hate",
+        "rq": "RQ2",
+        "kind": "image",
+        "image": "SwinV2",
+        "text": "",
+        "variant": "",
+        "task": "hate",
+        "paper_table": 7,
+        "scope": "full",
+        "seed": 42,
+        "epochs": 5,
+        "batch_size": 2,
+        "gradient_accumulation": 4,
+        "learning_rate": 2e-05,
+        "weight_decay": 0.01,
+        "dropout": 0.3,
+        "max_length": 256,
+        "patience": 2,
+        "lambda_hate": 0.5,
+        "max_train": null,
+        "max_validation": null,
+        "precision": "float32",
+        "optimizer": "AdamW",
+        "schedule": "linear, warmup=0",
+        "label_map": {
+          "hate": {
+            "not hate": 0,
+            "hate": 1
+          },
+          "appropriate": {
+            "appropriate": 0,
+            "inappropriate": 1
+          }
+        },
+        "models": {
+          "image": {
+            "id": "microsoft/swinv2-tiny-patch4-window8-256",
+            "revision": "40213dad8563a5a916d434a1291443c0fa6358f0"
+          }
+        },
+        "data_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+        "split_sha256": "f8052cf697c55b22dbb222b62874c0acf9fdf2cb73039768e8a1e31a3db3371e",
+        "script_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+        "support_sha256": {
+          "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+          "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73"
+        },
+        "versions": {
+          "torch": "2.6.0+cu124",
+          "transformers": "4.46.3",
+          "numpy": "2.5.4",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2"
+        },
+        "architecture": "author-code-style pooler/mean; linear-dropout projection for multimodal or dual-head",
+        "selection_metric": "macro-F1",
+        "comparison_policy": "RQ4 appropriate uses constrained predictions; raw scores retained",
+        "deviations": [
+          "validation derived from official train; selection by validation macro-F1",
+          "physical batch 2 x accumulation 4 approximates source batch 8; FP32",
+          "early stopping patience 2, warmup 0; clarify with authors",
+          "multitask lambda is an explicit candidate; validation tuning must be documented",
+          "model revisions pinned on first use; original author training revisions unknown",
+          "pooler_output follows source; article pooled-CLS wording requires clarification",
+          "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+          "unimodal dual-head projection follows author code; article prose omits its dimension",
+          "ViT checkpoint follows article (224-in21k), differs from active source 384",
+          "appropriate positive label is inappropriate; macro metrics unchanged by remapping"
+        ]
+      },
+      "history": [
+        {
+          "epoch": "1",
+          "train_loss": "0.6425218472457778",
+          "selection_macro_f1": "0.5011797441224302",
+          "hate_macro_f1": "0.5011797441224302"
+        },
+        {
+          "epoch": "2",
+          "train_loss": "0.5962136327320919",
+          "selection_macro_f1": "0.6288967104236217",
+          "hate_macro_f1": "0.6288967104236217"
+        },
+        {
+          "epoch": "3",
+          "train_loss": "0.5400208599781983",
+          "selection_macro_f1": "0.615210377934295",
+          "hate_macro_f1": "0.615210377934295"
+        },
+        {
+          "epoch": "4",
+          "train_loss": "0.504986793947984",
+          "selection_macro_f1": "0.6240996172150767",
+          "hate_macro_f1": "0.6240996172150767"
+        }
+      ],
+      "validation_metrics": {
+        "hate": {
+          "macro_precision": 0.6268800692967951,
+          "macro_recall": 0.6333788621924215,
+          "macro_f1": 0.6288967104236217,
+          "accuracy": 0.6579601990049752,
+          "confusion_matrix_labels_0_1": [
+            [
+              377,
+              154
+            ],
+            [
+              121,
+              152
+            ]
+          ]
+        }
+      },
+      "test_metrics": {
+        "hate": {
+          "macro_precision": 0.6251830070225067,
+          "macro_recall": 0.632567031349912,
+          "macro_f1": 0.6269661825092476,
+          "accuracy": 0.6517412935323383,
+          "confusion_matrix_labels_0_1": [
+            [
+              457,
+              201
+            ],
+            [
+              149,
+              198
+            ]
+          ],
+          "per_class": [
+            {
+              "label": 0,
+              "precision": 0.7541254125412541,
+              "recall": 0.6945288753799392,
+              "f1": 0.7231012658227848,
+              "support": 658
+            },
+            {
+              "label": 1,
+              "precision": 0.49624060150375937,
+              "recall": 0.5706051873198847,
+              "f1": 0.5308310991957105,
+              "support": 347
+            }
+          ],
+          "error_examples": {
+            "false_positive": [
+              {
+                "image_path": "1005306118298479.jpeg",
+                "truth": 0,
+                "prediction": 1,
+                "probability_positive": 0.6694159507751465
+              },
+              {
+                "image_path": "1009879063039334.jpeg",
+                "truth": 0,
+                "prediction": 1,
+                "probability_positive": 0.6406615972518921
+              },
+              {
+                "image_path": "1018563468837560.jpeg",
+                "truth": 0,
+                "prediction": 1,
+                "probability_positive": 0.6938862800598145
+              }
+            ],
+            "false_negative": [
+              {
+                "image_path": "1001507855343505.jpeg",
+                "truth": 1,
+                "prediction": 0,
+                "probability_positive": 0.3697117567062378
+              },
+              {
+                "image_path": "10030062560388920.jpeg",
+                "truth": 1,
+                "prediction": 0,
+                "probability_positive": 0.38544440269470215
+              },
+              {
+                "image_path": "1024657433028547.jpeg",
+                "truth": 1,
+                "prediction": 0,
+                "probability_positive": 0.4637939929962158
+              }
+            ]
+          }
+        }
+      },
+      "files": {
+        "config": "evidence/historical_supervised/E001/config.json",
+        "history": "evidence/historical_supervised/E001/history.csv",
+        "validation_predictions": "evidence/historical_supervised/E001/validation_predictions.csv",
+        "validation_metrics": "evidence/historical_supervised/E001/validation_metrics.json",
+        "fit_ids": "evidence/historical_supervised/E001/fit_ids.csv",
+        "validation_ids": "evidence/historical_supervised/E001/validation_ids.csv",
+        "test_predictions": "evidence/historical_supervised/E001/test_predictions.csv",
+        "test_metrics": "evidence/historical_supervised/E001/test_metrics.json",
+        "result": "evidence/historical_supervised/E001/result.json",
+        "full_verification": "evidence/historical_supervised/E001/local_full_verification.json",
+        "test_protocol_lock": "evidence/historical_supervised/E001/test_protocol_lock.json",
+        "execution_log": "evidence/historical_supervised/E001/execution.log"
+      },
+      "staged_dir": "evidence/historical_supervised/E001",
+      "selected_epoch": "2",
+      "epochs_trained": 4,
+      "insight": "Historical SwinV2 image-only hate model completed test before the core scope was narrowed. Its test macro-F1 is 0.6269662, versus core ViT E005 0.6408129. This extra result is reported separately, not substituted into the eight-core table."
+    },
+    {
+      "id": "E002",
+      "run_id": "RQ2__image__SwinV2__-__-__appropriate__490779049ff8",
+      "status": "partial_deferred_scope_no_test",
+      "config": {
+        "experiment_id": "RQ2__image__SwinV2__-__-__appropriate",
+        "rq": "RQ2",
+        "kind": "image",
+        "image": "SwinV2",
+        "text": "",
+        "variant": "",
+        "task": "appropriate",
+        "paper_table": 8,
+        "scope": "full",
+        "seed": 42,
+        "epochs": 5,
+        "batch_size": 2,
+        "gradient_accumulation": 4,
+        "learning_rate": 2e-05,
+        "weight_decay": 0.01,
+        "dropout": 0.3,
+        "max_length": 256,
+        "patience": 2,
+        "lambda_hate": 0.5,
+        "max_train": null,
+        "max_validation": null,
+        "precision": "float32",
+        "optimizer": "AdamW",
+        "schedule": "linear, warmup=0",
+        "label_map": {
+          "hate": {
+            "not hate": 0,
+            "hate": 1
+          },
+          "appropriate": {
+            "appropriate": 0,
+            "inappropriate": 1
+          }
+        },
+        "models": {
+          "image": {
+            "id": "microsoft/swinv2-tiny-patch4-window8-256",
+            "revision": "40213dad8563a5a916d434a1291443c0fa6358f0"
+          }
+        },
+        "data_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+        "split_sha256": "f8052cf697c55b22dbb222b62874c0acf9fdf2cb73039768e8a1e31a3db3371e",
+        "script_sha256": "49f14e548d4971e7eec3087186b3f961e9af40e72cc6d2be79ff1b86b62c3c61",
+        "support_sha256": {
+          "master_workflow.py": "855bd09c5a6b862112a5aa82ef529afde130ef472d304b90cf952a6f48501fce",
+          "baseline_text.py": "10e09cdede5d408565313d13a4fbada3e61bcb834f3f727ff99e21dffdf68e73"
+        },
+        "versions": {
+          "torch": "2.6.0+cu124",
+          "transformers": "4.46.3",
+          "numpy": "2.5.4",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2"
+        },
+        "architecture": "author-code-style pooler/mean; linear-dropout projection for multimodal or dual-head",
+        "selection_metric": "macro-F1",
+        "comparison_policy": "RQ4 appropriate uses constrained predictions; raw scores retained",
+        "deviations": [
+          "validation derived from official train; selection by validation macro-F1",
+          "physical batch 2 x accumulation 4 approximates source batch 8; FP32",
+          "early stopping patience 2, warmup 0; clarify with authors",
+          "multitask lambda is an explicit candidate; validation tuning must be documented",
+          "model revisions pinned on first use; original author training revisions unknown",
+          "pooler_output follows source; article pooled-CLS wording requires clarification",
+          "XLM-R double </s></s> follows RQ2 article input diagram; RQ4 prose/source differ",
+          "unimodal dual-head projection follows author code; article prose omits its dimension",
+          "ViT checkpoint follows article (224-in21k), differs from active source 384",
+          "appropriate positive label is inappropriate; macro metrics unchanged by remapping"
+        ]
+      },
+      "history": [
+        {
+          "epoch": "1",
+          "train_loss": "0.6853848611744725",
+          "selection_macro_f1": "0.5346542686983756",
+          "appropriate_macro_f1": "0.5346542686983756"
+        },
+        {
+          "epoch": "2",
+          "train_loss": "0.6353917851042659",
+          "selection_macro_f1": "0.6193252967012428",
+          "appropriate_macro_f1": "0.6193252967012428"
+        },
+        {
+          "epoch": "3",
+          "train_loss": "0.5868054110540614",
+          "selection_macro_f1": "0.6088677027556484",
+          "appropriate_macro_f1": "0.6088677027556484"
+        }
+      ],
+      "validation_metrics": {
+        "appropriate": {
+          "macro_precision": 0.6197834060269627,
+          "macro_recall": 0.6216740088105727,
+          "macro_f1": 0.6193252967012428,
+          "accuracy": 0.6218905472636815,
+          "confusion_matrix_labels_0_1": [
+            [
+              283,
+              171
+            ],
+            [
+              133,
+              217
+            ]
+          ]
+        }
+      },
+      "test_metrics": null,
+      "files": {
+        "config": "evidence/historical_supervised/E002/config.json",
+        "history": "evidence/historical_supervised/E002/history.csv",
+        "validation_predictions": "evidence/historical_supervised/E002/validation_predictions.csv",
+        "validation_metrics": "evidence/historical_supervised/E002/validation_metrics.json",
+        "fit_ids": "evidence/historical_supervised/E002/fit_ids.csv",
+        "validation_ids": "evidence/historical_supervised/E002/validation_ids.csv",
+        "execution_log": "evidence/historical_supervised/E002/execution.log"
+      },
+      "staged_dir": "evidence/historical_supervised/E002",
+      "selected_epoch": "2",
+      "epochs_trained": 3,
+      "insight": "SwinV2 inappropriate was deferred when scope changed. Three epochs are recorded; best validation macro-F1 0.6193253 at epoch 2. No completed result or test metric exists. Do not treat this as CUDA OOM or finished training."
+    }
+  ],
+  "calibrations": [
+    {
+      "kind": "one_batch_smoke_only",
+      "success": true,
+      "gpu": "Tesla T4",
+      "loss": 0.7497007250785828,
+      "seconds_one_step": 2.5706133950000094,
+      "peak_allocated_mib": 1690.8173828125,
+      "peak_reserved_mib": 1916.0,
+      "test_evaluated": false,
+      "id": "colab_vit_received_2026-10-18",
+      "source": "evidence/calibrations/colab_vit_received_2026-10-18.json",
+      "evaluation": "one_batch_calibration",
+      "insight": "One successful forward/backward step checks feasibility only; loss, time and VRAM are not validation/test accuracy or evidence that full training will fit.",
+      "execution_observed_directly": false,
+      "provenance": "User-supplied Colab artifact, schema and revisions independently checked, execution not directly observed.",
+      "verification_path": "evidence/calibrations/colab_vit_received_2026-10-18_verification.json"
+    },
+    {
+      "kind": "real_pretrained_one_batch_calibration",
+      "success": true,
+      "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+      "loss": 0.7374444007873535,
+      "seconds_one_step": 5.801300099992659,
+      "peak_allocated_mib": 1698.53515625,
+      "peak_reserved_mib": 1916.0,
+      "test_evaluated": false,
+      "completed_utc": "2026-10-23T14:10:37.363228+00:00",
+      "id": "local_vit_2026-10-23",
+      "source": "evidence/calibrations/local_vit_2026-10-23.json",
+      "evaluation": "one_batch_calibration",
+      "insight": "One successful forward/backward step checks feasibility only; loss, time and VRAM are not validation/test accuracy or evidence that full training will fit."
+    },
+    {
+      "kind": "real_pretrained_one_batch_calibration",
+      "success": true,
+      "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+      "loss": 0.5908709764480591,
+      "seconds_one_step": 7.729047700006049,
+      "peak_allocated_mib": 3839.673828125,
+      "peak_reserved_mib": 4238.0,
+      "test_evaluated": false,
+      "completed_utc": "2026-10-23T16:31:12.658681+00:00",
+      "id": "local_fusion_E059_2026-10-23",
+      "source": "evidence/calibrations/local_fusion_E059_2026-10-23.json",
+      "evaluation": "one_batch_calibration",
+      "insight": "One successful forward/backward step checks feasibility only; loss, time and VRAM are not validation/test accuracy or evidence that full training will fit."
+    }
+  ],
+  "runtime_checks": [
+    {
+      "id": "post_cleanup_cpu",
+      "data": {
+        "passed": true,
+        "mode": "cpu",
+        "torch": "2.6.0+cpu",
+        "device": "cpu",
+        "forward_backward": true,
+        "cpp_archive_removed": true
+      },
+      "source": "evidence/runtime_checks/storage_runtime_cpu.json",
+      "insight": "Forward/backward dependency check after cleanup; not a separate paper experiment."
+    },
+    {
+      "id": "post_cleanup_gpu",
+      "data": {
+        "passed": true,
+        "mode": "gpu",
+        "torch": "2.6.0+cu124",
+        "device": "cuda",
+        "forward_backward": true,
+        "cpp_archive_removed": true
+      },
+      "source": "evidence/runtime_checks/storage_runtime_gpu.json",
+      "insight": "Forward/backward dependency check after cleanup; not a separate paper experiment."
+    }
+  ],
+  "failed_attempts": [
+    {
+      "id": "E059_local_original",
+      "condition": "E059",
+      "status": "failed_cuda_oom",
+      "stage": "backward",
+      "error_type": "RuntimeError",
+      "error_message": "RuntimeError: CUDA error: out of memory",
+      "source": "evidence/failed_attempts/E059_local_original.log",
+      "final_successful_replacement": "E059_lab_2026-10-28",
+      "test_metrics": null,
+      "insight": "A one-batch calibration does not guarantee memory for a full epoch. Historical local training failed in backward; the later lab run is a different successful run with physical batch 1 and accumulation 8. Do not assign metrics to the failed attempt."
+    },
+    {
+      "id": "E101_local_original",
+      "condition": "E101",
+      "status": "failed_cuda_oom",
+      "stage": "backward",
+      "error_type": "RuntimeError",
+      "error_message": "RuntimeError: CUDA error: out of memory",
+      "source": "evidence/failed_attempts/E101_local_original.log",
+      "final_successful_replacement": "E101_lab_2026-10-28",
+      "test_metrics": null,
+      "insight": "A one-batch calibration does not guarantee memory for a full epoch. Historical local training failed in backward; the later lab run is a different successful run with physical batch 1 and accumulation 8. Do not assign metrics to the failed attempt."
+    }
+  ],
+  "rq3_attempts": [
+    {
+      "model": "LLaVA OneVision 0.5B",
+      "scope": "full",
+      "run": "full__d8cfc2726036",
+      "status": "incomplete_partial_not_research_result",
+      "request_count": 1005,
+      "recorded_prediction_rows": 2,
+      "valid_label_rows": 1,
+      "raw_response_attempts": 2,
+      "error_types": {
+        "ValueError": 1
+      },
+      "completion": {
+        "requested": 1005,
+        "recorded": 2,
+        "valid_labels": 1,
+        "new_requests": 2,
+        "scope": "full",
+        "complete": false,
+        "research_test_result": false
+      },
+      "files": {
+        "config": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/full__d8cfc2726036/config.json",
+        "completion": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/full__d8cfc2726036/completion.json",
+        "predictions": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/full__d8cfc2726036/predictions.csv",
+        "response_summary": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/full__d8cfc2726036/response_summary.json"
+      },
+      "research_test_result": false,
+      "insight": "Historical local smoke/partial generation only. Responses contain errors or invalid label output and do not cover the official 1005-item test. No macro-F1 research result may be computed by silently dropping failures."
+    },
+    {
+      "model": "LLaVA OneVision 0.5B",
+      "scope": "smoke",
+      "run": "smoke__6a3ae35e666b",
+      "status": "smoke_complete_not_research_result",
+      "request_count": 1,
+      "recorded_prediction_rows": 1,
+      "valid_label_rows": 1,
+      "raw_response_attempts": 2,
+      "error_types": {
+        "ModuleNotFoundError": 1
+      },
+      "completion": {
+        "requested": 1,
+        "recorded": 1,
+        "valid_labels": 1,
+        "new_requests": 1,
+        "scope": "smoke",
+        "complete": true,
+        "research_test_result": false
+      },
+      "files": {
+        "config": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__6a3ae35e666b/config.json",
+        "completion": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__6a3ae35e666b/completion.json",
+        "predictions": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__6a3ae35e666b/predictions.csv",
+        "response_summary": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__6a3ae35e666b/response_summary.json"
+      },
+      "research_test_result": false,
+      "insight": "Historical local smoke/partial generation only. Responses contain errors or invalid label output and do not cover the official 1005-item test. No macro-F1 research result may be computed by silently dropping failures."
+    },
+    {
+      "model": "LLaVA OneVision 0.5B",
+      "scope": "smoke",
+      "run": "smoke__cb5abfb7aee3",
+      "status": "incomplete_partial_not_research_result",
+      "request_count": 3,
+      "recorded_prediction_rows": 3,
+      "valid_label_rows": 2,
+      "raw_response_attempts": 3,
+      "error_types": {},
+      "completion": {
+        "requested": 3,
+        "recorded": 3,
+        "valid_labels": 2,
+        "new_requests": 3,
+        "scope": "smoke",
+        "complete": false,
+        "research_test_result": false
+      },
+      "files": {
+        "config": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__cb5abfb7aee3/config.json",
+        "completion": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__cb5abfb7aee3/completion.json",
+        "predictions": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__cb5abfb7aee3/predictions.csv",
+        "response_summary": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__cb5abfb7aee3/response_summary.json"
+      },
+      "research_test_result": false,
+      "insight": "Historical local smoke/partial generation only. Responses contain errors or invalid label output and do not cover the official 1005-item test. No macro-F1 research result may be computed by silently dropping failures."
+    },
+    {
+      "model": "Qwen2-VL 2B",
+      "scope": "smoke",
+      "run": "smoke__8e71801efce7",
+      "status": "prepared_without_response_evidence",
+      "request_count": 3,
+      "recorded_prediction_rows": 0,
+      "valid_label_rows": 0,
+      "raw_response_attempts": 0,
+      "error_types": {},
+      "completion": null,
+      "files": {
+        "config": "evidence/historical_rq3/RQ3__zero-shot__Qwen2-VL_2B__-__Image__hate/smoke__8e71801efce7/config.json",
+        "response_summary": "evidence/historical_rq3/RQ3__zero-shot__Qwen2-VL_2B__-__Image__hate/smoke__8e71801efce7/response_summary.json"
+      },
+      "research_test_result": false,
+      "insight": "Only configuration/requests exist; no completion or response artifact supports a model score or a concrete error cause."
+    },
+    {
+      "model": "Qwen2-VL 2B",
+      "scope": "smoke",
+      "run": "smoke__aec1c2daa729",
+      "status": "prepared_without_response_evidence",
+      "request_count": 1,
+      "recorded_prediction_rows": 0,
+      "valid_label_rows": 0,
+      "raw_response_attempts": 0,
+      "error_types": {},
+      "completion": null,
+      "files": {
+        "config": "evidence/historical_rq3/RQ3__zero-shot__Qwen2-VL_2B__-__Image__hate/smoke__aec1c2daa729/config.json",
+        "response_summary": "evidence/historical_rq3/RQ3__zero-shot__Qwen2-VL_2B__-__Image__hate/smoke__aec1c2daa729/response_summary.json"
+      },
+      "research_test_result": false,
+      "insight": "Only configuration/requests exist; no completion or response artifact supports a model score or a concrete error cause."
+    }
+  ],
+  "data_audits": {
+    "perceptual_screening": {
+      "screening_completed": true,
+      "images": 5023,
+      "method": "64-bit DCT pHash, Hamming <= 6",
+      "candidate_pairs": 197,
+      "exact_pairs_recovered": 5,
+      "cross_split_candidate_pairs": 73,
+      "nonexact_candidates": 192,
+      "manual_review_completed": false,
+      "split_changed": false,
+      "limitation": "Similarity is a screening signal. Crops and larger edits can escape detection; false matches require visual review.",
+      "completed_utc": "2026-10-23T14:14:49.982052+00:00",
+      "files": {
+        "perceptual_audit.json": "evidence/data_audits/perceptual_audit.json",
+        "perceptual_duplicate_candidates.csv": "evidence/data_audits/perceptual_duplicate_candidates.csv",
+        "perceptual_hashes.csv": "evidence/data_audits/perceptual_hashes.csv"
+      },
+      "insight": "Screening was performed, unlike the older 18 October exact-only audit. Candidate matches are not confirmed duplicates; manual review remains incomplete and split was not changed."
+    },
+    "tokenizer_audit": {
+      "rows": 18,
+      "input_rows": 4018,
+      "input_split": "official train only",
+      "files": {
+        "tokenizer_audit_all.csv": "evidence/data_audits/tokenizer_audit_all.csv",
+        "tokenizer_audit_verification.json": "evidence/data_audits/tokenizer_audit_verification.json"
+      },
+      "records": [
+        {
+          "model": "IndoBERT",
+          "variant": "OCR",
+          "rows": "4018",
+          "median_tokens": "18.0",
+          "p95_tokens": "53.0",
+          "max_tokens": "185",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        },
+        {
+          "model": "IndoBERT",
+          "variant": "Caption",
+          "rows": "4018",
+          "median_tokens": "25.0",
+          "p95_tokens": "32.0",
+          "max_tokens": "45",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        },
+        {
+          "model": "IndoBERT",
+          "variant": "Caption+OCR",
+          "rows": "4018",
+          "median_tokens": "42.0",
+          "p95_tokens": "77.14999999999964",
+          "max_tokens": "213",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        },
+        {
+          "model": "IndoBERT",
+          "variant": "Caption+Topic",
+          "rows": "4018",
+          "median_tokens": "30.0",
+          "p95_tokens": "38.0",
+          "max_tokens": "51",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        },
+        {
+          "model": "IndoBERT",
+          "variant": "OCR+Topic",
+          "rows": "4018",
+          "median_tokens": "23.0",
+          "p95_tokens": "58.149999999999636",
+          "max_tokens": "189",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        },
+        {
+          "model": "IndoBERT",
+          "variant": "Caption+OCR+Topic",
+          "rows": "4018",
+          "median_tokens": "47.0",
+          "p95_tokens": "83.0",
+          "max_tokens": "217",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        },
+        {
+          "model": "XLM-R",
+          "variant": "OCR",
+          "rows": "4018",
+          "median_tokens": "21.0",
+          "p95_tokens": "62.0",
+          "max_tokens": "217",
+          "fraction_above_256": "0.0",
+          "separator": "</s></s>"
+        },
+        {
+          "model": "XLM-R",
+          "variant": "Caption",
+          "rows": "4018",
+          "median_tokens": "30.0",
+          "p95_tokens": "38.0",
+          "max_tokens": "53",
+          "fraction_above_256": "0.0",
+          "separator": "</s></s>"
+        },
+        {
+          "model": "XLM-R",
+          "variant": "Caption+OCR",
+          "rows": "4018",
+          "median_tokens": "52.0",
+          "p95_tokens": "93.0",
+          "max_tokens": "252",
+          "fraction_above_256": "0.0",
+          "separator": "</s></s>"
+        },
+        {
+          "model": "XLM-R",
+          "variant": "Caption+Topic",
+          "rows": "4018",
+          "median_tokens": "36.0",
+          "p95_tokens": "45.0",
+          "max_tokens": "60",
+          "fraction_above_256": "0.0",
+          "separator": "</s></s>"
+        },
+        {
+          "model": "XLM-R",
+          "variant": "OCR+Topic",
+          "rows": "4018",
+          "median_tokens": "27.0",
+          "p95_tokens": "68.0",
+          "max_tokens": "222",
+          "fraction_above_256": "0.0",
+          "separator": "</s></s>"
+        },
+        {
+          "model": "XLM-R",
+          "variant": "Caption+OCR+Topic",
+          "rows": "4018",
+          "median_tokens": "58.0",
+          "p95_tokens": "99.14999999999964",
+          "max_tokens": "257",
+          "fraction_above_256": "0.00024888003982080636",
+          "separator": "</s></s>"
+        },
+        {
+          "model": "IndoBERTweet",
+          "variant": "OCR",
+          "rows": "4018",
+          "median_tokens": "17.0",
+          "p95_tokens": "52.0",
+          "max_tokens": "181",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        },
+        {
+          "model": "IndoBERTweet",
+          "variant": "Caption",
+          "rows": "4018",
+          "median_tokens": "26.0",
+          "p95_tokens": "34.0",
+          "max_tokens": "47",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        },
+        {
+          "model": "IndoBERTweet",
+          "variant": "Caption+OCR",
+          "rows": "4018",
+          "median_tokens": "43.0",
+          "p95_tokens": "77.0",
+          "max_tokens": "206",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        },
+        {
+          "model": "IndoBERTweet",
+          "variant": "Caption+Topic",
+          "rows": "4018",
+          "median_tokens": "31.0",
+          "p95_tokens": "39.0",
+          "max_tokens": "53",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        },
+        {
+          "model": "IndoBERTweet",
+          "variant": "OCR+Topic",
+          "rows": "4018",
+          "median_tokens": "23.0",
+          "p95_tokens": "57.149999999999636",
+          "max_tokens": "185",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        },
+        {
+          "model": "IndoBERTweet",
+          "variant": "Caption+OCR+Topic",
+          "rows": "4018",
+          "median_tokens": "48.0",
+          "p95_tokens": "83.0",
+          "max_tokens": "210",
+          "fraction_above_256": "0.0",
+          "separator": "[SEP]"
+        }
+      ],
+      "insight": "IndoBERTweet Caption+OCR+Topic has maximum 210 and p95 83 tokens on official train, so no train input exceeds 256. XLM-R full-combination max is 257, one of 4018 inputs exceeds 256. These observations do not establish held-out test lengths."
+    }
+  },
+  "staged_files": [
+    {
+      "source": "notebooks/runs/baseline_text_20261018T102101134256Z/config.json",
+      "relative_path": "evidence/baseline_validation_2026-10-18/config.json",
+      "bytes": 2702,
+      "sha256": "86ac01555ed0dcd951e333ff27034938370df6c95242779cc320db91f4146a60"
+    },
+    {
+      "source": "notebooks/runs/baseline_text_20261018T102101134256Z/metrics.csv",
+      "relative_path": "evidence/baseline_validation_2026-10-18/metrics.csv",
+      "bytes": 1807,
+      "sha256": "9e05a633b92da6605fb374dab855afa37946912f722f0869cb27cef7e0447953"
+    },
+    {
+      "source": "notebooks/runs/baseline_text_20261018T102101134256Z/metrics.json",
+      "relative_path": "evidence/baseline_validation_2026-10-18/metrics.json",
+      "bytes": 5950,
+      "sha256": "102e5e3f955169aff3d4defdf0cef0d708f86e107466c94b89bc7f44fb691bde"
+    },
+    {
+      "source": "notebooks/runs/baseline_text_20261018T102101134256Z/predictions.csv",
+      "relative_path": "evidence/baseline_validation_2026-10-18/predictions.csv",
+      "bytes": 711968,
+      "sha256": "12a3c1c4fdd4ce6396e481e58c900b18c7edda08c5ea88ec9bf5c3e7e8fb105a"
+    },
+    {
+      "source": "notebooks/runs/baseline_text_20261018T102101134256Z/split_manifest.csv",
+      "relative_path": "evidence/baseline_validation_2026-10-18/split_manifest.csv",
+      "bytes": 208662,
+      "sha256": "c47be352c8ae9d4e919b365cbc75ee5a961c03b7eb3e60a8e23aeb951244807e"
+    },
+    {
+      "source": "notebooks/runs/baseline_text_20261018T102101134256Z/completion.json",
+      "relative_path": "evidence/baseline_validation_2026-10-18/completion.json",
+      "bytes": 105,
+      "sha256": "14a810e1b8ef9811463ad90c2d8fb09a9b0702a31628d2d79606f1da372ef477"
+    },
+    {
+      "source": "notebooks/runs/mentoring_awal_2026-10-18/workspace/baselines/baseline_text_20261018T132938640165Z/config.json",
+      "relative_path": "evidence/baseline_replays/mentoring_2026-10-18/config.json",
+      "bytes": 2702,
+      "sha256": "4dd65c257c14371a674bcb84bad3985b4b7c2e5068b3bea5878ba4254708c388"
+    },
+    {
+      "source": "notebooks/runs/mentoring_awal_2026-10-18/workspace/baselines/baseline_text_20261018T132938640165Z/metrics.json",
+      "relative_path": "evidence/baseline_replays/mentoring_2026-10-18/metrics.json",
+      "bytes": 5949,
+      "sha256": "f2524c22929128c8fd9066ef65b95e97df7354601adbc8b23e324b3e93490ca9"
+    },
+    {
+      "source": "notebooks/runs/mentoring_awal_2026-10-18/workspace/baselines/baseline_text_20261018T132938640165Z/metrics.csv",
+      "relative_path": "evidence/baseline_replays/mentoring_2026-10-18/metrics.csv",
+      "bytes": 1806,
+      "sha256": "bb0b3a446dd16f053059800059b75705ff716c3161f893d7793ad7445342e7c6"
+    },
+    {
+      "source": "notebooks/runs/mentoring_awal_2026-10-18/workspace/baselines/baseline_text_20261018T132938640165Z/predictions.csv",
+      "relative_path": "evidence/baseline_replays/mentoring_2026-10-18/predictions.csv",
+      "bytes": 711968,
+      "sha256": "e6868eea8b8a0f8cc5e3b79b988a12e532c32f56d6c4ee076b8eff687a9e7cdf"
+    },
+    {
+      "source": "notebooks/runs/mentoring_awal_2026-10-18/workspace/baselines/baseline_text_20261018T132938640165Z/completion.json",
+      "relative_path": "evidence/baseline_replays/mentoring_2026-10-18/completion.json",
+      "bytes": 104,
+      "sha256": "f0e24f8b0886b3967e9c11e710110604cd24e92d7d987c7a622150c3f93658ef"
+    },
+    {
+      "source": "notebooks/runs/mentoring_awal_2026-10-18/workspace/baselines/baseline_text_20261018T132938640165Z/split_manifest.csv",
+      "relative_path": "evidence/baseline_replays/mentoring_2026-10-18/split_manifest.csv",
+      "bytes": 208662,
+      "sha256": "c47be352c8ae9d4e919b365cbc75ee5a961c03b7eb3e60a8e23aeb951244807e"
+    },
+    {
+      "source": "notebooks/runs/presentasi_2026-10-24/workspace/baselines/baseline_text_20261023T130416677139Z/config.json",
+      "relative_path": "evidence/baseline_replays/presentation_2026-10-23/config.json",
+      "bytes": 2702,
+      "sha256": "d9c54a7e549ce02ecb14b09676c684bae48b40d34ae5cad08c440593641ddfb4"
+    },
+    {
+      "source": "notebooks/runs/presentasi_2026-10-24/workspace/baselines/baseline_text_20261023T130416677139Z/metrics.json",
+      "relative_path": "evidence/baseline_replays/presentation_2026-10-23/metrics.json",
+      "bytes": 5948,
+      "sha256": "33ab17fa803decbbeea2e64f945eda82d56deb83b36d106c82ff1f63ef9006e6"
+    },
+    {
+      "source": "notebooks/runs/presentasi_2026-10-24/workspace/baselines/baseline_text_20261023T130416677139Z/metrics.csv",
+      "relative_path": "evidence/baseline_replays/presentation_2026-10-23/metrics.csv",
+      "bytes": 1805,
+      "sha256": "d27275ec00422ecf72779b636664bdcbcbf30bc98d99a62bf7079169a007398a"
+    },
+    {
+      "source": "notebooks/runs/presentasi_2026-10-24/workspace/baselines/baseline_text_20261023T130416677139Z/predictions.csv",
+      "relative_path": "evidence/baseline_replays/presentation_2026-10-23/predictions.csv",
+      "bytes": 711968,
+      "sha256": "e6868eea8b8a0f8cc5e3b79b988a12e532c32f56d6c4ee076b8eff687a9e7cdf"
+    },
+    {
+      "source": "notebooks/runs/presentasi_2026-10-24/workspace/baselines/baseline_text_20261023T130416677139Z/completion.json",
+      "relative_path": "evidence/baseline_replays/presentation_2026-10-23/completion.json",
+      "bytes": 105,
+      "sha256": "889bca538c2c812732c81f26e28ff5f72fd2ad8eb021b1771e04b8bdad051241"
+    },
+    {
+      "source": "notebooks/runs/presentasi_2026-10-24/workspace/baselines/baseline_text_20261023T130416677139Z/split_manifest.csv",
+      "relative_path": "evidence/baseline_replays/presentation_2026-10-23/split_manifest.csv",
+      "bytes": 208662,
+      "sha256": "c47be352c8ae9d4e919b365cbc75ee5a961c03b7eb3e60a8e23aeb951244807e"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/runs/RQ2__image__SwinV2__-__-__hate__7bfd12deea55/config.json",
+      "relative_path": "evidence/historical_supervised/E001/config.json",
+      "bytes": 2604,
+      "sha256": "39d1f45a67aaf9f9f4dcc6e7d5819879abf565d09219887605e8dc94a89efc92"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/runs/RQ2__image__SwinV2__-__-__hate__7bfd12deea55/history.csv",
+      "relative_path": "evidence/historical_supervised/E001/history.csv",
+      "bytes": 288,
+      "sha256": "5df020b4efbe80f6d44bcb40083df19963387af747bf448e3469d3b45ea36767"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/runs/RQ2__image__SwinV2__-__-__hate__7bfd12deea55/validation_predictions.csv",
+      "relative_path": "evidence/historical_supervised/E001/validation_predictions.csv",
+      "bytes": 41227,
+      "sha256": "5dfa809549b2706f446fbd24b179d310f283ace75e6e745e680132296ce22134"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/runs/RQ2__image__SwinV2__-__-__hate__7bfd12deea55/validation_metrics.json",
+      "relative_path": "evidence/historical_supervised/E001/validation_metrics.json",
+      "bytes": 317,
+      "sha256": "6feee927824e221cd9eede5b5b3d4a7dd60ae3b1c3c117eb7ea55ceede771903"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/runs/RQ2__image__SwinV2__-__-__hate__7bfd12deea55/fit_ids.csv",
+      "relative_path": "evidence/historical_supervised/E001/fit_ids.csv",
+      "bytes": 73802,
+      "sha256": "c31e4a1ff21393b4d3b64686850980c04499d6d1f720cc69f49f37cef541d2d4"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/runs/RQ2__image__SwinV2__-__-__hate__7bfd12deea55/validation_ids.csv",
+      "relative_path": "evidence/historical_supervised/E001/validation_ids.csv",
+      "bytes": 18478,
+      "sha256": "06bcf2ea96d0568c1b401742ffca015f29d3558d556ddfb18c4befc3825c304d"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/runs/RQ2__image__SwinV2__-__-__hate__7bfd12deea55/test_predictions.csv",
+      "relative_path": "evidence/historical_supervised/E001/test_predictions.csv",
+      "bytes": 51513,
+      "sha256": "6f9e998c0b929c9597c86fd6d55219cf65110f8089d07202cfccff9c746d9e47"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/runs/RQ2__image__SwinV2__-__-__hate__7bfd12deea55/test_metrics.json",
+      "relative_path": "evidence/historical_supervised/E001/test_metrics.json",
+      "bytes": 316,
+      "sha256": "4dc87a908877d9f849c187520e24643ba0617cf14af886ded3607f92548e8255"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/runs/RQ2__image__SwinV2__-__-__hate__7bfd12deea55/result.json",
+      "relative_path": "evidence/historical_supervised/E001/result.json",
+      "bytes": 3496,
+      "sha256": "02d87e70c72fcbed8eabf7cc126751e88267f583a2d84d8c40bf7883bd635d9c"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/reports/local_full_verification.json",
+      "relative_path": "evidence/historical_supervised/E001/local_full_verification.json",
+      "bytes": 4291,
+      "sha256": "596ccb37a0e58af8e8d443bd5de3515f10a773b2532447cb71c61e75aa1e58c4"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/reports/test_protocol_lock.json",
+      "relative_path": "evidence/historical_supervised/E001/test_protocol_lock.json",
+      "bytes": 441,
+      "sha256": "c02eb44dbf9d3fc58482727bc663748fff47290b52500f234ba024ca4fd083d2"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E001/execution.log",
+      "relative_path": "evidence/historical_supervised/E001/execution.log",
+      "bytes": 1137,
+      "sha256": "5a60052d1f8efaf855e0e16678843176335f990c4cfdd928dab0a8bcfdca2111"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E002/runs/RQ2__image__SwinV2__-__-__appropriate__490779049ff8/config.json",
+      "relative_path": "evidence/historical_supervised/E002/config.json",
+      "bytes": 2618,
+      "sha256": "6cf59eac4d205148a40be0c5ef6e2d0a87bb8b127640d9f4c6d77b08039448f9"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E002/runs/RQ2__image__SwinV2__-__-__appropriate__490779049ff8/history.csv",
+      "relative_path": "evidence/historical_supervised/E002/history.csv",
+      "bytes": 238,
+      "sha256": "d0ee04080460ecf946a2ef289ea87b4bbc5fcd1345892973223394b03f7a8f54"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E002/runs/RQ2__image__SwinV2__-__-__appropriate__490779049ff8/validation_predictions.csv",
+      "relative_path": "evidence/historical_supervised/E002/validation_predictions.csv",
+      "bytes": 46780,
+      "sha256": "56b3bc3c7bfc882156da31acd36dbdb048a0b45ccde0f3e6e2110d07c55ad10b"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E002/runs/RQ2__image__SwinV2__-__-__appropriate__490779049ff8/validation_metrics.json",
+      "relative_path": "evidence/historical_supervised/E002/validation_metrics.json",
+      "bytes": 324,
+      "sha256": "e26f277f1ac461db56324457881987a0e720b305f3f0bc6a931f7296f665abf3"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E002/runs/RQ2__image__SwinV2__-__-__appropriate__490779049ff8/fit_ids.csv",
+      "relative_path": "evidence/historical_supervised/E002/fit_ids.csv",
+      "bytes": 73802,
+      "sha256": "c31e4a1ff21393b4d3b64686850980c04499d6d1f720cc69f49f37cef541d2d4"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E002/runs/RQ2__image__SwinV2__-__-__appropriate__490779049ff8/validation_ids.csv",
+      "relative_path": "evidence/historical_supervised/E002/validation_ids.csv",
+      "bytes": 18478,
+      "sha256": "06bcf2ea96d0568c1b401742ffca015f29d3558d556ddfb18c4befc3825c304d"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E002/execution.log",
+      "relative_path": "evidence/historical_supervised/E002/execution.log",
+      "bytes": 219,
+      "sha256": "e1587e9fb425fa3e6680f0718e24f6129ea753f6daef7c6c9b14ec722defa8af"
+    },
+    {
+      "source": "notebooks/runs/image_smoke_colab_received_2026-10-18/smoke.json",
+      "relative_path": "evidence/calibrations/colab_vit_received_2026-10-18.json",
+      "bytes": 1032,
+      "sha256": "8196dbfb6837377c0c5ba462892fd9bc86c36f23270a0e21e51357d5309ba556"
+    },
+    {
+      "source": "notebooks/runs/image_smoke_colab_received_2026-10-18/verification.json",
+      "relative_path": "evidence/calibrations/colab_vit_received_2026-10-18_verification.json",
+      "bytes": 1648,
+      "sha256": "8470b90f39c4fe092263f9b4e804c578dfabe8eebe7c6ae2705e278552d5e38c"
+    },
+    {
+      "source": "notebooks/runs/local_full_2026-10-23/reports/local_gpu_calibration.json",
+      "relative_path": "evidence/calibrations/local_vit_2026-10-23.json",
+      "bytes": 3255,
+      "sha256": "cd36d24218d0a98576e3295afe740945fdc107f4148d89c2596bb581a7ac6641"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E059/reports/local_gpu_calibration.json",
+      "relative_path": "evidence/calibrations/local_fusion_E059_2026-10-23.json",
+      "bytes": 3498,
+      "sha256": "0f832af8413d0e261da079e678fe2de93becea979bb7be530cbc590bd39574be"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/reports/storage_runtime_cpu.json",
+      "relative_path": "evidence/runtime_checks/storage_runtime_cpu.json",
+      "bytes": 146,
+      "sha256": "a749c80780ff4a9b4d1b02ea90d6ca00408b3382b551753175a8098fc0e0446d"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/reports/storage_runtime_gpu.json",
+      "relative_path": "evidence/runtime_checks/storage_runtime_gpu.json",
+      "bytes": 149,
+      "sha256": "d64b9858c26a0a0f38a3db29fc930fa28764ca64eca15352be1f4940a8b55cb5"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E059/execution.log",
+      "relative_path": "evidence/failed_attempts/E059_local_original.log",
+      "bytes": 1607,
+      "sha256": "bd91e05fa5954f6bbacf0d586b04d608ee81c4f2641e151aa9cb1645799d7e90"
+    },
+    {
+      "source": "notebooks/runs/local_suite_2026-10-23/E101/execution.log",
+      "relative_path": "evidence/failed_attempts/E101_local_original.log",
+      "bytes": 1375,
+      "sha256": "7041cbf1d22fc55f929aa0a22dcbfa10ac1bd327df5a5d4f7c93f7030a218415"
+    },
+    {
+      "source": "notebooks/runs/local_rq3_llava_2026-10-23/reports/rq3_inference/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/full__d8cfc2726036/config.json",
+      "relative_path": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/full__d8cfc2726036/config.json",
+      "bytes": 1177,
+      "sha256": "3b0fe0ac2606acd42f5e81550e6607bf75068d76ec582553e54b81436865a70f"
+    },
+    {
+      "source": "notebooks/runs/local_rq3_llava_2026-10-23/reports/rq3_inference/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/full__d8cfc2726036/completion.json",
+      "relative_path": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/full__d8cfc2726036/completion.json",
+      "bytes": 163,
+      "sha256": "281efb4d2f6c1f2a19d31825ad0d11b13ef01096befe24995b4849857da6e2c5"
+    },
+    {
+      "source": "notebooks/runs/local_rq3_llava_2026-10-23/reports/rq3_inference/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/full__d8cfc2726036/predictions.csv",
+      "relative_path": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/full__d8cfc2726036/predictions.csv",
+      "bytes": 1840,
+      "sha256": "66f86d3962425dea56113b554b232c7ab43b8f2d7c123386092cdcdabcfebecf"
+    },
+    {
+      "source": "notebooks/runs/local_rq3_llava_2026-10-23/reports/rq3_inference/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__6a3ae35e666b/config.json",
+      "relative_path": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__6a3ae35e666b/config.json",
+      "bytes": 1178,
+      "sha256": "dba0001861bf63905dfb75531354a67f9d6547df16cd1d95253909f7df0232f3"
+    },
+    {
+      "source": "notebooks/runs/local_rq3_llava_2026-10-23/reports/rq3_inference/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__6a3ae35e666b/completion.json",
+      "relative_path": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__6a3ae35e666b/completion.json",
+      "bytes": 160,
+      "sha256": "fbbc0f2497345fe621914f22f6fbde36fc226dc2cdb2ef3d92275315a931ac9d"
+    },
+    {
+      "source": "notebooks/runs/local_rq3_llava_2026-10-23/reports/rq3_inference/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__6a3ae35e666b/predictions.csv",
+      "relative_path": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__6a3ae35e666b/predictions.csv",
+      "bytes": 1095,
+      "sha256": "8f8d70bbf044b6225d3df1e807e7ecd2976badff3b62b35db8caf13cd72db152"
+    },
+    {
+      "source": "notebooks/runs/local_rq3_llava_2026-10-23/reports/rq3_inference/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__cb5abfb7aee3/config.json",
+      "relative_path": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__cb5abfb7aee3/config.json",
+      "bytes": 1178,
+      "sha256": "787fb9bd838679811b7ffc3d380aac1e140669604b9fc1cd6aa275738c80a64d"
+    },
+    {
+      "source": "notebooks/runs/local_rq3_llava_2026-10-23/reports/rq3_inference/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__cb5abfb7aee3/completion.json",
+      "relative_path": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__cb5abfb7aee3/completion.json",
+      "bytes": 161,
+      "sha256": "5654faaa6b024f7c456a98eb32468aa14be8f8df863e9eb30d16b4debb750844"
+    },
+    {
+      "source": "notebooks/runs/local_rq3_llava_2026-10-23/reports/rq3_inference/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__cb5abfb7aee3/predictions.csv",
+      "relative_path": "evidence/historical_rq3/RQ3__zero-shot__LLaVA_OneVision_0.5B__-__Image__hate/smoke__cb5abfb7aee3/predictions.csv",
+      "bytes": 3266,
+      "sha256": "869007a88572913f7e78a3f65c867ff9eb12a601098a7f254d5327d90f619a5b"
+    },
+    {
+      "source": "notebooks/runs/local_rq3_qwen_2026-10-23/reports/rq3_inference/RQ3__zero-shot__Qwen2-VL_2B__-__Image__hate/smoke__8e71801efce7/config.json",
+      "relative_path": "evidence/historical_rq3/RQ3__zero-shot__Qwen2-VL_2B__-__Image__hate/smoke__8e71801efce7/config.json",
+      "bytes": 1144,
+      "sha256": "05daa12ce94e989e9a2004489530d2382823c291d866c656522a001f02d8fe6c"
+    },
+    {
+      "source": "notebooks/runs/local_rq3_qwen_2026-10-23/reports/rq3_inference/RQ3__zero-shot__Qwen2-VL_2B__-__Image__hate/smoke__aec1c2daa729/config.json",
+      "relative_path": "evidence/historical_rq3/RQ3__zero-shot__Qwen2-VL_2B__-__Image__hate/smoke__aec1c2daa729/config.json",
+      "bytes": 1144,
+      "sha256": "c78be600de42603c2afe3d13173164c76e58c80b3014cd7f19a5cf01a36a6dc7"
+    },
+    {
+      "source": "notebooks/runs/local_full_2026-10-23/eda/perceptual_audit.json",
+      "relative_path": "evidence/data_audits/perceptual_audit.json",
+      "bytes": 484,
+      "sha256": "1f916d0554e71130d05992fc1c67e0976668decbc5aa87beaee6735b082ca24c"
+    },
+    {
+      "source": "notebooks/runs/local_full_2026-10-23/eda/perceptual_duplicate_candidates.csv",
+      "relative_path": "evidence/data_audits/perceptual_duplicate_candidates.csv",
+      "bytes": 14140,
+      "sha256": "6349d10d809817e7b3bcceab90d9a11587ed170df544dfee52d11daadae891b7"
+    },
+    {
+      "source": "notebooks/runs/local_full_2026-10-23/eda/perceptual_hashes.csv",
+      "relative_path": "evidence/data_audits/perceptual_hashes.csv",
+      "bytes": 229868,
+      "sha256": "5e30f0b7bf20f4cded7a8efcb87541b0f39023db2fe9d10511783446ae3d2964"
+    },
+    {
+      "source": "notebooks/runs/local_full_2026-10-23/eda/tokenizer_audit_all.csv",
+      "relative_path": "evidence/data_audits/tokenizer_audit_all.csv",
+      "bytes": 1076,
+      "sha256": "4b5b9c8ed426d156a7c127f36107ad430ea5fbc1f03ef3f9a836b3b58bc83ee4"
+    },
+    {
+      "source": "notebooks/runs/local_full_2026-10-23/eda/tokenizer_audit_verification.json",
+      "relative_path": "evidence/data_audits/tokenizer_audit_verification.json",
+      "bytes": 604,
+      "sha256": "999d9dabbe0d56fa060faec3199568370784e30506e2d9ede55263d4061cef54"
+    }
+  ],
+  "lab_calibration_note": "Four per-condition lab calibrations are described in preparation documentation, but their detailed local JSON is not in this inventory. Root may append fetched own-group server records; do not fabricate their measurements."
+}

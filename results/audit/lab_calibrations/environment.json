@@ -1,0 +1,14 @@
+{
+  "status": "installed",
+  "versions": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.46.3",
+    "numpy": "2.5.4",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.7.2",
+    "pyarrow": "23.0.1",
+    "Pillow": "13.0.0",
+    "huggingface-hub": "0.36.2"
+  },
+  "updated_at": 1793159307.7762077
+}

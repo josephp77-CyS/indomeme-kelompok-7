@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "started_at": "2026-10-30T14:01:16.921375+00:00",
+  "hostname": "BlackObsidian",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "input_sha256": "b3262e774f7db84a387ba4a04b964130cb5bce4f75d29452bfb41eee7405fc06",
+  "training_started": false,
+  "purpose": "Recompute analysis from retained experimental artifacts, not rerun training",
+  "elapsed_seconds": 28.19,
+  "executed_code_cells": 52,
+  "output_sha256": "5e0be9106cd88e979887375e646a3306b44075700ee38916837ef5698431e181",
+  "output_bytes": 2009166,
+  "visual_outputs": 219
+}
