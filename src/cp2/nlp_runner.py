@@ -159,8 +159,11 @@ def cmd_train_b0(args):
     frames, split_sha = get_partitions(args.workspace)
     fit, validation = frames["fit"], frames["validation"]
     if not args.full and not args.pilot_full_data:
-        fit = fit.sample(n=min(args.max_train, len(fit)), random_state=args.seed).reset_index(drop=True)
-        validation = validation.sample(n=min(args.max_validation, len(validation)), random_state=args.seed).reset_index(drop=True)
+        # Smoke defaults are applied only in smoke mode. Full and pilot use all rows.
+        max_train = args.max_train if args.max_train is not None else 32
+        max_validation = args.max_validation if args.max_validation is not None else 16
+        fit = fit.sample(n=min(max_train, len(fit)), random_state=args.seed).reset_index(drop=True)
+        validation = validation.sample(n=min(max_validation, len(validation)), random_state=args.seed).reset_index(drop=True)
     scope = "full" if args.full else ("pilot_full_data" if args.pilot_full_data else "smoke")
     epochs = args.epochs
     run_id = f"B0_{scope}_seed{args.seed}"
@@ -344,8 +347,8 @@ def make_parser():
     tr.add_argument("--output", required=True)
     tr.add_argument("--seed", type=int, default=42)
     tr.add_argument("--epochs", type=int, default=1)
-    tr.add_argument("--max-train", type=int, default=32)
-    tr.add_argument("--max-validation", type=int, default=16)
+    tr.add_argument("--max-train", type=int, default=None)
+    tr.add_argument("--max-validation", type=int, default=None)
     tr.add_argument("--pilot-full-data", action="store_true", help="One-epoch full fit/validation pilot; NOT final")
     tr.add_argument("--full", action="store_true", help="3214/804 and 5 epochs. Use --epochs 5")
     tr.add_argument("--require-gpu", action="store_true")
@@ -363,7 +366,8 @@ def make_parser():
 def main():
     args = make_parser().parse_args()
     if args.command == "train-b0":
-        if args.max_train <= 0 or args.max_validation <= 0 or args.epochs <= 0:
+        if args.epochs <= 0 or (args.max_train is not None and args.max_train <= 0) or \
+                (args.max_validation is not None and args.max_validation <= 0):
             raise ValueError("Positive epochs/max-train/max-validation required")
     args.func(args)
 

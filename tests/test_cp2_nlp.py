@@ -279,3 +279,27 @@ def test_b0_runner_one_epoch_synthetic_without_download(monkeypatch, tmp_path):
     assert result['epochs_completed'] == 1 and result['test_evaluated'] is False
     with pytest.raises(FileExistsError):
         nlp_runner.cmd_train_b0(args)
+
+
+def test_full_run_cli_uses_unlimited_split_by_default(monkeypatch):
+    import sys
+    from cp2.nlp_runner import make_parser
+    monkeypatch.setattr(sys, "argv", ["cp2.nlp_runner", "train-b0",
+                                     "--workspace", "/tmp/private-data",
+                                     "--output", "/tmp/private-runs",
+                                     "--full", "--epochs", "5"])
+    args = make_parser().parse_args()
+    assert args.full and args.epochs == 5
+    assert args.max_train is None and args.max_validation is None
+
+
+def test_smoke_cli_defaults_to_a_bounded_sample(monkeypatch):
+    import sys
+    from cp2.nlp_runner import make_parser
+    monkeypatch.setattr(sys, "argv", ["cp2.nlp_runner", "train-b0",
+                                     "--workspace", "/tmp/private-data",
+                                     "--output", "/tmp/private-runs"])
+    args = make_parser().parse_args()
+    assert not args.full and not args.pilot_full_data
+    assert args.max_train is None and args.max_validation is None
+    # In cmd_train_b0, None => 32 fit / 16 validation only for smoke.
