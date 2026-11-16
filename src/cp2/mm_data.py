@@ -11,7 +11,7 @@ from pathlib import Path
 from PIL import Image, UnidentifiedImageError
 from torch.utils.data import Dataset
 
-from .nlp_data import MemeTextDataset, VIT_MODEL, VIT_REVISION, sha256_file
+from .nlp_data import MemeTextDataset, VIT_MODEL, VIT_REVISION
 
 
 def image_processor():
@@ -32,8 +32,11 @@ def load_train_images(workspace: str | Path) -> dict[str, bytes]:
 class MemeMultimodalDataset(Dataset):
     """B0 text representation + RGB image. Hard fail on missing/corrupt images."""
 
-    def __init__(self, frame, images: dict[str, bytes], tokenizer, processor, max_length=256):
-        self.text = MemeTextDataset(frame, tokenizer, max_length=max_length)
+    def __init__(self, frame, images: dict[str, bytes], tokenizer, processor,
+                 max_length=256, mode: str = "normal"):
+        # NLP04: re-tokenize Caption/OCR under controlled no-caption/no-OCR evaluation.
+        # Image pixels and labels remain paired with the same IDs; no retraining.
+        self.text = MemeTextDataset(frame, tokenizer, mode=mode, max_length=max_length)
         if len(self.text) != len(set(self.text.ids)):
             raise ValueError("Duplicated image IDs")
         self.images = images
