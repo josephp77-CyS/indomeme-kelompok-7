@@ -1,0 +1,9 @@
+# The main repo requirements.txt is intentionally analysis-only.
+# Install a CUDA-compatible torch in a clean environment first (per AI Data Center).
+# Versions below match historical CP1 for Transformers and keep model revisions pinned in source.
+transformers==4.46.3
+huggingface-hub>=0.26,<1
+Pillow>=10,<13
+pyarrow>=18,<24
+pytest>=8,<10
+# Supplement with main repo requirements for exact pandas/numpy/scikit-learn versions.
