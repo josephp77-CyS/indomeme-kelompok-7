@@ -1,5 +1,7 @@
 # Paket kontribusi CP2 NLP — INDOMEME Kelompok 7
 
+> **Update 16 November 2026:** Status awal README di bawah adalah catatan implementasi awal NLP. **B0 full seed 42 dan 123 sudah selesai**; laporan agregat + metrik dua tugas ada di [NLP02/NLP03 results](docs/cp2/nlp02_nlp03_results_2026-11-16.md). **Kandidat implementasi B1 concatenation dan B2 pooled gate** kini ada di `src/cp2/mm_models.py`, `src/cp2/mm_data.py`, `src/cp2/mm_runner.py` dengan skrip `scripts/cp2_mm_run.sh`, tes `tests/test_cp2_mm.py` dan [panduan B1/B2](docs/cp2/b1_b2_implementation_2026-11-16.md). **Tes dan training B1/B2 belum dijalankan dan memerlukan review CV**, jangan melaporkan skor B1/B2 sebelum hasil aktual tersedia. M1–M3 belum diintegrasikan.
+
 **Status:** implementasi NLP untuk review. Source dan tes disiapkan lokal; kalibrasi/training pada dataset asli dan server AI Data Center belum dibuktikan. Branch GitHub dan bukti eksekusi perlu diperiksa sebelum dianggap selesai.
 
 ## 0. Mengapa paket ini diperlukan?
