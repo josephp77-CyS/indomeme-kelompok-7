@@ -15,7 +15,7 @@ export PYTHONNOUSERSITE=1
 export CP2_WORKSPACE="${CP2_WORKSPACE:-$HOME/kelompok-7-private/cp2_data}"
 export CP2_OUT="${CP2_OUT:-$HOME/kelompok-7-private/cp2_runs}"
 if [[ "$ACTION" == "test" ]]; then
-  python -m pytest -q tests/test_cp2_nlp.py tests/test_cp2_mm.py
+  python -m pytest -q tests/test_cp2_nlp.py tests/test_cp2_mm.py tests/test_cp2_nlp_cv_bridge.py
   exit 0
 fi
 if [[ "$ACTION" == "preflight" ]]; then
