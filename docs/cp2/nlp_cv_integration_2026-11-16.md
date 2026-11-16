@@ -1,5 +1,8 @@
 # CP2 — Kontribusi NLP pada B1/B2/M1/M2/M3 (integrasi bersama CV)
 
+> **UPDATE STATUS — 16 Nov 2026:** Snapshot di bawah ditulis sebelum eksekusi operator. **B1 dan B2 kini telah menyelesaikan smoke serta pilot 1 epoch seluruh fit/validation pada seed 42**, tidak lagi sebatas kandidat kode tanpa uji GPU. **NLP04 B0 seed 42/123 selesai pada validation**. M1–M3 masih belum full integrated/trained; full B1/B2 juga belum. [Bukti terbaru dan serah-terima untuk Joseph](cp2_b1_b2_pilot_nlp04_handoff_2026-11-16.md).
+
+
 **Tanggal:** 16 November 2026. **Branch:** `cp2/nlp-implementation` (PR #4, draft).  
 **Status:** Modul antarmuka/evaluasi dan pengujian sintetis ditambahkan. Tes lokal pada salinan modul sepadan: **46 passed** (25 tes NLP lama + 21 tes integrasi). **Belum ada uji model pretrained/GPU end-to-end untuk M1–M3 dan belum ada training B1/B2/M1–M3.** Penilaian implementasi CV dan persetujuan protokol tetap diperlukan.
 
