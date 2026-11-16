@@ -20,7 +20,8 @@ from torch.utils.data import DataLoader
 from .mm_data import MemeMultimodalDataset, image_processor, load_train_images
 from .mm_models import PooledMultimodal
 from .nlp_data import MAX_LENGTH, get_partitions, sha256_file
-from .nlp_evaluation import evaluate_model, write_json
+from .nlp_evaluation import write_json
+from .nlp_cv_bridge import CheckedLoader, NLPCheckedModel, evaluate_cv_model
 from .nlp_runner import environment_snapshot, make_provenance, model_loss, seed_all, selection_value, tokenizer
 
 
@@ -148,8 +149,10 @@ def run_training(args):
             torch.cuda.reset_peak_memory_stats()
             torch.cuda.synchronize()
         start = time.perf_counter()
-        loss = train_epoch_mm(model, fit_loader, optimizer, scheduler, device)
-        scores, predictions = evaluate_model(model, val_loader, device, out.name, args.seed)
+        checked_train = CheckedLoader(fit_loader, args.variant, special_ids=tok.all_special_ids)
+        loss = train_epoch_mm(NLPCheckedModel(model, args.variant), checked_train, optimizer, scheduler, device)
+        scores, predictions = evaluate_cv_model(model, val_loader, device, args.variant, out.name, args.seed,
+                                                special_ids=tok.all_special_ids)
         if device.type == "cuda":
             torch.cuda.synchronize()
         seconds = time.perf_counter() - start
