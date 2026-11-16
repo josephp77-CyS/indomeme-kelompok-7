@@ -1,5 +1,7 @@
 # Paket kontribusi CP2 NLP — INDOMEME Kelompok 7
 
+> **Integrasi lintas model (pembaruan berikutnya, 16 November):** Kontribusi NLP **juga berlaku pada B1, B2, M1, M2, M3**, bukan sekadar B0. Kode `src/cp2/nlp_cv_bridge.py` menyediakan kontrak batch/dua logits/evaluator bersama untuk keenam model; `src/cp2/nlp_cv_eval.py` menyediakan robustness validation-only; `mm_runner.py` B1/B2 sudah tersambung ke bridge. Lihat [audit, ownership, instruksi dan status pengujian](docs/cp2/nlp_cv_integration_2026-11-16.md). **M1–M3 masih memerlukan factory & full model dari CV.** NLP04 B0 belum dijalankan di server; jangan menyebutnya selesai.
+
 > **Update 16 November 2026:** Status awal README di bawah adalah catatan implementasi awal NLP. **B0 full seed 42 dan 123 sudah selesai**; laporan agregat + metrik dua tugas ada di [NLP02/NLP03 results](docs/cp2/nlp02_nlp03_results_2026-11-16.md). **Kandidat implementasi B1 concatenation dan B2 pooled gate** kini ada di `src/cp2/mm_models.py`, `src/cp2/mm_data.py`, `src/cp2/mm_runner.py` dengan skrip `scripts/cp2_mm_run.sh`, tes `tests/test_cp2_mm.py` dan [panduan B1/B2](docs/cp2/b1_b2_implementation_2026-11-16.md). **Tes dan training B1/B2 belum dijalankan dan memerlukan review CV**, jangan melaporkan skor B1/B2 sebelum hasil aktual tersedia. M1–M3 belum diintegrasikan.
 
 **Status:** implementasi NLP untuk review. Source dan tes disiapkan lokal; kalibrasi/training pada dataset asli dan server AI Data Center belum dibuktikan. Branch GitHub dan bukti eksekusi perlu diperiksa sebelum dianggap selesai.
