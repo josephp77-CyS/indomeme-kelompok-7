@@ -1,5 +1,7 @@
 # CP2 NLP — log progres eksekusi AI Data Center
 
+> **PEMBARUAN 16 November 2026:** Status historis di bawah merekam keadaan **15 November**, bukan status terbaru. Pada 16 November operator telah membagikan bukti bahwa kalibrasi attention/B0/ViT, B0 smoke, pilot dan full training seed 42 **selesai** di A100. Best raw validation mean Macro-F1 seed 42 = **0.7821** (epoch 2 dari 4; early stopping). Colab Tesla T4 juga menyelesaikan B0 seed 123 dengan best **0.7712135742** (epoch 1 dari 3; early stopping), yang dikonfirmasi dari file JSON di Drive. Detail lengkap, batas verifikasi, dan langkah NLP02/NLP03 ada di [laporan hasil 16 November](nlp02_nlp03_results_2026-11-16.md). **Jangan mengutip daftar "belum dijalankan" di bawah sebagai progres terbaru.**
+
 **Tanggal laporan:** 15 November 2026  
 **Cabang:** `cp2/nlp-implementation`  
 **Commit yang dijalankan operator:** `e5e1d2538a0a080cb7069bd8affc4e38d4ebcc90`  
