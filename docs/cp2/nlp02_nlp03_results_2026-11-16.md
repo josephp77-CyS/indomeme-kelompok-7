@@ -7,14 +7,14 @@
 **Label:** hate (1=hateful); appropriate (1=inappropriate).  
 **Input B0:** Caption+OCR, **tanpa topic**, panjang maksimal 256. Dua head di atas IndoBERTweet.
 
-> **Asal bukti dan verifikasi:** Untuk AI Data Center A100 (seed 42), angka ditranskripsi dari output Terminal JupyterLab yang dikirim operator pada percakapan; file privat server belum diakses langsung. Untuk Colab T4 (seed 123), notebook `seed123.ipynb` dan file `config.json`, `history.json`, `result.json`, `validation_metrics.json` dibaca langsung melalui Google Drive yang dibagikan pengguna. Status ini **bukan** review independen atas bobot model atau hasil official test. Jangan mengunggah `.pt`, data mentah, atau CSV prediksi per-ID ke repo ini.
+> **Asal bukti dan verifikasi:** Untuk AI Data Center A100 (seed 42), hasil training yang semula hanya dari output Terminal JupyterLab operator kini diverifikasi melalui **empat JSON aktual** yang diekspor dari server oleh operator dan diunggah sebagai arsip `B0_full_seed42_results.zip` (dibaca asisten 16 November 2026); akses langsung ke server tetap tidak tersedia. Untuk Colab T4 (seed 123), notebook `seed123.ipynb` dan file `config.json`, `history.json`, `result.json`, `validation_metrics.json` dibaca langsung melalui Google Drive yang dibagikan pengguna. Status ini **bukan** review independen atas bobot model atau hasil official test. Jangan mengunggah `.pt`, data mentah, atau CSV prediksi per-ID ke repo ini.
 
 ## A. Status kontribusi
 
 | Paket | Status | Bukti | Batas penyelesaian |
 | --- | --- | --- | --- |
 | **NLP02 — Input & baseline B0** | **Implementasi dan pelaksanaan B0 selesai**, siap review | `src/cp2/nlp_data.py`, `nlp_models.py`, `nlp_runner.py`; audit input, smoke, pilot dan full seed 42/123 | Freeze protokol dan review tim tetap diperlukan; B0 tidak sama dengan integrasi B1–M3 |
-| **NLP03 — evaluator CP2** | **Implementasi dan pengujian B0 selesai; handoff/integrasi multimodal belum selesai** | `src/cp2/nlp_evaluation.py`, pairing `image_path`, raw/constrained dua tugas, confusion matrix, 27 unit tests; file validation metrics privat untuk seed 123 | Baca metrik per tugas seed 42; pastikan runner B1–M3 menggunakan evaluator yang sama dan uji end-to-end setelah kode CV tersedia |
+| **NLP03 — evaluator CP2** | **Implementasi dan pengujian B0 selesai; handoff/integrasi multimodal belum selesai** | `src/cp2/nlp_evaluation.py`, pairing `image_path`, raw/constrained dua tugas, confusion matrix, 27 unit tests; file validation metrics agregat kedua seed 42/123 | Pastikan runner B1–M3 menggunakan evaluator yang sama dan uji end-to-end setelah kode CV tersedia |
 | **NLP01 — protokol** | Draft / review belum dinyatakan freeze | `configs/cp2_nlp_protocol.json`, PR #3 | Persetujuan bersama sebelum klaim eksperimen final |
 | **NLP04 / NLP05** | Belum selesai | Robustness, rescue/hurt lintas model, error analysis, test final | Memerlukan model multimodal, ID-paired predictions privat dan rencana test terkunci |
 
@@ -52,7 +52,33 @@ Smoke adalah cek pipeline, bukan hasil evaluasi riset.
 | **42** | AI Data Center / A100 | 0.7669 | **0.7821** | 0.7746 | 0.7806 | **2** | **0.7821** | Epoch 4, early stopping |
 | **123** | Colab / Tesla T4 | **0.7712136** | 0.7512181 | 0.7599154 | — | **1** | **0.7712135742** | Epoch 3, early stopping |
 
-Rata-rata best validation selection dua seed secara deskriptif = **0.7766568**; berbeda seed **dan** environment, tidak menyiratkan signifikan secara statistik atau perbandingan arsitektur yang terkendali. Kedua run full dilaporkan selesai. `test_evaluated=false` diverifikasi langsung pada `result.json` seed 123; untuk seed 42 official test tidak terlihat dijalankan dalam log operator.
+Rata-rata best validation selection dua seed secara deskriptif = **0.7766429441** (dibulatkan **0.7766**); berbeda seed **dan** environment, tidak menyiratkan signifikan secara statistik atau perbandingan arsitektur yang terkendali. Kedua run full selesai. `test_evaluated=false` terverifikasi langsung dari `result.json` **kedua seed**.
+
+### Detail evaluasi **seed 42** — empat JSON diekspor dari AI Data Center
+
+Operator mengunggah arsip `B0_full_seed42_results.zip` berisi `config.json`, `history.json`, `result.json` dan `validation_metrics.json`; file tersebut telah dibuka dan dibaca langsung. `validation_metrics.json` merekam **best checkpoint epoch 2** (bukan epoch terakhir).
+
+| Metrik validation (804 meme) | Hate | Appropriate raw | Appropriate constrained |
+| --- | ---: | ---: | ---: |
+| Macro-F1 | **0.8022781706** | **0.7618664573** | **0.7621251780** |
+| Accuracy | 0.8283582090 | 0.7723880597 | 0.7723880597 |
+| Confusion matrix `[[TN,FP],[FN,TP]]` | `[[479,52],[86,187]]` | `[[395,59],[124,226]]` | `[[394,60],[123,227]]` |
+
+- Mean raw selection: `(0.8022781706204379 + 0.7618664573403144) / 2 = 0.7820723139803762`; best validation epoch **2**.
+- Raw `hate=>inappropriate` constraint violations: **2**; constrained violations: **0**. Constrained appropriate sedikit lebih tinggi (0.7621252), tetapi **tidak** digunakan untuk pemilihan checkpoint.
+- `result.json`: `epochs_completed=4`, `test_evaluated=false`, `total_seconds=2447.61195` (~40.79 menit termasuk overhead). Berhenti setelah epoch 4 akibat patience 2 tanpa best baru.
+- `config.json`: Python **3.12.16**, PyTorch **2.6.0+cu124**, Transformers **4.46.3**, GPU **NVIDIA A100-SXM4-80GB**; Git source commit saat run `e5e1d2538a0a080cb7069bd8affc4e38d4ebcc90`. Manifest dataset, revisi model serta checksum SHA-256 keempat file source CP2 **cocok dengan config seed 123**, meskipun environment PyTorch/CUDA dan commit Git lingkungan berbeda.
+- Agregat hasil ini bersumber dari JSON user-provided, bukan akses langsung ke GPU server; prediksi individual dan bobot model tetap di server.
+
+### Perbandingan per tugas dua seed — best checkpoint masing-masing
+
+| Metrik validation | Seed 42 (A100) | Seed 123 (T4) | Mean dua seed, deskriptif |
+| --- | ---: | ---: | ---: |
+| Hate Macro-F1 raw | **0.8022782** | 0.7941173 | 0.7981977 |
+| Appropriate Macro-F1 raw | **0.7618665** | 0.7483099 | 0.7550882 |
+| Selection mean raw Macro-F1 | **0.7820723** | 0.7712136 | **0.7766429** |
+
+Nilai best tiap seed dipilih independen dari validation; jangan membandingkan cross-seed sebagai pembuktian efek arsitektur. Dataset official test belum dievaluasi.
 
 ### Detail evaluasi **seed 123** — dibaca dari Drive
 
@@ -70,19 +96,19 @@ File `validation_metrics.json` mencerminkan **best checkpoint epoch 1**, bukan m
 - Log TensorFlow di notebook melaporkan `Could not find cuda drivers`, namun PyTorch pada notebook melaporkan `torch.cuda.is_available() == True`, GPU Tesla T4; runner memakai `--require-gpu` dan berakhir berhasil. Log TensorFlow tidak cukup untuk menyimpulkan training PyTorch memakai CPU.
 - Output `pip check` pada notebook menunjukkan **konflik dependency** dengan komponen bawaan Colab (antara lain google-colab/ipykernel/pandas; numba/numpy; gradio/diffusers/huggingface-hub). Walau training B0 berhasil, konflik ini perlu didokumentasikan dan diselesaikan untuk lingkungan yang lebih bersih/reproduksibel.
 
-**Seed 42**: per-task `validation_metrics.json`, confusion matrix, `result.json`, dan provenance masih **menunggu ekspor operator** dari folder privat AI Data Center. Tidak mengarang nilai per-task seed 42 dari skor agregat. Lingkungan kalibrasi A100 yang dilaporkan: Python 3.12.16, torch 2.6.0+cu124, Transformers 4.46.3; Git SHA operator pada saat kalibrasi `e5e1d2538a0a080cb7069bd8affc4e38d4ebcc90`.
+**Seed 42**: empat JSON dari server **sudah diterima dan ditinjau** melalui arsip operator. Nilai per-tugas, confusion matrix, dua pelanggaran constraint raw, provenance, dan perbandingan dua seed tercantum di bagian di atas. Akses ke berkas bobot/prediksi privat tidak diperlukan untuk melengkapi tabel agregat.
 
 ## E. Akses data dan lokasi artefak
 
 - Notebook Colab yang dibaca: [`seed123.ipynb`](https://colab.research.google.com/drive/1Hk-4T9uaWmkHg_C_PMXW6U1zu9EXzAYS).
 - Hasil privat Colab full: [folder Drive B0 full seed 123](https://drive.google.com/drive/folders/1yDBydyQexr9p2_SLhi4YamjujKrbaygN). Tidak memindahkan, memperluas izin berbagi, atau mengunggah prediksi/checkpoint dari folder tersebut ke repo.
-- AI Data Center privat: `~/kelompok-7-private/cp2_runs/B0_full_seed42/` (tidak tersedia langsung bagi asisten).
+- AI Data Center privat: `~/kelompok-7-private/cp2_runs/B0_full_seed42/`; empat JSON hasil telah diekspor oleh operator sebagai `B0_full_seed42_results.zip` dan diunggah ke percakapan (arsip tidak dimasukkan ke repo). Akses server langsung tidak tersedia bagi asisten.
 - Berkas ringkasan yang aman untuk ditinjau: `config.json`, `history.json`, `result.json`, `validation_metrics.json`. `best.pt`, `last.pt`, `validation_predictions_PRIVATE.csv` tetap di storage privat.
 
 ## F. Langkah berikutnya
 
-1. Operator mengekspor **empat JSON seed 42** dari AI Data Center (tidak perlu memindahkan bobot `.pt` ke GitHub).
-2. Lengkapi tabel metrik per tugas untuk seed 42, cocokkan checksum manifest/provenance, ulangi smoke unit test setelah perubahan source dan simpan catatan reproducibility dua lingkungan.
+1. **Selesai:** empat JSON seed 42 diekspor dan ditinjau, tabel metrik per tugas dilengkapi; manifest/provenance dan checksum source B0 seed 42/123 cocok. Dokumentasi saja yang diubah, tidak ada perubahan source training.
+2. Tinjau reproduksibilitas antar-environment (perbedaan Python, CUDA, PyTorch, waktu epoch); jika source training berubah, ulangi unit test sebelum run berikutnya. Simpan artefak besar dan prediksi tetap privat.
 3. Reviewer NLP/CV menyetujui kontrak evaluator dua tugas (`raw` untuk seleksi, `constrained` sekunder), dan memastikan runner B1/B2/M1/M2/M3 benar-benar memanggil evaluator bersama serta menghormati `image_path`, `content_mask`, split yang sama.
 4. Partner CV mengimplementasikan dan menguji B1/B2/M1/M2/M3; profiling end-to-end B1/M3 harus menggantikan sekadar kalibrasi komponen. Mulai dari B1 sebagai kontrol multimodal; gunakan seed 42 dan 123 secara konsisten.
 5. Setelah validation/protokol terkunci, lanjut evaluasi robustness NLP04, rescue/hurt NLP05, kemudian official test final **sekali sesuai protokol**, bukan untuk pemilihan varian.
