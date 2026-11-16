@@ -1,4 +1,7 @@
 # CP2 B1/B2 pooled vision — Implementasi awal, belum training
+
+> **UPDATE STATUS — 16 Nov 2026:** Bagian di bawah merupakan *rencana awal saat kode belum dijalankan*, bukan status terkini. **Smoke B1 dan B2 telah berhasil**; **pilot 1 epoch seluruh data B1 dan B2 juga telah berhasil** di AI Data Center berdasarkan stdout operator. B1 pilot loss **0.5354**, raw validation Macro-F1 **0.7672**, durasi **1084.8 dtk**; B2 pilot loss **0.5344**, raw validation Macro-F1 **0.7542**, durasi **1044.7 dtk**. **Full training belum dilakukan**, hasil pilot bukan hasil utama. Lihat [handoff bukti terbaru](cp2_b1_b2_pilot_nlp04_handoff_2026-11-16.md); CV review dan audit resource dari JSON privat masih diperlukan.
+
 **Tanggal:** 16 November 2026  
 **Branch:** `cp2/nlp-implementation`, PR #4 (draft; **review CV Joseph diperlukan**).  
 **Status:** Kode dan tes offline ditulis; **tes tersebut belum dijalankan di server**; belum ada smoke/pilot/full GPU B1/B2, belum ada Macro-F1 B1/B2.
