@@ -7,6 +7,14 @@ Jika meme menggabungkan gambar dan teks, apakah tambahan gambar selalu membantu 
 
 Delapan konfigurasi inti menghasilkan sepuluh hasil tugas. Pada satu seed yang digunakan, fusi lebih baik untuk ketidakpantasan, sedangkan deteksi kebencian tidak membaik terhadap model teks. Teks sudah memuat OCR, deskripsi gambar, dan topik anotasi; hasil ini tidak membuktikan gambar tidak penting.
 
+**Rancangan checkpoint 2**
+
+Saya sedang menyiapkan rancangan bagian CV untuk membandingkan enam cara mengolah teks dan gambar. Rancangan memakai dua keluaran, yaitu kebencian dan kelayakan konten. Tahap saat ini adalah review bersama bagian NLP; implementasi dan training CP2 belum dijalankan.
+
+- [Rancangan model dan kalibrasi CV01](docs/cp2/cv-design.md)
+- [Penjelasan sederhana untuk diskusi](docs/cp2/laporan-sederhana.md) · [Word](docs/cp2/laporan-sederhana.docx)
+- [Contoh hasil dan serah terima NLP](docs/cp2/contoh-hasil-nlp.md) — panduan, belum menjadi hasil pekerjaan Rafa
+
 ## Mulai membaca
 
 - [Presentasi utama tim](docs/INDOMEME_Checkpoint1_PitchDeck.pptx)
