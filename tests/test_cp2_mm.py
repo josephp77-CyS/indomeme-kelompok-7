@@ -1,4 +1,4 @@
-"""Offline CV01 B1/B2 regression tests. No HF downloads or GPU required."""
+"""Offline CV01 B1–M3 regression tests. No HF downloads or GPU required."""
 from __future__ import annotations
 
 import io
@@ -32,7 +32,9 @@ class TinyEncoder(nn.Module):
         else:
             assert input_ids.shape == attention_mask.shape
             scalar = input_ids.float().mean(dim=1, keepdim=True) / 100
-        return SimpleNamespace(pooler_output=scalar * self.weight[None, :])
+        pooled = scalar * self.weight[None, :]
+        hidden = pooled[:, None, :].expand(-1, 50 if self.multimodal else input_ids.shape[1], -1)
+        return SimpleNamespace(pooler_output=pooled, last_hidden_state=hidden)
 
 
 class TinyTokenizer:
@@ -55,11 +57,14 @@ def batch(n=2):
     return {
         "input_ids": torch.tensor([[101, 7, 102]] * n),
         "attention_mask": torch.ones(n, 3, dtype=torch.long),
+        "content_mask": torch.tensor([[False, True, False]] * n),
         "pixel_values": torch.ones(n, 3, 224, 224),
     }
 
 
-@pytest.mark.parametrize("variant,params", [("B1", 1183492), ("B2", 595205)])
+@pytest.mark.parametrize("variant,params", [
+    ("B1", 1183492), ("B2", 595205), ("M1", 2365444), ("M2", 2366981), ("M3", 2366981),
+])
 def test_shapes_params_and_backprop(variant, params):
     torch.manual_seed(42)
     model = make_model(variant)
@@ -75,9 +80,13 @@ def test_shapes_params_and_backprop(variant, params):
     assert model.vision_encoder.weight.grad is not None
     assert torch.isfinite(model.text_encoder.weight.grad).all()
     assert torch.isfinite(model.vision_encoder.weight.grad).all()
+    if variant.startswith("M"):
+        assert model.attention.in_proj_weight.grad.abs().sum() > 0
+    if variant in ("M2", "M3"):
+        assert model.gate.weight.grad.abs().sum() > 0
 
 
-@pytest.mark.parametrize("variant", ["B1", "B2"])
+@pytest.mark.parametrize("variant", PooledMultimodal.VARIANTS)
 def test_eval_deterministic_and_visual_off(variant):
     model = make_model(variant).eval()
     x = batch()
@@ -110,7 +119,46 @@ def test_input_rejection():
     with pytest.raises(ValueError, match="pixel_values"):
         model(x)
     with pytest.raises(ValueError):
-        PooledMultimodal("M1", text_encoder=TinyEncoder(False), vision_encoder=TinyEncoder(True))
+        PooledMultimodal("B0", text_encoder=TinyEncoder(False), vision_encoder=TinyEncoder(True))
+
+
+def test_cross_attention_excludes_cls_padding_and_empty_content():
+    model = make_model("M1").eval()
+    t, tokens, vision = torch.randn(2, 768), torch.randn(2, 3, 768), torch.randn(2, 50, 768)
+    mask = torch.tensor([[True, False, False], [False, False, False]])
+    output = model.attended_features(t, tokens, vision, mask)
+    tokens[:, 1:] += 100
+    vision[:, 0] += 100
+    torch.testing.assert_close(model.attended_features(t, tokens, vision, mask), output)
+    assert torch.equal(output[1], t[1])
+    with pytest.raises(ValueError, match="49 patches"):
+        model.attended_features(t, tokens, vision[:, :-1], mask)
+
+
+def test_m3_dropout_per_meme_after_projection_and_checkpoint(tmp_path, monkeypatch):
+    m2 = make_model("M2").eval()
+    with torch.no_grad():
+        m2.attention.out_proj.bias.fill_(1)
+    checkpoint = tmp_path / "model.pt"
+    torch.save(m2.state_dict(), checkpoint)
+    m3 = make_model("M3").eval()
+    m3.load_state_dict(torch.load(checkpoint, map_location="cpu", weights_only=True), strict=True)
+    x = batch()
+    for task in ("hate", "appropriate"):
+        torch.testing.assert_close(m2(x)[task], m3(x)[task])
+
+    t, tokens, vision = torch.randn(2, 768), torch.randn(2, 3, 768), torch.randn(2, 50, 768)
+    expected = m2.attended_features(t, tokens, vision, x["content_mask"])
+    monkeypatch.setattr(torch, "rand", lambda b, d, device: torch.tensor([[0.01], [0.99]], device=device))
+    m3.train()
+    fused = m3.attended_features(t, tokens, vision, x["content_mask"])
+    assert torch.equal(fused[0], t[0])
+    torch.testing.assert_close(fused[1], expected[1])
+    m3.zero_grad()
+    sum(v.sum() for v in m3(x, visual_off=True).values()).backward()
+    assert m3.vision_encoder.weight.grad is None
+    assert m3.attention.out_proj.bias.grad is None
+    assert m3.text_encoder.weight.grad is not None
 
 
 def test_multimodal_dataset_id_alignment_and_decode():

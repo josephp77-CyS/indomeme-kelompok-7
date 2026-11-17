@@ -276,6 +276,8 @@ def test_b0_runner_one_epoch_synthetic_without_download(monkeypatch, tmp_path):
     assert (run / 'validation_metrics.json').exists()
     assert (run / 'validation_predictions_PRIVATE.csv').exists()
     result = __import__('json').loads((run / 'result.json').read_text())
+    metrics = __import__('json').loads((run / 'validation_metrics.json').read_text())
+    assert metrics['loss']['mean'] == pytest.approx((metrics['loss']['hate'] + metrics['loss']['appropriate']) / 2)
     assert result['epochs_completed'] == 1 and result['test_evaluated'] is False
     with pytest.raises(FileExistsError):
         nlp_runner.cmd_train_b0(args)

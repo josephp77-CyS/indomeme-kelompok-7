@@ -24,6 +24,7 @@ from .nlp_data import (
 )
 from .nlp_evaluation import TASKS, evaluate_model, write_json
 from .nlp_models import TextOnlyB0
+from .operations import GIB, check_checkpoint_disk, check_disk, check_gpu, private_path, require_frozen_protocol, worker_lock
 
 
 def seed_all(seed: int):
@@ -88,17 +89,20 @@ def make_provenance(manifest_sha):
 def cmd_init_data(args):
     # The existing CP1 functions reproduce and verify the official pinned CSV and historic split.
     from master_workflow import load_metadata, make_split
-    workspace = Path(args.workspace)
-    metadata = load_metadata(workspace)
-    make_split(metadata, workspace)
-    partitions, split_hash = get_partitions(workspace)
+    workspace = private_path(args.workspace)
+    with worker_lock(workspace):
+        check_disk(workspace, 12 * GIB)
+        metadata = load_metadata(workspace)
+        make_split(metadata, workspace)
+        partitions, split_hash = get_partitions(workspace)
     print(f"VALID SPLIT {split_hash}: " + ", ".join(f"{k}={len(v)}" for k, v in partitions.items()))
 
 
 def cmd_audit(args):
-    partitions, digest = get_partitions(args.workspace)
+    output = private_path(args.output)
+    partitions, digest = get_partitions(private_path(args.workspace))
     tok = tokenizer()
-    output = Path(args.output)
+    output.mkdir(parents=True, exist_ok=True, mode=0o700)
     token_report = audit_tokens(partitions, tok, output)
     counts = {}
     for name, frame in partitions.items():
@@ -152,11 +156,21 @@ def cmd_train_b0(args):
         raise ValueError("Pilot dan full harus terpisah")
     if args.pilot_full_data and args.epochs != 1:
         raise ValueError("Pilot seluruh data harus tepat 1 epoch")
+    if args.resume and not args.full:
+        raise ValueError("Resume only supported for full mode")
+    workspace, output = private_path(args.workspace), private_path(args.output)
+    protocol_sha = require_frozen_protocol() if args.full else None
+    with worker_lock(workspace):
+        return train_b0(args, workspace, output, protocol_sha)
+
+
+def train_b0(args, workspace, output, protocol_sha):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    if args.require_gpu and device.type != "cuda":
+    if (args.require_gpu or args.full) and device.type != "cuda":
         raise RuntimeError("GPU required but no CUDA device visible")
+    check_gpu(device)
     seed_all(args.seed)
-    frames, split_sha = get_partitions(args.workspace)
+    frames, split_sha = get_partitions(workspace)
     fit, validation = frames["fit"], frames["validation"]
     if not args.full and not args.pilot_full_data:
         # Smoke defaults are applied only in smoke mode. Full and pilot use all rows.
@@ -167,8 +181,11 @@ def cmd_train_b0(args):
     scope = "full" if args.full else ("pilot_full_data" if args.pilot_full_data else "smoke")
     epochs = args.epochs
     run_id = f"B0_{scope}_seed{args.seed}"
-    out = Path(args.output) / run_id
-    out.mkdir(parents=True, exist_ok=True)
+    out = private_path(output / run_id)
+    if (out / "result.json").exists():
+        raise FileExistsError(f"Run already completed: {out}. Do not overwrite; create separate output")
+    check_checkpoint_disk(out, 111_000_000)
+    out.mkdir(parents=True, exist_ok=True, mode=0o700)
     config = {
         "run_id": run_id, "scope": scope, "seed": args.seed, "model": "B0",
         "input": "Caption+OCR", "forbidden_input": "topic", "max_length": MAX_LENGTH,
@@ -177,20 +194,21 @@ def cmd_train_b0(args):
         "precision": "float32", "loss_weights": {"hate": 0.5, "appropriate": 0.5},
         "checkpoint_selection": "mean raw validation macro-F1, first epoch wins ties",
         "fit_rows": len(fit), "validation_rows": len(validation),
+        "frozen_protocol_sha256": protocol_sha,
         "provenance": make_provenance(split_sha),
     }
     config_file = out / "config.json"
     if config_file.exists() and json.loads(config_file.read_text()) != config:
         raise ValueError(f"Config changed for existing run {out}; use a fresh private output folder")
     write_json(config_file, config)
-    if (out / "result.json").exists():
-        raise FileExistsError(f"Run already completed: {out}. Do not overwrite; create separate output")
     from transformers import get_linear_schedule_with_warmup
     tok = tokenizer()
     fit_ds = MemeTextDataset(fit, tok)
     val_ds = MemeTextDataset(validation, tok)
     val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=0)
+    check_gpu(device)
     model = TextOnlyB0().to(device)
+    parameters = sum(p.numel() for p in model.parameters())
     optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5, weight_decay=0.01)
     steps_per_epoch = math.ceil(math.ceil(len(fit_ds) / 1) / 8)
     scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=0,
@@ -203,7 +221,7 @@ def cmd_train_b0(args):
     if last_checkpoint.exists():
         if not args.resume:
             raise FileExistsError(f"Existing checkpoint {last_checkpoint}; add --resume or new output")
-        state = torch.load(last_checkpoint, map_location=device, weights_only=True)
+        state = torch.load(last_checkpoint, map_location="cpu", weights_only=True)
         if state["config_hash"] != sha256_file(config_file):
             raise ValueError("Resume config hash mismatch")
         model.load_state_dict(state["model"])
@@ -213,6 +231,9 @@ def cmd_train_b0(args):
         best = float(state["best"])
         bad_epochs = int(state["bad_epochs"])
         history = state["history"]
+        del state
+    elif args.resume:
+        raise FileNotFoundError(f"Cannot resume: no checkpoint at {last_checkpoint}")
     begin = time.perf_counter()
     for epoch in range(start_epoch, epochs):
         if bad_epochs >= 2:
@@ -220,11 +241,17 @@ def cmd_train_b0(args):
         seed_all(args.seed + epoch)
         generator = torch.Generator().manual_seed(args.seed + epoch)
         fit_loader = DataLoader(fit_ds, batch_size=1, shuffle=True, generator=generator, num_workers=0)
+        if device.type == "cuda":
+            torch.cuda.reset_peak_memory_stats(device)
+            torch.cuda.synchronize(device)
         start = time.perf_counter()
         train_loss = train_epoch(model, fit_loader, optimizer, scheduler, device, 8)
         scores, predictions = evaluate_model(model, val_loader, device, run_id, args.seed)
         score = selection_value(scores)
+        if device.type == "cuda":
+            torch.cuda.synchronize(device)
         elapsed = time.perf_counter() - start
+        check_checkpoint_disk(out, parameters)
         improved = score > best  # earlier epoch wins exact ties
         if improved:
             best = score
@@ -239,11 +266,14 @@ def cmd_train_b0(args):
         else:
             bad_epochs += 1
         history.append({"epoch": epoch + 1, "train_loss": train_loss,
+                        "validation_loss": scores["loss"],
                         "raw_validation_selection_macro_f1": score,
                         "hate_macro_f1": scores["hate"]["macro_f1"],
                         "appropriate_macro_f1": scores["appropriate"]["macro_f1"],
                         "appropriate_constrained_macro_f1": scores["appropriate_constrained"]["macro_f1"],
-                        "seconds": elapsed})
+                        "seconds": elapsed,
+                        "peak_gpu_allocated_bytes": torch.cuda.max_memory_allocated(device) if device.type == "cuda" else None,
+                        "peak_gpu_reserved_bytes": torch.cuda.max_memory_reserved(device) if device.type == "cuda" else None})
         write_json(out / "history.json", history)
         state = {"model": model.state_dict(), "optimizer": optimizer.state_dict(),
                  "scheduler": scheduler.state_dict(), "config_hash": sha256_file(config_file),
@@ -261,12 +291,19 @@ def cmd_train_b0(args):
 
 
 def cmd_calibrate(args):
-    Path(args.output).mkdir(parents=True, exist_ok=True)
+    output = private_path(args.output)
+    with worker_lock(args.workspace):
+        return calibrate(args, output)
+
+
+def calibrate(args, output):
     if args.batch <= 0:
         raise ValueError("Batch must be positive")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if args.require_gpu and device.type != "cuda":
         raise RuntimeError("GPU required but CUDA unavailable")
+    check_gpu(device)
+    output.mkdir(parents=True, exist_ok=True, mode=0o700)
     seed_all(42)
     if args.component == "attention":
         model = nn.MultiheadAttention(768, 8, batch_first=True).to(device)
@@ -325,10 +362,10 @@ def cmd_calibrate(args):
         "vram_free_before_step": free_vram, "vram_total": total_vram,
         "peak_allocated_bytes": torch.cuda.max_memory_allocated() if device.type == "cuda" else None,
         "peak_reserved_bytes": torch.cuda.max_memory_reserved() if device.type == "cuda" else None,
-        "disk_free_bytes": shutil.disk_usage(args.output if Path(args.output).exists() else Path.home()).free,
+        "disk_free_bytes": shutil.disk_usage(output).free,
         "environment": environment_snapshot(),
     }
-    write_json(Path(args.output) / f"calibration_{args.component}_batch{args.batch}.json", report)
+    write_json(output / f"calibration_{args.component}_batch{args.batch}.json", report)
     print(json.dumps(report, indent=2))
 
 
@@ -358,6 +395,7 @@ def make_parser():
     ca.add_argument("--component", choices=["b0", "vision", "attention"], required=True)
     ca.add_argument("--batch", type=int, default=1)
     ca.add_argument("--output", required=True)
+    ca.add_argument("--workspace", default=os.environ.get("CP2_WORKSPACE", str(Path.home() / "kelompok-7-private/cp2_data")))
     ca.add_argument("--require-gpu", action="store_true")
     ca.set_defaults(func=cmd_calibrate)
     return p

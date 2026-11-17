@@ -167,8 +167,8 @@ Model tetap dilatih sesuai kondisi normal; no-caption/no-OCR/visual-off dipakai 
 
 ## 12. Hasil review / approval (diisi setelah ada bukti nyata)
 
-- Link PR NLP: **belum ada**
-- Commit NLP: **belum ada**
+- Link PR NLP: [#3](https://github.com/josephp77-CyS/indomeme-kelompok-7/pull/3)
+- Commit NLP: `08ff298`; implementasi historis [PR #4](https://github.com/josephp77-CyS/indomeme-kelompok-7/pull/4)
 - Reviewer CV: **belum memberikan persetujuan**
 - Status: **DRAF**
 - Temuan dan revisi: **menunggu review**

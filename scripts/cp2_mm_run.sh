@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# CV01 pooled-vision B1/B2 operator script. Run from repository root.
+# CV01 B1–M3 operator script. Run from repository root.
 # Nothing runs on GPU until an operator explicitly calls smoke/pilot/full.
 set -euo pipefail
 ACTION="${1:-}"
-case "$ACTION" in
-  test|preflight|smoke-b1|smoke-b2|pilot-b1|pilot-b2|full-b1|full-b2|resume-b1|resume-b2) ;;
-  *) echo "Usage: bash scripts/cp2_mm_run.sh {test|preflight|smoke-b1|smoke-b2|pilot-b1|pilot-b2|full-b1|full-b2|resume-b1|resume-b2}"; exit 2 ;;
-esac
+if [[ "$ACTION" != test && "$ACTION" != preflight && ! "$ACTION" =~ ^(smoke|pilot|full|resume)-(b[12]|m[123])$ ]]; then
+  echo "Usage: bash scripts/cp2_mm_run.sh {test|preflight|{smoke,pilot,full,resume}-{b1,b2,m1,m2,m3}}"
+  exit 2
+fi
 if [[ ! -f src/cp2/mm_runner.py || ! -f src/master_workflow.py ]]; then
   echo "ERROR: run from root of CP2 implementation branch"; exit 2
 fi
@@ -15,7 +15,7 @@ export PYTHONNOUSERSITE=1
 export CP2_WORKSPACE="${CP2_WORKSPACE:-$HOME/kelompok-7-private/cp2_data}"
 export CP2_OUT="${CP2_OUT:-$HOME/kelompok-7-private/cp2_runs}"
 if [[ "$ACTION" == "test" ]]; then
-  python -m pytest -q tests/test_cp2_nlp.py tests/test_cp2_mm.py tests/test_cp2_nlp_cv_bridge.py
+  python -m pytest -q tests
   exit 0
 fi
 if [[ "$ACTION" == "preflight" ]]; then
@@ -29,14 +29,8 @@ PY
   df -h "$HOME"
   exit 0
 fi
-mkdir -p "$CP2_WORKSPACE" "$CP2_OUT"
-case "$(realpath "$CP2_OUT")" in
-  "$(realpath .)"/*) echo "ERROR: private output directory must be outside the repository"; exit 2 ;;
-esac
-case "$ACTION" in
-  *b1) VARIANT=B1 ;;
-  *b2) VARIANT=B2 ;;
-esac
+VARIANT="${ACTION#*-}"
+VARIANT="${VARIANT^^}"
 ARGS=(--variant "$VARIANT" --workspace "$CP2_WORKSPACE" --output "$CP2_OUT"
       --seed "${CP2_SEED:-42}" --require-gpu)
 case "$ACTION" in

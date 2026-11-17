@@ -8,3 +8,8 @@ notebooks/*.rerun.*
 *.parquet
 *_predictions.csv
 *_ids.csv
+*_PRIVATE.csv
+cp2_data/
+cp2_runs/
+kelompok-7-private/
+.cp2-worker.lock

@@ -77,8 +77,10 @@ def evaluate_records(frame: pd.DataFrame):
 def evaluate_model(model, loader, device, run_id: str, seed: int, split="validation"):
     model.eval()
     records = []
+    losses = torch.zeros(len(TASKS), device=device)
     for batch in loader:
         labels = batch["labels"].cpu()
+        targets = labels.to(device)
         ids = batch["image_path"]
         inputs = {k: v.to(device) for k, v in batch.items() if k not in ("labels", "image_path")}
         logits = model(inputs)
@@ -89,6 +91,9 @@ def evaluate_model(model, loader, device, run_id: str, seed: int, split="validat
                 raise ValueError(f"Invalid logits shape for {task}")
             if not torch.isfinite(logits[task]).all():
                 raise ValueError("Non-finite logits")
+            losses[task_idx] += torch.nn.functional.cross_entropy(
+                logits[task], targets[:, task_idx], reduction="sum",
+            )
             probabilities = logits[task].softmax(-1).cpu().numpy()
             preds = probabilities.argmax(-1)
             for i, image_path in enumerate(ids):
@@ -98,7 +103,11 @@ def evaluate_model(model, loader, device, run_id: str, seed: int, split="validat
                     "truth": int(labels[i, task_idx]), "prediction_raw": int(preds[i]),
                     "probability_positive": float(probabilities[i, 1]),
                 })
-    return evaluate_records(pd.DataFrame(records))
+    scores, predictions = evaluate_records(pd.DataFrame(records))
+    means = (losses / (len(records) // len(TASKS))).cpu().tolist()
+    scores["loss"] = dict(zip(TASKS, means))
+    scores["loss"]["mean"] = sum(means) / len(TASKS)
+    return scores, predictions
 
 
 def rescue_hurt(reference: pd.DataFrame, candidate: pd.DataFrame):

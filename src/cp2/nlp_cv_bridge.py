@@ -135,7 +135,7 @@ def evaluate_robustness(model, variant, validation_frame, tokenizer, device,
     out = Path(output_dir)
     if (out / "robustness_metrics.json").exists():
         raise FileExistsError("Robustness report already exists; choose new private output")
-    out.mkdir(parents=True, exist_ok=True)
+    out.mkdir(parents=True, exist_ok=True, mode=0o700)
     conditions = (*TEXT_CONDITIONS, *(("visual_off",) if variant != "B0" else ()))
     reports, predictions = {}, {}
     for condition in conditions:

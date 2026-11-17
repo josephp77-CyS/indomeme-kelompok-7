@@ -1,5 +1,7 @@
 # Paket kontribusi CP2 NLP — INDOMEME Kelompok 7
 
+**Status integrasi terbaru ada di [mulai-cp2.md](docs/cp2/mulai-cp2.md).** Dokumen di bawah merekam pekerjaan NLP yang sudah diserahkan hingga 16 November, termasuk status sementara sebelum audit dan sebelum integrasi M1–M3. Gunakan panduan baru untuk menjalankan eksperimen dari branch integrasi.
+
 > **STATUS TERBARU — 16 November 2026 (berdasarkan bukti operator dan notebook yang dijalankan):** **B0 full training dua seed (42/123) telah selesai**, dan NLP04 validation-only pada B0 dua seed juga telah selesai. **B1 dan B2 telah lulus smoke dan pilot seluruh data satu epoch seed 42** di AI Data Center (B1 pilot train loss **0.5354**, mean raw validation Macro-F1 **0.7672**, **1084.8 dtk**; B2 pilot train loss **0.5344**, mean raw validation Macro-F1 **0.7542**, **1044.7 dtk**). **Belum full training B1/B2**; M1–M3 belum memiliki implementasi resmi end-to-end. [Laporan bukti dan handoff untuk CV/Joseph](docs/cp2/cp2_b1_b2_pilot_nlp04_handoff_2026-11-16.md). [Laporan NLP04 dua seed](docs/cp2/nlp04_b0_two_seed_robustness_2026-11-16.md). Paragraf status historis setelah ini adalah snapshot saat penulisan awal, **bukan status terkini**. Angka pilot tidak dipakai sebagai skor final; metrik/perangkat/VRAM rinci menunggu audit JSON privat.
 
 

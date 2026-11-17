@@ -1,4 +1,4 @@
-"""B1/B2 pooled-vision CP2 training. Run from repo root with PYTHONPATH=src.
+"""B1–M3 CP2 training. Run from repo root with PYTHONPATH=src.
 
 No official test inference, no automatic heavy training, and no GitHub data upload.
 Separate run directories from B0 prevent accidental checkpoint overwrites.
@@ -22,12 +22,13 @@ from .mm_models import PooledMultimodal
 from .nlp_data import MAX_LENGTH, get_partitions, sha256_file
 from .nlp_evaluation import write_json
 from .nlp_cv_bridge import CheckedLoader, NLPCheckedModel, evaluate_cv_model
-from .nlp_runner import environment_snapshot, make_provenance, model_loss, seed_all, selection_value, tokenizer
+from .nlp_runner import make_provenance, model_loss, seed_all, selection_value, tokenizer
+from .operations import GIB, check_checkpoint_disk, check_disk, check_gpu, private_path, require_frozen_protocol, worker_lock
 
 
 def checked_args(args):
     if args.variant not in PooledMultimodal.VARIANTS:
-        raise ValueError("Variant must be B1 or B2")
+        raise ValueError("Variant must be B1, B2, M1, M2 or M3")
     if args.epochs <= 0 or args.max_train is not None and args.max_train <= 0 or args.max_validation is not None and args.max_validation <= 0:
         raise ValueError("Epochs and optional sample bounds must be positive")
     if args.pilot_full_data and args.full:
@@ -62,19 +63,32 @@ def train_epoch_mm(model, loader, optimizer, scheduler, device, accumulation=8):
 
 def run_training(args):
     checked_args(args)
+    workspace, output = private_path(args.workspace), private_path(args.output)
+    protocol_sha = require_frozen_protocol() if args.full else None
+    with worker_lock(workspace):
+        return train_run(args, workspace, output, protocol_sha)
+
+
+def train_run(args, workspace, output, protocol_sha):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    if args.require_gpu and device.type != "cuda":
+    if (args.require_gpu or args.full) and device.type != "cuda":
         raise RuntimeError("GPU required; no visible CUDA device")
+    check_gpu(device)
+    if device.type == "cuda" and not (workspace / "data/raw/train-00000-of-00001.parquet").is_file():
+        check_disk(workspace, 50 * GIB)
     seed_all(args.seed)
-    partitions, digest = get_partitions(args.workspace)
+    partitions, digest = get_partitions(workspace)
     fit, val = partitions["fit"], partitions["validation"]
     scope = "full" if args.full else ("pilot_full_data" if args.pilot_full_data else "smoke")
     if scope == "smoke":
         fit = fit.sample(n=min(args.max_train or 32, len(fit)), random_state=args.seed).reset_index(drop=True)
         val = val.sample(n=min(args.max_validation or 16, len(val)), random_state=args.seed).reset_index(drop=True)
 
-    out = Path(args.output).expanduser().resolve() / f"{args.variant}_{scope}_seed{args.seed}"
-    out.mkdir(parents=True, exist_ok=True)
+    out = private_path(output / f"{args.variant}_{scope}_seed{args.seed}")
+    if (out / "result.json").exists():
+        raise FileExistsError(f"Completed run cannot be overwritten: {out}")
+    check_checkpoint_disk(out, 203_000_000)
+    out.mkdir(parents=True, exist_ok=True, mode=0o700)
     # Provenance includes runtime, source checksums and pinned revisions, never credentials.
     provenance = make_provenance(digest)
     provenance["multimodal_source_sha256"] = {
@@ -91,6 +105,8 @@ def run_training(args):
         "checkpoint_selection": "mean raw validation macro-F1, first epoch wins ties",
         "fit_rows": len(fit), "validation_rows": len(val),
         "image_split_loaded": "train only",
+        "visual_dropout": PooledMultimodal.VISUAL_DROPOUT if args.variant == "M3" else 0.0,
+        "frozen_protocol_sha256": protocol_sha,
         "provenance": provenance,
     }
     cf = out / "config.json"
@@ -98,11 +114,9 @@ def run_training(args):
         # An exact byte-for-byte provenance match is expected on resume.
         raise ValueError("Run config/provenance mismatch; do not overwrite an existing run")
     write_json(cf, config)
-    if (out / "result.json").exists():
-        raise FileExistsError(f"Completed run cannot be overwritten: {out}")
 
     # Loading image bytes may download a large pinned TRAIN parquet; no test parquet.
-    images = load_train_images(args.workspace)
+    images = load_train_images(workspace)
     needed_ids = set(fit.image_path) | set(val.image_path)
     if not needed_ids.issubset(images):
         raise ValueError("Image IDs missing from pinned TRAIN parquet")
@@ -110,9 +124,10 @@ def run_training(args):
     fit_ds = MemeMultimodalDataset(fit, images, tok, processor)
     val_ds = MemeMultimodalDataset(val, images, tok, processor)
     val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=0)
+    check_gpu(device)
     model = PooledMultimodal(args.variant).to(device)
     model_params = model.parameter_summary()
-    expected_nonencoder = {"B1": 1183492, "B2": 595205}[args.variant]
+    expected_nonencoder = {"B1": 1183492, "B2": 595205, "M1": 2365444, "M2": 2366981, "M3": 2366981}[args.variant]
     if model_params["non_encoder"] != expected_nonencoder:
         raise RuntimeError(f"CV01 non-encoder parameter mismatch: {model_params}")
     write_json(out / "parameter_summary.json", model_params)
@@ -127,7 +142,7 @@ def run_training(args):
     if last.exists():
         if not args.resume:
             raise FileExistsError(f"Found incomplete checkpoint {last}; use --resume after review")
-        state = torch.load(last, map_location=device, weights_only=True)
+        state = torch.load(last, map_location="cpu", weights_only=True)
         if state["config_hash"] != sha256_file(cf):
             raise ValueError("Checkpoint config hash mismatch")
         model.load_state_dict(state["model"])
@@ -135,6 +150,7 @@ def run_training(args):
         scheduler.load_state_dict(state["scheduler"])
         start_epoch, best = int(state["epoch_completed"]), float(state["best"])
         bad_epochs, history = int(state["bad_epochs"]), state["history"]
+        del state
     elif args.resume:
         raise FileNotFoundError(f"Cannot resume: no checkpoint at {last}")
 
@@ -157,6 +173,7 @@ def run_training(args):
             torch.cuda.synchronize()
         seconds = time.perf_counter() - start
         score = selection_value(scores)
+        check_checkpoint_disk(out, model_params["total"])
         if score > best:
             best, bad_epochs = score, 0
             best_state = {"model": model.state_dict(), "config_hash": sha256_file(cf),
@@ -170,6 +187,7 @@ def run_training(args):
             bad_epochs += 1
         history.append({
             "epoch": epoch + 1, "train_loss": loss,
+            "validation_loss": scores["loss"],
             "raw_validation_selection_macro_f1": score,
             "hate_macro_f1": scores["hate"]["macro_f1"],
             "appropriate_macro_f1": scores["appropriate"]["macro_f1"],
@@ -197,8 +215,8 @@ def run_training(args):
 
 
 def main():
-    p = argparse.ArgumentParser(description="Train CV01 B1/B2 CP2 multimodal pooled fusion")
-    p.add_argument("--variant", choices=["B1", "B2"], required=True)
+    p = argparse.ArgumentParser(description="Train CV01 B1–M3 multimodal fusion")
+    p.add_argument("--variant", choices=PooledMultimodal.VARIANTS, required=True)
     p.add_argument("--workspace", required=True)
     p.add_argument("--output", required=True)
     p.add_argument("--seed", type=int, default=42)

@@ -13,12 +13,6 @@ fi
 export PYTHONPATH="${PWD}/src${PYTHONPATH:+:$PYTHONPATH}"
 export CP2_WORKSPACE="${CP2_WORKSPACE:-$HOME/kelompok-7-private/cp2_data}"
 export CP2_OUT="${CP2_OUT:-$HOME/kelompok-7-private/cp2_runs}"
-if [[ "$ACTION" != preflight && "$ACTION" != test ]]; then
-  mkdir -p "$CP2_WORKSPACE" "$CP2_OUT"
-  case "$(realpath "$CP2_OUT")" in
-    "$(realpath .)"/*) echo 'ERROR: private CP2_OUT must be outside repository'; exit 2;;
-  esac
-fi
 case "$ACTION" in
   preflight)
     echo "Git branch: $(git branch --show-current 2>/dev/null || echo unknown)"
