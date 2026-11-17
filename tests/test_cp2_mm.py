@@ -225,3 +225,60 @@ def test_optimizer_step_mm_with_mock_encoders():
     sched = torch.optim.lr_scheduler.LambdaLR(optim, lr_lambda=lambda _: 1.)
     loss = train_epoch_mm(model, batches, optim, sched, torch.device("cpu"), accumulation=2)
     assert np.isfinite(loss)
+
+
+def test_m3_resume_matches_uninterrupted_epochs(tmp_path, monkeypatch):
+    import json
+    import sys
+    from cp2 import mm_runner
+
+    rows = pd.DataFrame([
+        dict(image_path=str(i), caption="caption", ocr="OCR", y_hate=i % 2, y_appropriate=i % 2)
+        for i in range(4)
+    ])
+    buf = io.BytesIO()
+    Image.new("RGB", (8, 8), (64, 64, 64)).save(buf, "PNG")
+    monkeypatch.setattr(mm_runner, "get_partitions", lambda _: ({"fit": rows[:2], "validation": rows[2:]}, "split"))
+    monkeypatch.setattr(mm_runner, "load_train_images", lambda _: dict.fromkeys(rows.image_path, buf.getvalue()))
+    monkeypatch.setattr(mm_runner, "image_processor", lambda: lambda **_: {"pixel_values": torch.ones(1, 3, 224, 224)})
+    monkeypatch.setattr(mm_runner, "make_provenance", lambda digest: {"manifest_sha256": digest})
+    monkeypatch.setattr(mm_runner, "tokenizer", TinyTokenizer)
+    class MockMultimodal(PooledMultimodal):
+        def __init__(self, variant):
+            super().__init__(variant, text_encoder=TinyEncoder(False), vision_encoder=TinyEncoder(True))
+    monkeypatch.setattr(mm_runner, "PooledMultimodal", MockMultimodal)
+    monkeypatch.setattr(mm_runner, "check_checkpoint_disk", lambda *a: None)
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+    monkeypatch.setitem(sys.modules, "transformers", SimpleNamespace(
+        get_linear_schedule_with_warmup=lambda optimizer, num_warmup_steps, num_training_steps:
+            torch.optim.lr_scheduler.LambdaLR(optimizer, lambda step: 1 - step / num_training_steps)
+    ))
+    run = args(variant="M3", epochs=2, seed=42, require_gpu=False)
+    # Use the inner runner to exercise real checkpoint restart in a short CPU fixture.
+    mm_runner.train_run(run, tmp_path, tmp_path / "clean", None)
+    original_train_epoch = mm_runner.train_epoch_mm
+    calls = 0
+
+    def interrupt_second_epoch(*a, **kw):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            raise InterruptedError("simulated interruption")
+        return original_train_epoch(*a, **kw)
+
+    monkeypatch.setattr(mm_runner, "train_epoch_mm", interrupt_second_epoch)
+    with pytest.raises(InterruptedError):
+        mm_runner.train_run(run, tmp_path, tmp_path / "restart", None)
+    monkeypatch.setattr(mm_runner, "train_epoch_mm", original_train_epoch)
+    run.resume = True
+    mm_runner.train_run(run, tmp_path, tmp_path / "restart", None)
+    first = tmp_path / "clean/M3_smoke_seed42"
+    second = tmp_path / "restart/M3_smoke_seed42"
+    states = [torch.load(d / "last.pt", map_location="cpu", weights_only=True) for d in (first, second)]
+    a, b = states
+    assert a["epoch_completed"] == b["epoch_completed"] == 2
+    assert a["best"] == b["best"] and a["bad_epochs"] == b["bad_epochs"]
+    assert a["scheduler"] == b["scheduler"]
+    for name, value in a["model"].items():
+        torch.testing.assert_close(value, b["model"][name], rtol=0, atol=0)
+    assert json.loads((second / "result.json").read_text())["test_evaluated"] is False

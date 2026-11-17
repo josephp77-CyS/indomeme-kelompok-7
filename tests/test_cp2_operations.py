@@ -1,5 +1,6 @@
 from pathlib import Path
 from types import SimpleNamespace
+import json
 
 import pytest
 import torch
@@ -55,6 +56,16 @@ def test_selected_gpu_needs_free_memory_and_low_utilization(monkeypatch, memory,
             operations.check_gpu(torch.device("cuda"))
 
 
-def test_draft_protocol_refuses_full_run():
+def test_freeze_refuses_draft_or_dirty_source(tmp_path, monkeypatch):
+    monkeypatch.setattr(operations, "REPO", tmp_path)
+    config = tmp_path / "configs" / "cp2_nlp_protocol.json"
+    config.parent.mkdir()
+    config.write_text(json.dumps({"status": "PROPOSED_NOT_FROZEN"}), encoding="utf-8")
     with pytest.raises(RuntimeError, match="joint CV/NLP review"):
         operations.require_frozen_protocol()
+    config.write_text(json.dumps({"status": "FROZEN", "freeze_receipt": "review fixture"}), encoding="utf-8")
+    monkeypatch.setattr(operations.subprocess, "check_output", lambda *a, **kw: " M src/cp2/operations.py")
+    with pytest.raises(RuntimeError, match="Commit the reviewed"):
+        operations.require_frozen_protocol()
+    monkeypatch.setattr(operations.subprocess, "check_output", lambda *a, **kw: "")
+    assert operations.require_frozen_protocol() == operations.sha256_file(config)

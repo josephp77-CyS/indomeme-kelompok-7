@@ -77,6 +77,12 @@ def check_gpu(device):
 def require_frozen_protocol():
     path = REPO / "configs/cp2_nlp_protocol.json"
     protocol = json.loads(path.read_text(encoding="utf-8"))
-    if protocol.get("status") != "FROZEN" or not protocol.get("freeze_receipt"):
+    receipt = protocol.get("freeze_receipt")
+    if protocol.get("status") != "FROZEN" or not isinstance(receipt, str) or not receipt.strip():
         raise RuntimeError("Full training requires a frozen protocol and a recorded joint CV/NLP review")
+    dirty = subprocess.check_output(
+        ["git", "status", "--porcelain", "--", "src", "configs", "scripts"], cwd=REPO, text=True,
+    )
+    if dirty.strip():
+        raise RuntimeError("Commit the reviewed CP2 source and protocol before full training")
     return sha256_file(path)

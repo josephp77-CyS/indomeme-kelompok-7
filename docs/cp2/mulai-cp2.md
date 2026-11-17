@@ -7,11 +7,13 @@ Status 17 November 2026. [CP1](../../README.md) adalah referensi historis. Ekspe
 | B0 | IndoBERTweet, teks Caption+OCR | Full seed 42 diaudit di JupyterHub (mean raw validation F1 0,782072); full seed 123 dilaporkan di Colab (0,771214); robustness B0 dua seed dilaporkan |
 | B1 | IndoBERTweet + ViT concatenation | Pilot seed 42 diaudit: 0,767186, 18,08 menit/epoch; full belum ada |
 | B2 | Pooled projection + shared scalar gate + residual teks | Pilot seed 42 diaudit: 0,754206, 17,41 menit/epoch; full belum ada |
-| M1 | Query token teks, key/value 49 patch ViT, masked pooling + residual | Implementasi terhubung ke trainer dan evaluator; kalibrasi GPU dan full belum ada |
-| M2 | M1 + shared scalar gate | Implementasi terhubung ke trainer dan evaluator; kalibrasi GPU dan full belum ada |
-| M3 | M2 + visual dropout per meme dengan peluang 0,1 | Implementasi terhubung ke trainer dan evaluator; kalibrasi GPU dan full belum ada |
+| M1 | Query token teks, key/value 49 patch ViT, masked pooling + residual | Smoke pretrained di CPU JupyterHub lulus; kalibrasi GPU dan full belum ada |
+| M2 | M1 + shared scalar gate | Smoke pretrained di CPU JupyterHub lulus; kalibrasi GPU dan full belum ada |
+| M3 | M2 + visual dropout per meme dengan peluang 0,1 | Smoke pretrained di CPU JupyterHub lulus; kalibrasi GPU dan full belum ada |
 
 Pilot berbeda dari full dalam jumlah epoch dan jadwal learning rate. Angka pilot bukan ranking model. Referensi sintetis yang lama tetap dipisahkan dari model pretrained resmi di `src/cp2/mm_models.py`.
+
+Smoke di JupyterHub pada commit `42ce32f`: masing-masing 8 fit dan 8 validation, seed 42, satu langkah optimizer, data asli dan bobot pinned dari cache. M1/M2/M3 masing-masing memerlukan 19,0/19,3/20,2 detik untuk train + validation CPU. Tiap `best.pt` dan `last.pt` cocok dengan hash config; checkpoint terbaik dimuat ulang dan mereproduksi prediksi serta probabilitas validation dalam toleransi FP32. Checkpoint dan prediksi disimpan privat. Ini bukti alur, bukan estimasi GPU atau bukti keunggulan metode. Tes sintetis tambahan menguji resume M3 hingga bobot sama persis dengan run tak terputus.
 
 ## Keputusan siap review
 
@@ -21,7 +23,7 @@ Pilot berbeda dari full dalam jumlah epoch dan jadwal learning rate. Angka pilot
 - Dua CE berbobot 0,5; rata-rata **raw** validation Macro-F1 memilih checkpoint. Jika seri, pilih epoch lebih awal. Skor constrained tetap sekunder. Perbandingan model memakai seed yang sama, dengan aturan selisih ≤0,005 dan biaya terukur bila tim menyetujui usulan tie-break.
 - Model dipilih dari validation. Batas 256 token, pinned backbone dan seed split 42 tetap. B0 seed 42/123 sudah dilatih sebelum freeze formal; pertahankan sebagai bukti yang ada dan dokumentasikan jika keputusan baru mengubah keterbandingannya.
 - Usulkan satu seed 42 untuk keenam model sebagai paket minimum eksploratif; tetapkan 6/14/18 run setelah pilot M3 dan jadwal GPU terukur. Jangan menukar seed berdasarkan skor. Laporkan CP1 dan CP2, raw/constrained, normal/ablasi, dan biaya secara terpisah.
-- Setelah Joseph dan Rafa menyetujui kebijakan, isi `freeze_receipt` di [config CP2](../../configs/cp2_nlp_protocol.json) dengan rujukan review dan keputusan, ubah `status` ke `FROZEN`, dan commit. Runner menyimpan hash config tersebut untuk full run. Belum ada freeze formal atau approval GPU dalam dokumen ini.
+- Setelah Joseph dan Rafa menyetujui kebijakan, isi `freeze_receipt` di [config CP2](../../configs/cp2_nlp_protocol.json) dengan rujukan review dan keputusan, ubah `status` ke `FROZEN`, dan commit. Runner menolak source/protokol yang belum di-commit dan menyimpan hash config tersebut untuk full run. Belum ada freeze formal atau approval GPU dalam dokumen ini.
 
 ## Menjalankan tahap berikutnya
 
