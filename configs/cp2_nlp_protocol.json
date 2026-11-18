@@ -1,0 +1,24 @@
+{
+  "status": "PROPOSED_NOT_FROZEN",
+  "freeze_receipt": null,
+  "dataset": "aiatums/INDOMEME",
+  "dataset_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
+  "historic_manifest_sha256": "4368e5767d73dfe988f9734dde59a146e125a0cda82c2783ee8eff46acab1a39",
+  "splits": {"fit": 3214, "validation": 804, "test": 1005},
+  "text": {
+    "model": "indolem/indobertweet-base-uncased",
+    "revision": "32e28c05b47e33b6675d2670a1745c50a65e987a",
+    "fields": ["caption", "ocr"], "forbidden": ["topic"], "max_length": 256
+  },
+  "image": {"model": "google/vit-base-patch32-224-in21k", "revision": "98cb6f7099d372694c8547bf7002289b36857dc7", "patches": 49},
+  "label_order": ["hate", "appropriate"],
+  "positive_class": {"hate": "hate", "appropriate": "inappropriate"},
+  "loss": {"hate": 0.5, "appropriate": 0.5},
+  "checkpoint_selection": "mean(raw_validation_macro_F1_hate, raw_validation_macro_F1_appropriate)",
+  "constrained_metric": "secondary_only",
+  "optimizer": "AdamW", "learning_rate": 0.00002, "weight_decay": 0.01,
+  "physical_batch": 1, "gradient_accumulation": 8, "precision": "fp32",
+  "epochs_max": 5, "patience": 2, "seeds_proposed": [42, 123, 2026],
+  "variants": ["B0", "B1", "B2", "M1", "M2", "M3"],
+  "visual_dropout_m3": 0.1
+}
