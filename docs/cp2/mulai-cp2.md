@@ -1,6 +1,6 @@
 # CP2 INDOMEME — integrasi CV dan NLP
 
-Status 17 November 2026. [CP1](../../README.md) adalah referensi historis. Eksperimen CP2 memakai input dan aturan pemilihan checkpoint yang berbeda, sehingga skor CP1 dan CP2 tidak menjadi perbandingan langsung.
+Status 18 November 2026. [CP1](../../README.md) adalah referensi historis. Eksperimen CP2 memakai input dan aturan pemilihan checkpoint yang berbeda, sehingga skor CP1 dan CP2 tidak menjadi perbandingan langsung.
 
 | Kondisi | Arsitektur CV01 | Bukti tersedia |
 | --- | --- | --- |
@@ -15,6 +15,8 @@ Pilot berbeda dari full dalam jumlah epoch dan jadwal learning rate. Angka pilot
 
 Smoke di JupyterHub pada commit `42ce32f`: masing-masing 8 fit dan 8 validation, seed 42, satu langkah optimizer, data asli dan bobot pinned dari cache. M1/M2/M3 masing-masing memerlukan 19,0/19,3/20,2 detik untuk train + validation CPU. Tiap `best.pt` dan `last.pt` cocok dengan hash config; checkpoint terbaik dimuat ulang dan mereproduksi prediksi serta probabilitas validation dalam toleransi FP32. Checkpoint dan prediksi disimpan privat. Ini bukti alur, bukan estimasi GPU atau bukti keunggulan metode. Tes sintetis tambahan menguji resume M3 hingga bobot sama persis dengan run tak terputus.
 
+Commit `6e4c212` lulus 74 tes di laptop dan 74 tes di CPU JupyterHub dalam 5,74 detik. Verifier CP1 juga lulus pada source tersebut. Pemeriksaan GPU tanggal 18 November berhasil memilih UUID perangkat yang sama dengan PyTorch, lalu menolak training karena utilisasi 100% dengan sekitar 39 GiB VRAM bebas.
+
 ## Keputusan siap review
 
 [PR desain CV #2](https://github.com/josephp77-CyS/indomeme-kelompok-7/pull/2), [PR protokol NLP #3](https://github.com/josephp77-CyS/indomeme-kelompok-7/pull/3), dan [PR implementasi NLP #4](https://github.com/josephp77-CyS/indomeme-kelompok-7/pull/4) tetap menjadi riwayat kontribusi masing-masing. Cabang integrasi menggabungkan source dari keduanya untuk review; tidak memutuskan approval atas nama Rafa.
@@ -28,6 +30,8 @@ Smoke di JupyterHub pada commit `42ce32f`: masing-masing 8 fit dan 8 validation,
 ## Menjalankan tahap berikutnya
 
 Aktifkan environment CP2 yang sudah diuji. Gunakan checkout bersih pada SHA kandidat dan folder privat yang sama untuk seluruh worker kelompok. Gunakan output baru agar artefak lama tidak tertimpa. Data tidak disalin ke dalam checkout.
+
+[Notebook operator](../../notebooks/00_cp2_nlp_operator.ipynb) dapat dibuka dari folder notebooks. Sel awal menemukan root checkout. Sel tes menjalankan seluruh suite CP2, dan kontrol multimodal menyediakan smoke/pilot B1–M3. [Panduan kontribusi](../../CONTRIBUTING.md) memuat perintah pemeriksaan PR.
 
 ```bash
 export CP2_WORKSPACE="$HOME/kelompok-7-private/cp2_data"

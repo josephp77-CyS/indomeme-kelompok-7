@@ -25,7 +25,7 @@ import torch
 print('Torch:', torch.__version__, 'CUDA:', torch.version.cuda, 'available:', torch.cuda.is_available())
 PY
     ;;
-  test) python -m pytest -q tests/test_cp2_nlp.py; python verify_submission.py;;
+  test) python -m pytest -q tests; python verify_submission.py;;
   init-data) python -m cp2.nlp_runner init-data --workspace "$CP2_WORKSPACE";;
   audit) python -m cp2.nlp_runner audit --workspace "$CP2_WORKSPACE" --output "$CP2_OUT/audits";;
   calibrate-attention) python -m cp2.nlp_runner calibrate --component attention --batch 1 --output "$CP2_OUT/calibration" --require-gpu;;
