@@ -17,6 +17,8 @@ Smoke di JupyterHub pada commit `42ce32f`: masing-masing 8 fit dan 8 validation,
 
 Commit `6e4c212` lulus 74 tes di laptop dan 74 tes di CPU JupyterHub dalam 5,74 detik. Verifier CP1 juga lulus pada source tersebut. Pemeriksaan GPU tanggal 18 November berhasil memilih UUID perangkat yang sama dengan PyTorch, lalu menolak training karena utilisasi 100% dengan sekitar 39 GiB VRAM bebas.
 
+Pada `6fe0da7`, kedua skrip operator lulus 74 tes setelah isolasi PYTHONPATH diperbaiki. Notebook operator selesai menjalankan tujuh sel kode dengan kernel CP2. B0 seed 42 juga dievaluasi ulang di CPU pada 804 meme validation. Prediksi raw untuk normal, no-caption, dan no-OCR cocok dengan hasil sebelumnya, dengan mean raw Macro-F1 masing-masing 0,782072 / 0,692749 / 0,756750. Rescue/hurt juga cocok. CLI awal berhenti pada batas 900 detik setelah dua kondisi tersimpan. Kondisi no-OCR diselesaikan dengan batch evaluasi 8, lalu seluruh prediksi dipasangkan ulang berdasarkan ID dan task. Ketiga kondisi menghasilkan nol perubahan label prediksi. Checkpoint, CSV individual, dan JSON verifikasi tersimpan privat.
+
 ## Keputusan siap review
 
 [PR desain CV #2](https://github.com/josephp77-CyS/indomeme-kelompok-7/pull/2), [PR protokol NLP #3](https://github.com/josephp77-CyS/indomeme-kelompok-7/pull/3), dan [PR implementasi NLP #4](https://github.com/josephp77-CyS/indomeme-kelompok-7/pull/4) tetap menjadi riwayat kontribusi masing-masing. Cabang integrasi menggabungkan source dari keduanya untuk review; tidak memutuskan approval atas nama Rafa.
