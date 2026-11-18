@@ -79,7 +79,7 @@ def require_frozen_protocol():
     protocol = json.loads(path.read_text(encoding="utf-8"))
     receipt = protocol.get("freeze_receipt")
     if protocol.get("status") != "FROZEN" or not isinstance(receipt, str) or not receipt.strip():
-        raise RuntimeError("Full training requires a frozen protocol and a recorded joint CV/NLP review")
+        raise RuntimeError("Full training requires a frozen protocol and a recorded authorization")
     dirty = subprocess.check_output(
         ["git", "status", "--porcelain", "--", "src", "configs", "scripts"], cwd=REPO, text=True,
     )

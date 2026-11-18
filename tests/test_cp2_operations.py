@@ -61,7 +61,7 @@ def test_freeze_refuses_draft_or_dirty_source(tmp_path, monkeypatch):
     config = tmp_path / "configs" / "cp2_nlp_protocol.json"
     config.parent.mkdir()
     config.write_text(json.dumps({"status": "PROPOSED_NOT_FROZEN"}), encoding="utf-8")
-    with pytest.raises(RuntimeError, match="joint CV/NLP review"):
+    with pytest.raises(RuntimeError, match="recorded authorization"):
         operations.require_frozen_protocol()
     config.write_text(json.dumps({"status": "FROZEN", "freeze_receipt": "review fixture"}), encoding="utf-8")
     monkeypatch.setattr(operations.subprocess, "check_output", lambda *a, **kw: " M src/cp2/operations.py")

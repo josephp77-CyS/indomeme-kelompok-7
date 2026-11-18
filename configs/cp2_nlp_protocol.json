@@ -1,6 +1,6 @@
 {
-  "status": "PROPOSED_NOT_FROZEN",
-  "freeze_receipt": null,
+  "status": "FROZEN",
+  "freeze_receipt": "2026-11-19 WIB: Joseph authorized the seed 42 protocol after technical review. See docs/cp2/protokol-full-seed42.md. No approval attributed to Rafa.",
   "dataset": "aiatums/INDOMEME",
   "dataset_revision": "3e0cb8cae9cd726582f69afdb122163d0eab108b",
   "historic_manifest_sha256": "4368e5767d73dfe988f9734dde59a146e125a0cda82c2783ee8eff46acab1a39",
@@ -18,7 +18,8 @@
   "constrained_metric": "secondary_only",
   "optimizer": "AdamW", "learning_rate": 0.00002, "weight_decay": 0.01,
   "physical_batch": 1, "gradient_accumulation": 8, "precision": "fp32",
-  "epochs_max": 5, "patience": 2, "seeds_proposed": [42, 123, 2026],
+  "epochs_max": 5, "patience": 2, "seeds": [42],
   "variants": ["B0", "B1", "B2", "M1", "M2", "M3"],
+  "full_run_order": ["B1", "M1", "M2", "M3", "B2"],
   "visual_dropout_m3": 0.1
 }
