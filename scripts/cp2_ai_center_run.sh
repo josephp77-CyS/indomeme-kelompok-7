@@ -10,7 +10,8 @@ ACTION="$1"
 if [[ ! -f src/cp2/nlp_runner.py || ! -f src/master_workflow.py ]]; then
   echo 'ERROR: run from repo root with both CP1 and CP2 source'; exit 2
 fi
-export PYTHONPATH="${PWD}/src${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH="${PWD}/src"
+export PYTHONNOUSERSITE=1
 export CP2_WORKSPACE="${CP2_WORKSPACE:-$HOME/kelompok-7-private/cp2_data}"
 export CP2_OUT="${CP2_OUT:-$HOME/kelompok-7-private/cp2_runs}"
 case "$ACTION" in
