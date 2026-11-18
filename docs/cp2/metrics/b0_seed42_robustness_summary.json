@@ -1,0 +1,47 @@
+{
+  "artifact_type": "verified_aggregate_summary_from_terminal_output",
+  "source_note": "Values transcribed from the operator's pasted original-versus-recheck output on 2026-11-18. The full private robustness_metrics.json was not accessible in this GitHub session; per-task metrics and confusion matrices are not included.",
+  "verification": {
+    "original_and_recheck_match_on_reported_fields": true,
+    "complete_source_json_reviewed": false
+  },
+  "variant": "B0",
+  "run_id": "B0_full_seed42",
+  "seed": 42,
+  "split": "validation",
+  "number_of_ids": 804,
+  "test_evaluated": false,
+  "scores": {
+    "normal": {
+      "selection_macro_f1_raw": 0.7820723139803762
+    },
+    "no_caption": {
+      "selection_macro_f1_raw": 0.6927487893588997
+    },
+    "no_ocr": {
+      "selection_macro_f1_raw": 0.7567499520085174
+    }
+  },
+  "rescue_hurt_vs_normal": {
+    "no_caption": {
+      "hate": {
+        "rescue": 36,
+        "hurt": 80
+      },
+      "appropriate": {
+        "rescue": 39,
+        "hurt": 91
+      }
+    },
+    "no_ocr": {
+      "hate": {
+        "rescue": 27,
+        "hurt": 43
+      },
+      "appropriate": {
+        "rescue": 32,
+        "hurt": 44
+      }
+    }
+  }
+}
