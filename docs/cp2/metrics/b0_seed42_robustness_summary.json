@@ -1,9 +1,11 @@
 {
-  "artifact_type": "verified_aggregate_summary_from_terminal_output",
-  "source_note": "Values transcribed from the operator's pasted original-versus-recheck output on 2026-11-18. The full private robustness_metrics.json was not accessible in this GitHub session; per-task metrics and confusion matrices are not included.",
+  "artifact_type": "aggregate_summary_augmented_from_operator_reported_private_CSV_audit",
+  "source_note": "Scores and confusion matrices transcribed from the operator's output of scripts/cp2_nlp05_analyze.py on private B0_full_seed42 validation CSVs (2026-11-18). The script reports that 804 paired IDs, raw Macro-F1, and rescue/hurt agree with the earlier published summary. Private CSV files were not accessible to this GitHub connection, so this is not an independent raw-file audit or a verbatim copy of the private robustness_metrics.json.",
   "verification": {
     "original_and_recheck_match_on_reported_fields": true,
-    "complete_source_json_reviewed": false
+    "private_csv_cpu_audit_reported_by_operator": true,
+    "source_csv_independently_inspected": false,
+    "validation_only": true
   },
   "variant": "B0",
   "run_id": "B0_full_seed42",
@@ -13,13 +15,91 @@
   "test_evaluated": false,
   "scores": {
     "normal": {
-      "selection_macro_f1_raw": 0.7820723139803762
+      "selection_macro_f1_raw": 0.7820723139803762,
+      "hate": {
+        "macro_f1": 0.802278,
+        "confusion_matrix_0_1": [
+          [
+            479,
+            52
+          ],
+          [
+            86,
+            187
+          ]
+        ]
+      },
+      "appropriate": {
+        "macro_f1": 0.761866,
+        "confusion_matrix_0_1": [
+          [
+            395,
+            59
+          ],
+          [
+            124,
+            226
+          ]
+        ]
+      }
     },
     "no_caption": {
-      "selection_macro_f1_raw": 0.6927487893588997
+      "selection_macro_f1_raw": 0.6927487893588997,
+      "hate": {
+        "macro_f1": 0.71281,
+        "confusion_matrix_0_1": [
+          [
+            496,
+            35
+          ],
+          [
+            147,
+            126
+          ]
+        ]
+      },
+      "appropriate": {
+        "macro_f1": 0.672688,
+        "confusion_matrix_0_1": [
+          [
+            416,
+            38
+          ],
+          [
+            197,
+            153
+          ]
+        ]
+      }
     },
     "no_ocr": {
-      "selection_macro_f1_raw": 0.7567499520085174
+      "selection_macro_f1_raw": 0.7567499520085174,
+      "hate": {
+        "macro_f1": 0.771865,
+        "confusion_matrix_0_1": [
+          [
+            486,
+            45
+          ],
+          [
+            109,
+            164
+          ]
+        ]
+      },
+      "appropriate": {
+        "macro_f1": 0.741635,
+        "confusion_matrix_0_1": [
+          [
+            404,
+            50
+          ],
+          [
+            145,
+            205
+          ]
+        ]
+      }
     }
   },
   "rescue_hurt_vs_normal": {
