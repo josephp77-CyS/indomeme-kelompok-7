@@ -7,6 +7,7 @@ import pytest
 from cp2.caption_triage import View
 from cp2.recaption import MAX_NEW_TOKENS, MAX_PIXELS, MIN_PIXELS, PROMPT, REVISION, restore_caption_rows
 from cp2.repair_router import error_cost, fit_router, replay
+from cp2.repair_specialist import compare_at_fixed_routing
 from cp2.source_noise import mixed_condition, noisy_sources, repair_training_captions
 
 
@@ -62,3 +63,6 @@ def test_router_targets_action_gain_and_keeps_unavailable_replacements():
     assert checked["learned_confirm"]["routed"] == checked["learned"]["routed"]
     assert checked["learned_confirm"]["usable_action"] == 0
     assert checked["learned_confirm"]["error_cost_per_100"] == checked["keep"]["error_cost_per_100"]
+    specialist, contrast = compare_at_fixed_routing(truth, available, views, noisy_replacement, cross_fit_rank, 0.2)
+    assert not contrast.any()
+    assert specialist["S1_after_recaption"]["macro_f1"] == results["learned"]["macro_f1"]

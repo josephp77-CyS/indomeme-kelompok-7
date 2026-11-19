@@ -57,21 +57,25 @@ def fit_router(truth, available, views, *, confirm=False):
     return model, oof.reshape(2, count)
 
 
+def replay_assignments(n, swap_fraction):
+    budget, n_swap = math.ceil(0.2 * n), math.ceil(swap_fraction * n)
+    rng = np.random.default_rng(REPLAY_SEED)
+    for _ in range(20):
+        replaced = np.zeros(n, dtype=bool)
+        replaced[rng.permutation(n)[:n_swap]] = True
+        yield replaced, rng.permutation(n), budget
+
+
 def replay(truth, available, views, learned, swap_fraction, confirmation=None):
     clean, masked, swapped, alternate = (views[name] for name in (*CONDITIONS, "recaption"))
     hints_clean, hints_swap = (priorities(view.probabilities, masked.probabilities) for view in (clean, swapped))
     n = len(truth)
-    budget, n_swap = math.ceil(0.2 * n), math.ceil(swap_fraction * n)
-    rng = np.random.default_rng(REPLAY_SEED)
     policies = ("keep", "random", "uncertainty", "disagreement", "learned", "learned_omit", "all")
     if confirmation is not None:
         policies += ("learned_confirm",)
     metrics = {policy: [] for policy in policies}
     paired = np.zeros(n)
-    for _ in range(20):
-        replaced = np.zeros(n, dtype=bool)
-        replaced[rng.permutation(n)[:n_swap]] = True
-        tie = rng.permutation(n)
+    for replaced, tie, budget in replay_assignments(n, swap_fraction):
         initial = np.where(replaced[:, None], swapped.predictions, clean.predictions)
         rank = {"random": np.zeros(n), "learned": np.where(replaced, learned[1], learned[0])}
         rank.update({name: np.where(replaced, hints_swap[name], hints_clean[name]) for name in hints_clean})
