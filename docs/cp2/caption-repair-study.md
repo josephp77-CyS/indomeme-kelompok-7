@@ -1,6 +1,6 @@
 # Regenerasi caption untuk moderasi meme Indonesia dengan anggaran tetap
 
-INDOMEME memakai caption Gemini 2.5 Flash dan OCR sebagai informasi tambahan untuk klasifikasi kebencian dan ketidakpantasan. Caption awal mencakup isi visual dan pesan tersirat. Eksperimen ini menguji apakah deskripsi visual baru membantu kedua keputusan, terutama saat caption yang tersedia keliru. Aplikasi yang dituju adalah antrean moderasi komunitas berbahasa Indonesia, dengan pemrosesan caption tambahan dibatasi pada item yang diperkirakan paling terbantu. [Paper INDOMEME](https://doi.org/10.7717/peerj-cs.3736) · [Kartu dataset](https://huggingface.co/datasets/aiatums/INDOMEME/blob/main/README.md)
+INDOMEME memakai caption Gemini 2.5 Flash dan OCR Qwen2-VL-2B sebagai informasi tambahan untuk klasifikasi kebencian dan ketidakpantasan. Caption awal mencakup isi visual dan pesan tersirat. Eksperimen ini menguji apakah deskripsi visual baru membantu kedua keputusan, terutama saat caption yang tersedia keliru. Aplikasi yang dituju adalah antrean moderasi komunitas berbahasa Indonesia, dengan pemrosesan caption tambahan dibatasi pada item yang diperkirakan paling terbantu. [Paper INDOMEME](https://doi.org/10.7717/peerj-cs.3736) · [Kartu dataset](https://huggingface.co/datasets/aiatums/INDOMEME/blob/main/README.md)
 
 Posisi kontribusinya adalah perbandingan terkontrol antara strategi memilih intervensi dan training yang membiasakan model dengan caption baru. Pembelajaran kebijakan berbiaya dan pemilihan intervensi dengan kapasitas terbatas sudah memiliki preseden. Di sini pembanding memakai aksi regenerasi caption yang sama dan biaya klasifikasi dilacak pada dua tugas moderasi. [Mozannar dan Sontag, ICML 2020](https://proceedings.mlr.press/v119/mozannar20b.html) · [Alves dkk., TMLR 2024](https://arxiv.org/abs/2403.06906)
 
@@ -18,6 +18,7 @@ Posisi kontribusinya adalah perbandingan terkontrol antara strategi memilih inte
 - Random, ketidakpastian, perubahan probabilitas saat caption dihilangkan, dan router terlatih memperoleh kuota identik. Kontrol tambahan meliputi mempertahankan caption, menghapus caption pada pilihan router, dan mencoba regenerasi untuk seluruh item. Caption yang tidak tersedia mempertahankan prediksi awal pada simulasi regenerasi. Kuota mengukur jumlah permintaan caption dan belum menghitung biaya tambahan untuk pass tanpa caption.
 - S3 dan S1 berbagi arsitektur, seed, jadwal gangguan, dan pemilihan checkpoint Clean Macro-F1. Untuk S3, sekitar separuh bagian normal mendapat tawaran caption baru. Dengan proporsi normal 60%, ini mencakup hingga sekitar 30% input fit. Semua 3.214 fit dipakai. Konfigurasi memberi maksimum lima epoch dan early stopping setelah dua epoch tanpa perbaikan.
 - Selisih berpasangan dan interval bootstrap dihitung berdasarkan meme. Seed dan replay dipertahankan tetap. Dua duplikat piksel yang ditemukan pada audit awal tetap masuk ukuran utama 1.005 test agar perbandingan cocok dengan hasil awal. [Protokol terkunci](../../configs/cp2_caption_repair.json) · [Audit dan studi awal](source-reliability-study.md)
+- Audit tambahan membandingkan tumpang tindih kosakata caption lama dan baru terhadap OCR. Karena OCR dan regenerasi memakai keluarga model yang sama, kemiripan keluaran relevan untuk membaca hasil. Audit deskriptif melaporkan perubahan biaya saat seluruh caption yang tersedia dipakai oleh S1, dikelompokkan menurut topik dengan minimal 50 meme. Topik dapat bertumpang tindih dan hanya dipakai untuk analisis setelah inferensi.
 
 ## Pembacaan hasil
 
@@ -34,3 +35,5 @@ bash scripts/run_cp2_caption_repair.sh /path/to/cp2_data /path/to/source_study /
 ```
 
 Ringkasan agregat ditulis ke `router_results.json` dan `classifier_results.json`. Prediksi per meme dan caption tetap di penyimpanan privat. `pipeline_stage`, `pipeline.log`, dan `pipeline_exit` menunjukkan status kerja.
+
+Setelah prediksi router tersedia, jalankan `python -m cp2.repair_caption_audit --workspace /path/to/cp2_data --study /path/to/source_study --job /path/to/caption_repair` untuk menghasilkan `caption_audit.json`.
