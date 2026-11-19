@@ -65,8 +65,12 @@ def check_gpu(device):
     except (OSError, ValueError, subprocess.SubprocessError) as exc:
         raise RuntimeError("Cannot verify utilization of the selected CUDA device") from exc
     free, _ = torch.cuda.mem_get_info(device)
-    if not 0 <= utilization <= 10 or free < 10 * GIB:
-        raise RuntimeError(f"GPU needs ≥10 GiB free and ≤10% utilization; got {free/GIB:.2f} GiB / {utilization}%")
+    max_utilization = 100 if os.environ.get("CP2_ALLOW_SHARED_GPU") == "YES" else 10
+    if not 0 <= utilization <= max_utilization or free < 10 * GIB:
+        raise RuntimeError(
+            f"GPU needs ≥10 GiB free and utilization in 0–{max_utilization}%; "
+            f"got {free/GIB:.2f} GiB / {utilization}%"
+        )
     meminfo = Path("/proc/meminfo")
     if meminfo.is_file():
         for line in meminfo.read_text().splitlines():

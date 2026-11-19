@@ -46,7 +46,7 @@ for model in m1 m2 m3; do bash scripts/cp2_mm_run.sh "smoke-$model" || break; do
 bash scripts/cp2_mm_run.sh pilot-m3
 ```
 
-Smoke menguji alur dengan sampel terbatas; pilot mengukur satu epoch pada seluruh fit/validation. Catat VRAM, disk, waktu, parameter, dan muat ulang checkpoint dari smoke sebelum mengunci paket. Pengaman memeriksa GPU yang dipilih PyTorch via UUID, minimal 10 GiB bebas dan utilisasi maksimum 10%, RAM Linux 8 GiB, 50 GiB untuk workspace tanpa cache Parquet, dan ruang cadangan serta ruang checkpoint sebelum menulis. Snapshot ini bukan reservasi GPU. Kunci hanya berlaku untuk worker baru yang memakai lokasi workspace fisik yang sama; pilih satu operator.
+Smoke menguji alur dengan sampel terbatas. Pilot mengukur satu epoch pada seluruh fit/validation. Catat VRAM, disk, waktu, parameter, dan hasil muat ulang checkpoint smoke. Pengaman memeriksa GPU yang dipilih PyTorch via UUID, minimal 10 GiB VRAM bebas, RAM Linux 8 GiB, 50 GiB untuk workspace tanpa cache Parquet, dan ruang cadangan untuk checkpoint. Ambang utilisasi standar adalah 10%. Untuk sesi GPU bersama yang diizinkan, set `CP2_ALLOW_SHARED_GPU=YES` pada sesi tersebut. Catat kondisi GPU dan ukur kembali durasi pilot saat berbagi GPU. Jalankan satu worker CP2 pada workspace fisik yang sama.
 
 Setelah GPU dialokasikan, jalankan smoke dan pilot M3. Setelah lolos, jalankan full **B1 → M1 → M2 → M3 → B2** pada seed 42 dari bobot pretrained. Skrip full meminta `CP2_CONFIRM_MM_FULL=YES` sebagai tanda operator sudah memeriksa syarat. Gunakan `resume-<varian>` untuk melanjutkan checkpoint full parsial dengan SHA/config/environment yang sama.
 

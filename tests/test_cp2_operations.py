@@ -40,8 +40,16 @@ def test_checkpoint_space_uses_nearest_existing_directory(tmp_path, monkeypatch)
         operations.check_checkpoint_disk(tmp_path / "new" / "run", 200_000_000)
 
 
-@pytest.mark.parametrize("memory,util,allowed", [(10, 10, True), (9, 0, False), (80, 100, False)])
-def test_selected_gpu_needs_free_memory_and_low_utilization(monkeypatch, memory, util, allowed):
+@pytest.mark.parametrize(
+    "shared,memory,util,allowed",
+    [(False, 10, 10, True), (False, 9, 0, False), (False, 80, 100, False),
+     (True, 10, 100, True), (True, 9, 40, False), (True, 80, 101, False)],
+)
+def test_selected_gpu_checks_free_memory_and_utilization(monkeypatch, shared, memory, util, allowed):
+    if shared:
+        monkeypatch.setenv("CP2_ALLOW_SHARED_GPU", "YES")
+    else:
+        monkeypatch.delenv("CP2_ALLOW_SHARED_GPU", raising=False)
     monkeypatch.setattr(torch.cuda, "get_device_properties", lambda d: SimpleNamespace(uuid="abc"))
     monkeypatch.setattr(torch.cuda, "mem_get_info", lambda d: (memory * operations.GIB, 80 * operations.GIB))
     monkeypatch.setattr(Path, "is_file", lambda p: False)
