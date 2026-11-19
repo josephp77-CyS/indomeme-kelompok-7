@@ -13,13 +13,16 @@ from torch.utils.data import DataLoader
 
 from .nlp_data import MemeTextDataset, MAX_LENGTH
 from .nlp_evaluation import TASKS, evaluate_model, rescue_hurt, write_json
+from .source_model import SOURCE_ARMS
 
 VARIANTS = ("B0", "B1", "B2", "M1", "M2", "M3")
 TEXT_CONDITIONS = ("normal", "no_caption", "no_ocr")
+MODEL_VARIANTS = VARIANTS + SOURCE_ARMS
+SOURCE_FIELDS = ("source_ids", "source_mask", "source_present")
 
 
 def validate_cp2_batch(batch: Mapping, variant: str, special_ids=()):
-    if variant not in VARIANTS:
+    if variant not in MODEL_VARIANTS:
         raise ValueError(f"Unknown CP2 variant: {variant}")
     forbidden = {"topic", "joint_label", "truth", "prediction", "y_hate", "y_appropriate"}
     if forbidden & set(batch):
@@ -62,15 +65,25 @@ def validate_cp2_batch(batch: Mapping, variant: str, special_ids=()):
             raise ValueError("pixel_values must be [B,3,224,224]")
         if not pixels.dtype.is_floating_point or not torch.isfinite(pixels).all():
             raise ValueError("pixel_values must be finite floating point")
+    if variant in SOURCE_ARMS:
+        source_ids, source_mask, present = (batch.get(key) for key in SOURCE_FIELDS)
+        source_shape = (n, 2, MAX_LENGTH // 2)
+        if any(not isinstance(field, torch.Tensor) or field.shape != source_shape or field.dtype != torch.long
+               for field in (source_ids, source_mask)):
+            raise ValueError("Source tokens and masks must be int64 [B,2,128]")
+        if not isinstance(present, torch.Tensor) or present.shape != (n, 2) or present.dtype != torch.bool:
+            raise ValueError("Source availability must be boolean [B,2]")
     return n
 
 
 def model_inputs(batch: Mapping, variant: str):
-    if variant not in VARIANTS:
+    if variant not in MODEL_VARIANTS:
         raise ValueError("Unknown variant")
     keys = ("input_ids", "attention_mask", "content_mask")
     if variant != "B0":
         keys += ("pixel_values",)
+    if variant in SOURCE_ARMS:
+        keys += SOURCE_FIELDS
     if set(keys) - set(batch):
         raise ValueError("Missing model inputs")
     return {key: batch[key] for key in keys}
@@ -80,7 +93,7 @@ class NLPCheckedModel(nn.Module):
     """Require exactly two task logits; visual_off must be explicit in CV model."""
     def __init__(self, model: nn.Module, variant: str, visual_off=False):
         super().__init__()
-        if variant not in VARIANTS or (variant == "B0" and visual_off):
+        if variant not in MODEL_VARIANTS or (variant in ("B0", *SOURCE_ARMS) and visual_off):
             raise ValueError("Unknown variant or visual_off on B0")
         self.model, self.variant, self.visual_off = model, variant, visual_off
 

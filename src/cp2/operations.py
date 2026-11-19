@@ -78,8 +78,8 @@ def check_gpu(device):
                 raise RuntimeError("GPU worker needs at least 8 GiB available host RAM")
 
 
-def require_frozen_protocol():
-    path = REPO / "configs/cp2_nlp_protocol.json"
+def require_frozen_protocol(config_name="cp2_nlp_protocol.json"):
+    path = REPO / "configs" / config_name
     protocol = json.loads(path.read_text(encoding="utf-8"))
     receipt = protocol.get("freeze_receipt")
     if protocol.get("status") != "FROZEN" or not isinstance(receipt, str) or not receipt.strip():

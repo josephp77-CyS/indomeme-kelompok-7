@@ -15,7 +15,24 @@ from .nlp_data import MemeTextDataset, get_partitions, sha256_file
 from .nlp_evaluation import rescue_hurt, write_json
 from .nlp_runner import tokenizer
 from .operations import GIB, check_disk, check_gpu, private_path, worker_lock
+from .queue_eval import simulate_review
+from .source_model import SOURCE_ARMS, SourceDataset, SourceGate
 from .source_noise import CONDITIONS, noisy_sources
+
+
+class ReviewScores(torch.nn.Module):
+    """Collect deployment-visible doubt without using corruption targets or gold labels."""
+
+    def __init__(self, model):
+        super().__init__()
+        self.model = model
+        self.doubt = []
+
+    def forward(self, inputs):
+        outputs, quality = self.model(inputs, return_quality=True)
+        reliability = quality.sigmoid().masked_fill(~inputs["source_present"], 0)
+        self.doubt.extend((1 - reliability.min(dim=1).values).cpu().tolist())
+        return outputs
 
 
 def benchmark(args):
@@ -43,7 +60,7 @@ def benchmark(args):
 
 def evaluate_checkpoint(checkpoint, config, output, conditions, tok, images, processor, manifest, device, noise_seed):
     variant, seed, run_id = config.get("variant", config.get("model")), config["seed"], config["run_id"]
-    if variant not in VARIANTS or config["scope"] != "full" or run_id != f"{variant}_full_seed{seed}":
+    if variant not in (*VARIANTS, *SOURCE_ARMS) or config["scope"] != "full" or run_id != f"{variant}_full_seed{seed}":
         raise ValueError("Unexpected variant, scope, seed, or run ID")
     if config["provenance"]["manifest_sha256"] != manifest:
         raise ValueError("Checkpoint split manifest mismatch")
@@ -63,17 +80,25 @@ def evaluate_checkpoint(checkpoint, config, output, conditions, tok, images, pro
     state = torch.load(checkpoint, map_location="cpu", weights_only=True)
     if state["config_hash"] != config_sha:
         raise ValueError("Checkpoint config hash does not match")
-    model = load_reviewed_model(variant)
+    model = SourceGate() if variant in SOURCE_ARMS else load_reviewed_model(variant)
     model.load_state_dict(state["model"], strict=True)
     del state
     check_gpu(device)
     model.to(device)
-    reports, predictions = {}, {}
+    reports, predictions, review = {}, {}, {}
     for mode, (frame, quality) in conditions.items():
         start = time.perf_counter()
-        data = MemeTextDataset(frame, tok) if variant == "B0" else MemeMultimodalDataset(frame, images, tok, processor)
+        if variant == "B0":
+            data = MemeTextDataset(frame, tok)
+        elif variant in SOURCE_ARMS:
+            data = SourceDataset(frame, images, tok, processor, quality)
+        else:
+            data = MemeMultimodalDataset(frame, images, tok, processor)
         loader = DataLoader(data, batch_size=1)
-        score, prediction = evaluate_cv_model(model, loader, device, variant, run_id, seed, special_ids=tok.all_special_ids)
+        evaluated_model = ReviewScores(model) if variant == "S2" else model
+        score, prediction = evaluate_cv_model(
+            evaluated_model, loader, device, variant, run_id, seed, special_ids=tok.all_special_ids,
+        )
         if len(prediction) != 2 * len(frame):
             raise ValueError("Unexpected paired evaluation row count")
         score["seconds"] = time.perf_counter() - start
@@ -82,6 +107,8 @@ def evaluate_checkpoint(checkpoint, config, output, conditions, tok, images, pro
             for i, source in enumerate(("caption", "ocr"))
         }
         reports[mode], predictions[mode] = score, prediction
+        if variant == "S2":
+            review[mode] = simulate_review(prediction, frame.image_path.astype(str), evaluated_model.doubt)
         prediction.to_csv(folder / f"validation_{mode}_predictions_PRIVATE.csv", index=False)
         print(f"{run_id} {mode}: {score['selection_macro_f1_raw']:.6f} ({score['seconds']:.1f}s)", flush=True)
     if abs(reports["normal"]["selection_macro_f1_raw"] - training["best_raw_validation_macro_f1"]) > 1e-9:
@@ -90,7 +117,7 @@ def evaluate_checkpoint(checkpoint, config, output, conditions, tok, images, pro
     write_json(report, {
         "run_id": run_id, "model_seed": seed, "noise_seed": noise_seed, "split": "validation",
         "n_memes": len(conditions["normal"][0]), "manifest_sha256": manifest,
-        "config_sha256": config_sha, "scores": reports, "rescue_hurt": changes,
+        "config_sha256": config_sha, "scores": reports, "rescue_hurt": changes, "offline_review_queue": review,
     })
 
 

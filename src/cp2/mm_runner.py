@@ -21,14 +21,19 @@ from .mm_data import MemeMultimodalDataset, image_processor, load_train_images
 from .mm_models import PooledMultimodal
 from .nlp_data import MAX_LENGTH, get_partitions, sha256_file
 from .nlp_evaluation import write_json
-from .nlp_cv_bridge import CheckedLoader, NLPCheckedModel, evaluate_cv_model
+from .nlp_cv_bridge import CheckedLoader, NLPCheckedModel, evaluate_cv_model, model_inputs
 from .nlp_runner import make_provenance, model_loss, seed_all, selection_value, tokenizer
 from .operations import GIB, check_checkpoint_disk, check_disk, check_gpu, private_path, require_frozen_protocol, worker_lock
+from .source_model import QUALITY_WEIGHT, SOURCE_ARMS, SourceDataset, SourceGate, quality_loss
+from .source_noise import noisy_sources
+
+
+VARIANTS = PooledMultimodal.VARIANTS + SOURCE_ARMS
 
 
 def checked_args(args):
-    if args.variant not in PooledMultimodal.VARIANTS:
-        raise ValueError("Variant must be B1, B2, M1, M2 or M3")
+    if args.variant not in VARIANTS:
+        raise ValueError(f"Unknown training variant: {args.variant}")
     if args.epochs <= 0 or args.max_train is not None and args.max_train <= 0 or args.max_validation is not None and args.max_validation <= 0:
         raise ValueError("Epochs and optional sample bounds must be positive")
     if args.pilot_full_data and args.full:
@@ -46,8 +51,14 @@ def train_epoch_mm(model, loader, optimizer, scheduler, device, accumulation=8):
     optimizer.zero_grad(set_to_none=True)
     losses = []
     for step, batch in enumerate(loader):
-        inputs = {k: v.to(device) for k, v in batch.items() if k not in ("labels", "image_path")}
-        loss = model_loss(model(inputs), batch["labels"].to(device))
+        inputs = {k: v.to(device) for k, v in batch.items()
+                  if k not in ("labels", "image_path", "source_quality")}
+        labels = batch["labels"].to(device)
+        if isinstance(model, NLPCheckedModel) and model.variant == "S2":
+            logits, gate = model.model(model_inputs(inputs, model.variant), return_quality=True)
+            loss = model_loss(logits, labels) + QUALITY_WEIGHT * quality_loss(gate, batch["source_quality"].to(device))
+        else:
+            loss = model_loss(model(inputs), labels)
         if not torch.isfinite(loss).item():
             raise RuntimeError("Non-finite loss: STOP training")
         group_size = min(accumulation, len(loader) - (step // accumulation) * accumulation)
@@ -64,12 +75,18 @@ def train_epoch_mm(model, loader, optimizer, scheduler, device, accumulation=8):
 def run_training(args):
     checked_args(args)
     workspace, output = private_path(args.workspace), private_path(args.output)
-    protocol_sha = require_frozen_protocol() if args.full else None
+    protocol_sha = None
+    if args.full:
+        protocol_sha = (
+            require_frozen_protocol("cp2_source_reliability.json")
+            if args.variant in SOURCE_ARMS else require_frozen_protocol()
+        )
     with worker_lock(workspace):
         return train_run(args, workspace, output, protocol_sha)
 
 
 def train_run(args, workspace, output, protocol_sha):
+    source_arm = args.variant in SOURCE_ARMS
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if (args.require_gpu or args.full) and device.type != "cuda":
         raise RuntimeError("GPU required; no visible CUDA device")
@@ -109,6 +126,14 @@ def train_run(args, workspace, output, protocol_sha):
         "frozen_protocol_sha256": protocol_sha,
         "provenance": provenance,
     }
+    if source_arm:
+        for name in ("source_model.py", "source_noise.py", "nlp_cv_bridge.py"):
+            provenance["multimodal_source_sha256"][name] = sha256_file(Path(__file__).resolve().parent / name)
+        config["source_study"] = {
+            "training_noise": args.variant in ("S1", "S2"),
+            "quality_loss_weight": QUALITY_WEIGHT if args.variant == "S2" else 0,
+            "text_token_budget_per_source": MAX_LENGTH // 2,
+        }
     cf = out / "config.json"
     if cf.exists() and json.loads(cf.read_text()) != config:
         # An exact byte-for-byte provenance match is expected on resume.
@@ -121,19 +146,26 @@ def train_run(args, workspace, output, protocol_sha):
     if not needed_ids.issubset(images):
         raise ValueError("Image IDs missing from pinned TRAIN parquet")
     tok, processor = tokenizer(), image_processor()
-    fit_ds = MemeMultimodalDataset(fit, images, tok, processor)
-    val_ds = MemeMultimodalDataset(val, images, tok, processor)
+    def dataset(frame, mode="normal", noise_seed=args.seed):
+        if not source_arm:
+            return MemeMultimodalDataset(frame, images, tok, processor)
+        prepared, quality = noisy_sources(frame, mode, noise_seed)
+        return SourceDataset(prepared, images, tok, processor, quality)
+
+    mixed_training = args.variant in ("S1", "S2")
+    fit_ds = None if mixed_training else dataset(fit)
+    val_ds = dataset(val)
     val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=0)
     check_gpu(device)
-    model = PooledMultimodal(args.variant).to(device)
+    model = (SourceGate() if source_arm else PooledMultimodal(args.variant)).to(device)
     model_params = model.parameter_summary()
-    expected_nonencoder = {"B1": 1183492, "B2": 595205, "M1": 2365444, "M2": 2366981, "M3": 2366981}[args.variant]
-    if model_params["non_encoder"] != expected_nonencoder:
+    expected_nonencoder = {"B1": 1183492, "B2": 595205, "M1": 2365444, "M2": 2366981, "M3": 2366981}.get(args.variant)
+    if expected_nonencoder is not None and model_params["non_encoder"] != expected_nonencoder:
         raise RuntimeError(f"CV01 non-encoder parameter mismatch: {model_params}")
     write_json(out / "parameter_summary.json", model_params)
     optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5, weight_decay=0.01)
     from transformers import get_linear_schedule_with_warmup
-    steps_per_epoch = math.ceil(len(fit_ds) / 8)
+    steps_per_epoch = math.ceil(len(fit) / 8)
     scheduler = get_linear_schedule_with_warmup(
         optimizer, num_warmup_steps=0, num_training_steps=steps_per_epoch * args.epochs
     )
@@ -160,6 +192,8 @@ def train_run(args, workspace, output, protocol_sha):
             break
         seed_all(args.seed + epoch)
         gen = torch.Generator().manual_seed(args.seed + epoch)
+        if mixed_training:
+            fit_ds = dataset(fit, "mixed", 20270000 + args.seed * 100 + epoch + 1)
         fit_loader = DataLoader(fit_ds, batch_size=1, shuffle=True, generator=gen, num_workers=0)
         if device.type == "cuda":
             torch.cuda.reset_peak_memory_stats()
@@ -216,7 +250,7 @@ def train_run(args, workspace, output, protocol_sha):
 
 def main():
     p = argparse.ArgumentParser(description="Train CV01 B1–M3 multimodal fusion")
-    p.add_argument("--variant", choices=PooledMultimodal.VARIANTS, required=True)
+    p.add_argument("--variant", choices=VARIANTS, required=True)
     p.add_argument("--workspace", required=True)
     p.add_argument("--output", required=True)
     p.add_argument("--seed", type=int, default=42)
