@@ -22,6 +22,23 @@ Caption donor menghasilkan gangguan sintetis. Kecocokan semantik belum dinilai m
 - Jalankan smoke sebelum full. Gunakan maksimal lima epoch, patience dua, dan seed 42, 123, dan 2026. Laporkan skor masing-masing seed dan interval bootstrap berpasangan yang bersyarat pada seed tersebut.
 - Simulasi review S2 membandingkan urutan acak, skor positif, skor plus ketidakpastian, dan penambahan indikasi kualitas sumber. Semua strategi melihat anggaran antrean yang sama. Keluaran mencatat recall label positif, recall kasus yang model salah klasifikasikan, dan jumlah kasus negatif pada kedua tugas yang masuk antrean. Simulasi menggunakan gold sebagai penilaian offline dan tidak mengukur waktu atau keputusan moderator nyata.
 
+## Hasil baseline seed 42
+
+Enam checkpoint CP2 dievaluasi ulang pada lima kondisi dan 804 ID yang sama. Kondisi normal cocok dengan hasil full training. Pada setiap model, caption donor sintetis memberi skor lebih rendah daripada caption yang dihapus.
+
+| Model | Normal | Tanpa caption | Caption ditukar | Selisih terhadap tanpa caption, pp | Interval 95% |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| B0 | 0,7821 | 0,6927 | 0,6452 | −4,75 | −8,14 s.d. −1,37 |
+| B1 | 0,7885 | 0,7071 | 0,6447 | −6,24 | −9,77 s.d. −2,75 |
+| B2 | 0,7887 | 0,7007 | 0,6555 | −4,51 | −8,02 s.d. −0,99 |
+| M1 | 0,7853 | 0,7027 | 0,6486 | −5,41 | −8,84 s.d. −2,01 |
+| M2 | 0,7871 | 0,7088 | 0,6480 | −6,08 | −9,53 s.d. −2,65 |
+| M3 | 0,7862 | 0,6926 | 0,6606 | −3,20 | −6,50 s.d. +0,08 |
+
+Interval berasal dari 10.000 bootstrap berpasangan pada meme validation, dengan skor yang dikondisikan pada satu seed model. Pada B2, penggantian caption dibanding penghapusan memberi 79 rescue dan 145 hurt pada kebencian, serta 99 rescue dan 160 hurt pada ketidakpantasan. [Bukti agregat baseline dan simulasi antrean](https://node580-ai-hub.ub.ac.id/user/josephplase77/lab/tree/kelompok-7-private/cp2-source-noise-study/baseline_analysis.json)
+
+Pada kondisi caption ditukar dan budget 161 dari 804 item, mengurutkan kasus berdasarkan skor positif B2 menjangkau 36,6% meme dengan label kebencian. Urutan acak menjangkau 17,2%. Menambahkan sinyal ketidakpastian menjangkau 32,0% kesalahan klasifikasi kebencian, dibanding 24,4% dengan skor positif saja. Ini mengilustrasikan perbedaan antara mendahulukan kasus positif dan mendahulukan kesalahan model.
+
 ## Eksekusi
 
 Jalankan dari root checkout pada lingkungan CP2 yang sudah disiapkan. Set `CP2_ALLOW_SHARED_GPU=YES` hanya untuk penggunaan bersama yang diizinkan. Simpan prediksi per ID dan checkpoint pada folder privat.
