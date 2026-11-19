@@ -1,0 +1,14 @@
+{
+  "status": "FROZEN",
+  "freeze_receipt": "Prespecified official-test extension after Joseph requested complete experiments, before opening test images for CP2 inference.",
+  "seeds": [42, 123, 2026],
+  "cp2_variants": ["B0", "B1", "B2", "M1", "M2", "M3"],
+  "seed42_variants": ["B0", "B1", "B2", "M1", "M2", "M3", "S0", "S1", "S2"],
+  "repeated_variants": ["B2", "M2", "S0", "S1", "S2"],
+  "manifest_sha256": "4368e5767d73dfe988f9734dde59a146e125a0cda82c2783ee8eff46acab1a39",
+  "expected_official_test": 1005,
+  "expected_cross_split_test_duplicates": 2,
+  "noise_seed": 20261119,
+  "primary_comparison": "mean raw Macro-F1 S2 minus S1 in caption_swap, paired by meme on all three fixed seeds",
+  "sensitivity": "normal scores after excluding official test images with exact RGB pixel match in fit or validation"
+}

@@ -130,10 +130,11 @@ class CheckedLoader:
         return len(self.loader)
 
 
-def evaluate_cv_model(model, loader, device, variant, run_id, seed, *, special_ids=(), visual_off=False):
+def evaluate_cv_model(model, loader, device, variant, run_id, seed, *, special_ids=(), visual_off=False,
+                      split="validation"):
     wrapped = NLPCheckedModel(model, variant, visual_off=visual_off)
     checked = CheckedLoader(loader, variant, special_ids)
-    return evaluate_model(wrapped, checked, device, run_id, seed, split="validation")
+    return evaluate_model(wrapped, checked, device, run_id, seed, split=split)
 
 
 def evaluate_robustness(model, variant, validation_frame, tokenizer, device,

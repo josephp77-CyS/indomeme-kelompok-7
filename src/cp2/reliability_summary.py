@@ -26,21 +26,28 @@ def score(truth, prediction):
     return ((f1_positive + f1_negative) / 2).mean(axis=-1)
 
 
-def load_pairs(directory, condition, model, seed):
-    frame = pd.read_csv(directory / f"validation_{condition}_predictions_PRIVATE.csv", dtype={"image_path": str})
-    if set(frame["split"]) != {"validation"} or set(frame["seed"]) != {seed} or set(frame["run_id"]) != {f"{model}_full_seed{seed}"}:
+def load_pairs(directory, condition, model, seed, split, n_memes):
+    frame = pd.read_csv(directory / f"{split}_{condition}_predictions_PRIVATE.csv", dtype={"image_path": str})
+    if set(frame["split"]) != {split} or set(frame["seed"]) != {seed} or set(frame["run_id"]) != {f"{model}_full_seed{seed}"}:
         raise ValueError("Unexpected paired prediction provenance")
     if not frame["truth"].isin((0, 1)).all() or not frame["prediction_raw"].isin((0, 1)).all():
         raise ValueError("Non-binary truth or predictions")
     paired = frame.pivot(index="image_path", columns="task", values=["truth", "prediction_raw"]).sort_index()
-    if paired.shape != (804, 4) or paired.isna().any().any():
-        raise ValueError("Expected 804 aligned IDs with both tasks")
+    if paired.shape != (n_memes, 4) or paired.isna().any().any():
+        raise ValueError(f"Expected {n_memes} aligned IDs with both tasks")
     return paired.index, paired["truth"][list(TASKS)].to_numpy(dtype=bool), paired["prediction_raw"][list(TASKS)].to_numpy(dtype=bool)
 
 
-def summarize(benchmark, seeds):
+def summarize(benchmark, seeds, split="validation"):
+    n_memes = 804
+    expected_lock = None
+    if split == "test":
+        state = json.loads((benchmark / "official_completed.json").read_text(encoding="utf-8"))
+        n_memes, expected_lock = state["n_test"], state["lock_sha256"]
+        if (n_memes, state["deduplicated_n_test"]) != (1005, 1003) or not expected_lock:
+            raise ValueError("Expected completed official test and duplicate audit")
     rng = np.random.default_rng(20261119)
-    sampled = rng.integers(0, 804, size=(10000, 804), dtype=np.int16)
+    sampled = rng.integers(0, n_memes, size=(10000, n_memes), dtype=np.int16)
     reports = {}
     scores = {}
     for seed in seeds:
@@ -48,7 +55,8 @@ def summarize(benchmark, seeds):
         for variant in ("B2", "M2", "S0", "S1", "S2"):
             directory = benchmark / f"{variant}_full_seed{seed}"
             report = json.loads((directory / "noise_metrics.json").read_text(encoding="utf-8"))
-            if (report["split"], report["n_memes"], report["model_seed"], report["noise_seed"]) != ("validation", 804, seed, 20261119):
+            if (report["split"], report["n_memes"], report["model_seed"], report["noise_seed"],
+                    report.get("official_lock_sha256")) != (split, n_memes, seed, 20261119, expected_lock):
                 raise ValueError("Unexpected robustness report provenance")
             reports[variant, seed] = report
             scores[str(seed)][variant] = {mode: data["selection_macro_f1_raw"] for mode, data in report["scores"].items()}
@@ -57,7 +65,7 @@ def summarize(benchmark, seeds):
         per_seed, distributions = {}, []
         reference_ids = reference_truth = None
         for seed in seeds:
-            loaded = [load_pairs(benchmark / f"{model}_full_seed{seed}", condition, model, seed)
+            loaded = [load_pairs(benchmark / f"{model}_full_seed{seed}", condition, model, seed, split, n_memes)
                       for model in (candidate, reference)]
             ids, truth, candidate_predictions = loaded[0]
             other_ids, other_truth, reference_predictions = loaded[1]
@@ -81,7 +89,7 @@ def summarize(benchmark, seeds):
                           "delta_pp_by_seed": per_seed, "mean_delta_pp": float(np.mean(list(per_seed.values()))),
                           "ci95_pp": interval})
     return {
-        "split": "validation", "seeds": seeds, "n_memes": 804,
+        "split": split, "seeds": seeds, "n_memes": n_memes,
         "interval_method": "10,000 exploratory paired bootstrap draws over memes, conditional on the requested seeds",
         "mean_raw_macro_f1": scores, "contrasts": contrasts,
         "offline_review_queue": {
@@ -95,10 +103,11 @@ def main():
     parser.add_argument("--benchmark", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--seeds", type=int, nargs="+", required=True)
+    parser.add_argument("--split", choices=("validation", "test"), default="validation")
     args = parser.parse_args()
     if len(set(args.seeds)) != len(args.seeds):
         raise ValueError("Model seeds must be unique")
-    write_json(private_path(args.output), summarize(private_path(args.benchmark), args.seeds))
+    write_json(private_path(args.output), summarize(private_path(args.benchmark), args.seeds, args.split))
 
 
 if __name__ == "__main__":

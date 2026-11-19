@@ -12,7 +12,7 @@ from .mm_data import MemeMultimodalDataset, image_processor, load_train_images
 from .nlp_cv_bridge import evaluate_cv_model, VARIANTS
 from .nlp_cv_eval import load_reviewed_model
 from .nlp_data import MemeTextDataset, get_partitions, sha256_file
-from .nlp_evaluation import rescue_hurt, write_json
+from .nlp_evaluation import evaluate_records, rescue_hurt, write_json
 from .nlp_runner import tokenizer
 from .operations import GIB, check_disk, check_gpu, private_path, worker_lock
 from .queue_eval import simulate_review
@@ -58,7 +58,8 @@ def benchmark(args):
             evaluate_checkpoint(path, config, output, conditions, tok, images, processor, manifest, device, args.noise_seed)
 
 
-def evaluate_checkpoint(checkpoint, config, output, conditions, tok, images, processor, manifest, device, noise_seed):
+def evaluate_checkpoint(checkpoint, config, output, conditions, tok, images, processor, manifest, device, noise_seed,
+                        *, official_lock_sha=None, excluded_ids=()):
     variant, seed, run_id = config.get("variant", config.get("model")), config["seed"], config["run_id"]
     if variant not in (*VARIANTS, *SOURCE_ARMS) or config["scope"] != "full" or run_id != f"{variant}_full_seed{seed}":
         raise ValueError("Unexpected variant, scope, seed, or run ID")
@@ -70,9 +71,11 @@ def evaluate_checkpoint(checkpoint, config, output, conditions, tok, images, pro
     folder = output / run_id
     report = folder / "noise_metrics.json"
     config_sha = sha256_file(checkpoint.parent / "config.json")
+    split = "test" if official_lock_sha else "validation"
     if report.exists():
         saved = json.loads(report.read_text(encoding="utf-8"))
-        if (saved["config_sha256"], saved["noise_seed"]) != (config_sha, noise_seed):
+        if (saved["config_sha256"], saved["noise_seed"], saved["split"], saved.get("official_lock_sha256")) != (
+                config_sha, noise_seed, split, official_lock_sha):
             raise ValueError("Existing benchmark has different provenance")
         print(f"Already evaluated: {run_id}", flush=True)
         return
@@ -98,6 +101,7 @@ def evaluate_checkpoint(checkpoint, config, output, conditions, tok, images, pro
         evaluated_model = ReviewScores(model) if variant == "S2" else model
         score, prediction = evaluate_cv_model(
             evaluated_model, loader, device, variant, run_id, seed, special_ids=tok.all_special_ids,
+            visual_off=mode == "visual_off", split=split,
         )
         if len(prediction) != 2 * len(frame):
             raise ValueError("Unexpected paired evaluation row count")
@@ -109,16 +113,26 @@ def evaluate_checkpoint(checkpoint, config, output, conditions, tok, images, pro
         reports[mode], predictions[mode] = score, prediction
         if variant == "S2":
             review[mode] = simulate_review(prediction, frame.image_path.astype(str), evaluated_model.doubt)
-        prediction.to_csv(folder / f"validation_{mode}_predictions_PRIVATE.csv", index=False)
+        prediction.to_csv(folder / f"{split}_{mode}_predictions_PRIVATE.csv", index=False)
         print(f"{run_id} {mode}: {score['selection_macro_f1_raw']:.6f} ({score['seconds']:.1f}s)", flush=True)
-    if abs(reports["normal"]["selection_macro_f1_raw"] - training["best_raw_validation_macro_f1"]) > 1e-9:
+    if split == "validation" and abs(reports["normal"]["selection_macro_f1_raw"]
+                                     - training["best_raw_validation_macro_f1"]) > 1e-9:
         raise ValueError("Clean validation disagrees with the selected training checkpoint")
     changes = {mode: rescue_hurt(predictions["normal"], p) for mode, p in predictions.items() if mode != "normal"}
-    write_json(report, {
-        "run_id": run_id, "model_seed": seed, "noise_seed": noise_seed, "split": "validation",
+    result = {
+        "run_id": run_id, "model_seed": seed, "noise_seed": noise_seed, "split": split,
         "n_memes": len(conditions["normal"][0]), "manifest_sha256": manifest,
         "config_sha256": config_sha, "scores": reports, "rescue_hurt": changes, "offline_review_queue": review,
-    })
+    }
+    if official_lock_sha:
+        normal = predictions["normal"]
+        retained = normal.loc[~normal.image_path.isin(excluded_ids)]
+        if len(normal) - len(retained) != 2 * len(excluded_ids):
+            raise ValueError("Duplicate exclusion did not match both task labels")
+        subset, _ = evaluate_records(retained)
+        result.update(official_lock_sha256=official_lock_sha, deduplicated_normal=subset,
+                      deduplicated_n_memes=len(retained) // 2)
+    write_json(report, result)
 
 
 def main():

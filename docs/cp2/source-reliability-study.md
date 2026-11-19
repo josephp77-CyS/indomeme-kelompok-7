@@ -41,6 +41,18 @@ python -m cp2.noise_eval --workspace "$CP2_WORKSPACE" --output "$CP2_STUDY_ROOT/
 bash scripts/cp2_source_study.sh
 ```
 
+## Official INDOMEME test
+
+Setelah ketiga seed selesai dan analisis validation tersedia, [protokol official](../../configs/cp2_official_source_study.json) menetapkan B0–M3 seed 42 dan set berpasangan B2/M2/S0/S1/S2 pada tiga seed. Evaluator mencatat SHA-256 checkpoint dan config serta pilihan CP2 berdasarkan validation pada lock privat **sebelum** membaca gambar test atau menjalankan inferensi. Jalankan kondisi teks yang sama pada 1.005 test; visual-off ditambahkan untuk B1–M3 seed 42. Skor normal juga dihitung pada 1.003 test setelah mengecualikan dua exact RGB duplicate yang cocok dengan fit atau validation. Hasil official tidak digunakan untuk memilih checkpoint.
+
+```bash
+python -m cp2.official_source_eval --workspace "$CP2_WORKSPACE" --study "$CP2_STUDY_ROOT" \
+  --b0-checkpoint /path/to/B0_full_seed42/best.pt --cp2-runs /path/to/cp2_full_runs \
+  --output "$CP2_STUDY_ROOT/official" --require-gpu
+python -m cp2.reliability_summary --benchmark "$CP2_STUDY_ROOT/official" \
+  --output "$CP2_STUDY_ROOT/official_summary.json" --split test --seeds 42 123 2026
+```
+
 ## Protokol untuk domain dan anotator baru
 
 Sumber dan anotator eksternal belum tersedia. Siapkan satu domain dengan izin penggunaan dan pisahkan dari INDOMEME maupun template yang hampir identik. Beri setiap item ID privat. Simpan metadata sumber, kondisi input, dua label, dan penilaian kualitas sumber. Dua penilai menulis caption deskriptif atau menandai tidak yakin tanpa melihat prediksi atau label model. Untuk kualitas caption, tandai fakta yang bertentangan, informasi penting yang hilang, dan inferensi yang tidak dapat didukung oleh bukti yang tampak. Catat kesepakatan dan adjudikasi. Simpan sampel asli sesuai izin sumber. Evaluasi held-out lintas domain dan sesi moderator dilakukan setelah data tersedia.
