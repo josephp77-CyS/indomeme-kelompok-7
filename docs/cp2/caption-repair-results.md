@@ -19,3 +19,36 @@ Ringkasan ini mencakup 804 meme, 161 slot regenerasi per replay, 20 replay, dan 
 | S1 regenerasi seluruhnya | 70,69% | 68,21 |
 
 Pada S1, router mengurangi estimasi biaya 1,35 per 100 meme dibanding ketidakpastian, dengan IK 95% −3,40 hingga +0,61 untuk selisih router dikurangi ketidakpastian. Efek pemeriksaan setelah regenerasi terhadap router saja adalah −0,12 dengan IK −0,61 hingga +0,33. Pada B2, router mengalahkan ketidakpastian pada validation dalam biaya tertimbang (−2,44 dengan IK −4,69 hingga −0,20) dan biaya terbaik tetap diperoleh dengan mempertahankan caption. Semua interval eksploratif dan mengondisikan pada seed dan replay yang ditentukan.
+
+## Test retrospektif dan kuota regenerasi 20%
+
+Pada 1.005 meme test, 948 caption baru memenuhi pemeriksaan keluaran. Setiap kebijakan selektif memiliki 201 slot regenerasi. Tabel memakai 20 replay dan tiga seed, dengan 20% caption ditukar memakai donor. [Ringkasan router](https://node580-ai-hub.ub.ac.id/user/josephplase77/lab/tree/kelompok-7-private/cp2-caption-repair-study/router_results.json)
+
+| Kebijakan pada S1 | Macro-F1 | Biaya tertimbang per 100 meme |
+| --- | ---: | ---: |
+| Pertahankan caption | 75,38% | 58,01 |
+| Regenerasi acak | 74,80% | 59,51 |
+| Regenerasi berdasarkan ketidakpastian | 74,75% | 59,06 |
+| Regenerasi berdasarkan perbedaan prediksi | 74,41% | 60,46 |
+| **Router prediksi manfaat** | **75,88%** | **56,65** |
+| Router dan pemeriksaan setelah regenerasi | 75,83% | 56,73 |
+| Hilangkan caption pada pilihan router | 75,28% | 57,70 |
+| Regenerasi seluruhnya | 72,67% | 64,43 |
+
+![Kebijakan regenerasi dan interval efek pada S1](figures/caption-repair-router.png)
+
+Pada perbandingan utama S1, biaya router dikurangi ketidakpastian adalah **−2,41 per 100 meme** (IK 95% −4,14 hingga −0,69). Rata-rata hate yang terlewat turun dari 133,23 ke 119,40 per replay, dengan positif palsu hate naik dari 75,38 ke 89,23. Macro-F1 naik 1,14 poin dibanding ketidakpastian dan 0,50 poin dibanding mempertahankan caption. Pada B2, selisih biaya router terhadap ketidakpastian adalah −0,97 (IK −2,69 hingga +0,69). Pada S1 dengan caption asli sepanjang replay, Macro-F1 mencapai 77,23% dengan router dan 77,03% saat mempertahankan caption.
+
+Pemeriksaan tambahan setelah menerima caption baru mengubah biaya S1 sebesar +0,09 per 100 meme (IK −0,25 hingga +0,44) terhadap router saja. Pemeriksaan mengurangi jumlah caption yang dipakai dari rata-rata 190,08 menjadi 156,83 sambil mempertahankan 201 permintaan caption. Bukti ini belum mendukung penambahan pemeriksaan sebagai tahap default. [Ringkasan pemeriksaan](https://node580-ai-hub.ub.ac.id/user/josephplase77/lab/tree/kelompok-7-private/cp2-caption-repair-study/confirmation_results.json)
+
+## Audit topik dan OCR
+
+Pada 948 pasangan test yang memiliki caption baru, median panjang keduanya 18 kata unik. Rata-rata bagian kosakata caption yang juga muncul di OCR naik dari 12,30% untuk caption lama ke 35,02% untuk caption baru. Keduanya mengukur kemiripan kosakata. Ketepatan fakta dan makna tersirat membutuhkan penilaian manusia.
+
+Jika semua caption baru yang tersedia digunakan pada S1, biaya naik 10,32 per 100 meme dibanding caption asli dan turun 8,69 dibanding kondisi semua caption tertukar. Dibanding caption asli, kenaikan tertinggi di antara topik yang dianalisis terjadi pada politik (+30,75, 142 meme) dan individu (+29,85, 134 meme). Pada kelompok sosial, efek terhadap caption tertukar adalah −12,74 per 100 meme (560 meme). Topik dapat bertumpang tindih. Angka ini deskriptif dan membantu memilih kasus untuk audit manusia. [Ringkasan audit caption](https://node580-ai-hub.ub.ac.id/user/josephplase77/lab/tree/kelompok-7-private/cp2-caption-repair-study/caption_audit.json)
+
+## Narasi presentasi
+
+“Saat kapasitas regenerasi dibatasi, urutan berdasarkan perkiraan manfaat lebih berguna untuk S1 daripada urutan berdasarkan ketidakpastian pada replay test INDOMEME. Kenaikan Macro-F1 terhadap mempertahankan caption hanya sekitar setengah poin. Regenerasi massal merugikan, dan kenaikan positif palsu perlu dipertimbangkan ketika penurunan hate yang terlewat dihargai lebih tinggi.”
+
+Antrean moderator komunitas Indonesia dapat memakai skor manfaat untuk memilih item yang membutuhkan caption baru. Hasil saat ini berasal dari data INDOMEME yang sudah dipakai dalam penelitian dan gangguan donor sintetis. Uji moderator, kesalahan caption alami, dan transfer lintas domain masih memerlukan data dan anotator.
