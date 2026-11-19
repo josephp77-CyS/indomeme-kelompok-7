@@ -1,6 +1,6 @@
 # Regenerasi caption untuk moderasi meme Indonesia dengan anggaran tetap
 
-INDOMEME memakai caption buatan mesin dan OCR sebagai informasi tambahan untuk klasifikasi kebencian dan ketidakpantasan. Eksperimen ini menguji kapan caption yang dibuat ulang dari gambar membantu kedua keputusan. Aplikasi yang dituju adalah antrean moderasi komunitas berbahasa Indonesia, dengan pemrosesan caption tambahan dibatasi pada item yang diperkirakan paling terbantu. [Paper INDOMEME](https://doi.org/10.7717/peerj-cs.3736)
+INDOMEME memakai caption Gemini 2.5 Flash dan OCR sebagai informasi tambahan untuk klasifikasi kebencian dan ketidakpantasan. Caption awal mencakup isi visual dan pesan tersirat. Eksperimen ini menguji apakah deskripsi visual baru membantu kedua keputusan, terutama saat caption yang tersedia keliru. Aplikasi yang dituju adalah antrean moderasi komunitas berbahasa Indonesia, dengan pemrosesan caption tambahan dibatasi pada item yang diperkirakan paling terbantu. [Paper INDOMEME](https://doi.org/10.7717/peerj-cs.3736) · [Kartu dataset](https://huggingface.co/datasets/aiatums/INDOMEME/blob/main/README.md)
 
 Posisi kontribusinya adalah perbandingan terkontrol antara strategi memilih intervensi dan training yang membiasakan model dengan caption baru. Pembelajaran kebijakan berbiaya dan pemilihan intervensi dengan kapasitas terbatas sudah memiliki preseden. Di sini pembanding memakai aksi regenerasi caption yang sama dan biaya klasifikasi dilacak pada dua tugas moderasi. [Mozannar dan Sontag, ICML 2020](https://proceedings.mlr.press/v119/mozannar20b.html) · [Alves dkk., TMLR 2024](https://arxiv.org/abs/2403.06906)
 
@@ -21,7 +21,7 @@ Posisi kontribusinya adalah perbandingan terkontrol antara strategi memilih inte
 
 ## Pembacaan hasil
 
-Pilot fase sebelumnya mendapati bahwa ketidaksepakatan probabilitas lebih sering menandai swap daripada ketidakpastian. Memakai prediksi tanpa caption pada item terpilih menurunkan Macro-F1 S1 sekitar 1,43 poin dan B2 sekitar 5,06 poin. Regenerasi menguji apakah aksi pengganti yang memanfaatkan gambar memberi nilai lebih. [Hasil pilot sebelumnya](source-reliability-study.md#pilot-caption-triage)
+Pilot fase sebelumnya mendapati bahwa ketidaksepakatan probabilitas lebih sering menandai swap daripada ketidakpastian. Memakai prediksi tanpa caption pada item terpilih menurunkan Macro-F1 S1 sekitar 1,43 poin dan B2 sekitar 5,06 poin. Regenerasi menguji apakah aksi pengganti yang memanfaatkan gambar memberi nilai lebih. Perubahan skor juga dapat dipengaruhi oleh cakupan semantik yang berbeda antara prompt awal dan prompt deskripsi visual. [Hasil pilot sebelumnya](source-reliability-study.md#pilot-verifikasi-selektif)
 
 Klaim efektivitas perlu bersandar pada selisih biaya kesalahan S1 terhadap ketidakpastian dan intervalnya. Dampak pada caption asli, false positive, serta missed hate membantu menilai trade-off moderasi. Efek training S3 dibaca dari selisih Macro-F1 berpasangan terhadap S1. Penggunaan lintas platform dan ketepatan caption akan memerlukan data domain lain, anotasi caption, dan pengujian moderator.
 
