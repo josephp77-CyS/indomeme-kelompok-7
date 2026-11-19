@@ -50,8 +50,15 @@ def test_router_targets_action_gain_and_keeps_unavailable_replacements():
     assert error_cost(truth[:2], ~truth[:2]).tolist() == [2, 3]
     _, cross_fit_rank = fit_router(truth, available, views)
     assert cross_fit_rank[1].mean() > cross_fit_rank[0].mean()
+    _, cross_fit_confirmation = fit_router(truth, available, views, confirm=True)
+    assert cross_fit_confirmation[1].mean() > cross_fit_confirmation[0].mean()
     results, _ = replay(truth, available, views, cross_fit_rank, 0.2)
     assert results["learned"]["routed"] == results["uncertainty"]["routed"] == 12
     assert results["all"]["usable_action"] == available.sum()
     assert results["learned"]["error_cost_per_100"] < results["uncertainty"]["error_cost_per_100"]
     assert results["learned"]["error_cost_per_100"] >= results["all"]["error_cost_per_100"]
+    gate = np.full((2, len(truth)), -1.0)
+    checked, _ = replay(truth, available, views, cross_fit_rank, 0.2, confirmation=gate)
+    assert checked["learned_confirm"]["routed"] == checked["learned"]["routed"]
+    assert checked["learned_confirm"]["usable_action"] == 0
+    assert checked["learned_confirm"]["error_cost_per_100"] == checked["keep"]["error_cost_per_100"]

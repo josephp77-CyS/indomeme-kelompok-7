@@ -19,6 +19,7 @@ Posisi kontribusinya adalah perbandingan terkontrol antara strategi memilih inte
 - S3 dan S1 berbagi arsitektur, seed, jadwal gangguan, dan pemilihan checkpoint Clean Macro-F1. Untuk S3, sekitar separuh bagian normal mendapat tawaran caption baru. Dengan proporsi normal 60%, ini mencakup hingga sekitar 30% input fit. Semua 3.214 fit dipakai. Konfigurasi memberi maksimum lima epoch dan early stopping setelah dua epoch tanpa perbaikan.
 - Selisih berpasangan dan interval bootstrap dihitung berdasarkan meme. Seed dan replay dipertahankan tetap. Dua duplikat piksel yang ditemukan pada audit awal tetap masuk ukuran utama 1.005 test agar perbandingan cocok dengan hasil awal. [Protokol terkunci](../../configs/cp2_caption_repair.json) · [Audit dan studi awal](source-reliability-study.md)
 - Audit tambahan membandingkan tumpang tindih kosakata caption lama dan baru terhadap OCR. Karena OCR dan regenerasi memakai keluarga model yang sama, kemiripan keluaran relevan untuk membaca hasil. Audit deskriptif melaporkan perubahan biaya saat seluruh caption yang tersedia dipakai oleh S1, dikelompokkan menurut topik dengan minimal 50 meme. Topik dapat bertumpang tindih dan hanya dipakai untuk analisis setelah inferensi.
+- Eksperimen tambahan S1 menguji pemeriksaan setelah caption dibuat. Model Ridge kedua memakai prediksi sebelum dan sesudah regenerasi, dengan lipatan dan target yang sama. Ia menerima caption hasil regenerasi hanya bila prediksi manfaat positif. Evaluasinya membandingkan dua kebijakan pada item terpilih yang persis sama, sehingga kuota regenerasi tetap identik. Ambang nol dibakukan sebelum hasil regenerasi dan replay tersedia.
 
 ## Pembacaan hasil
 
@@ -36,4 +37,4 @@ bash scripts/run_cp2_caption_repair.sh /path/to/cp2_data /path/to/source_study /
 
 Ringkasan agregat ditulis ke `router_results.json` dan `classifier_results.json`. Prediksi per meme dan caption tetap di penyimpanan privat. `pipeline_stage`, `pipeline.log`, dan `pipeline_exit` menunjukkan status kerja.
 
-Setelah prediksi router tersedia, jalankan `python -m cp2.repair_caption_audit --workspace /path/to/cp2_data --study /path/to/source_study --job /path/to/caption_repair` untuk menghasilkan `caption_audit.json`.
+Setelah prediksi router tersedia, jalankan `python -m cp2.repair_caption_audit --workspace /path/to/cp2_data --study /path/to/source_study --job /path/to/caption_repair` untuk menghasilkan `caption_audit.json`. `python -m cp2.repair_confirmation --study /path/to/source_study --job /path/to/caption_repair` menghasilkan `confirmation_results.json`.

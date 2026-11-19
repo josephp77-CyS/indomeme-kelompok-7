@@ -30,10 +30,17 @@ def features(displayed, masked):
     return np.concatenate((p, q, np.abs(p - q), np.abs(p - 0.5), np.abs(q - 0.5)), axis=1)
 
 
-def fit_router(truth, available, views):
+def confirmation_features(displayed, masked, alternate):
+    base = features(displayed, masked)
+    return np.concatenate((base, alternate.probabilities, np.abs(alternate.probabilities - 0.5),
+                           alternate.probabilities - displayed.probabilities), axis=1)
+
+
+def fit_router(truth, available, views, *, confirm=False):
     clean, masked, swapped, alternate = (views[name] for name in (*CONDITIONS, "recaption"))
     cases = (clean, swapped)
-    design = np.concatenate([features(view, masked) for view in cases])
+    design = np.concatenate([confirmation_features(view, masked, alternate) if confirm else features(view, masked)
+                             for view in cases])
     targets = np.concatenate([
         np.where(available, error_cost(truth, view.predictions) - error_cost(truth, alternate.predictions), 0)
         for view in cases
@@ -50,13 +57,15 @@ def fit_router(truth, available, views):
     return model, oof.reshape(2, count)
 
 
-def replay(truth, available, views, learned, swap_fraction):
+def replay(truth, available, views, learned, swap_fraction, confirmation=None):
     clean, masked, swapped, alternate = (views[name] for name in (*CONDITIONS, "recaption"))
     hints_clean, hints_swap = (priorities(view.probabilities, masked.probabilities) for view in (clean, swapped))
     n = len(truth)
     budget, n_swap = math.ceil(0.2 * n), math.ceil(swap_fraction * n)
     rng = np.random.default_rng(REPLAY_SEED)
     policies = ("keep", "random", "uncertainty", "disagreement", "learned", "learned_omit", "all")
+    if confirmation is not None:
+        policies += ("learned_confirm",)
     metrics = {policy: [] for policy in policies}
     paired = np.zeros(n)
     for _ in range(20):
@@ -68,11 +77,16 @@ def replay(truth, available, views, learned, swap_fraction):
         rank.update({name: np.where(replaced, hints_swap[name], hints_clean[name]) for name in hints_clean})
         choices = {name: np.lexsort((tie, -priority))[:budget] for name, priority in rank.items()}
         choices.update(keep=np.empty(0, dtype=int), all=np.arange(n), learned_omit=choices["learned"])
+        if confirmation is not None:
+            choices["learned_confirm"] = choices["learned"]
+            confirmed = np.where(replaced, confirmation[1], confirmation[0]) > 0
         costs = {}
         initial_cost = error_cost(truth, initial)
         for name in policies:
             selected = choices[name]
             changed = selected if name == "learned_omit" else selected[available[selected]]
+            if name == "learned_confirm":
+                changed = changed[confirmed[changed]]
             pred = initial.copy()
             pred[changed] = masked.predictions[changed] if name == "learned_omit" else alternate.predictions[changed]
             costs[name] = error_cost(truth, pred)
@@ -82,14 +96,17 @@ def replay(truth, available, views, learned, swap_fraction):
                                   len(selected), len(changed), int(replaced[selected].sum()),
                                   int((change < 0).sum()), int((change > 0).sum()),
                                   float(change[replaced].sum()), float(change[~replaced].sum())])
-        paired += (costs["learned"] - costs["uncertainty"]) / 20
+        if confirmation is None:
+            paired += (costs["learned"] - costs["uncertainty"]) / 20
+        else:
+            paired += (costs["learned_confirm"] - costs["learned"]) / 20
     fields = ("macro_f1", "error_cost_per_100", "missed_hate", "missed_inappropriate", "false_hate",
               "false_inappropriate", "routed", "usable_action", "synthetic_swaps_routed",
               "lower_cost_memes", "higher_cost_memes", "cost_delta_on_swaps", "cost_delta_on_originals")
     return {name: dict(zip(fields, np.mean(rows, axis=0).tolist())) for name, rows in metrics.items()}, paired
 
 
-def average_replays(results, n):
+def average_replays(results, n, contrast="learned_minus_uncertainty"):
     rows, paired = zip(*results, strict=True)
     paired = 100 * np.mean(paired, axis=0)
     rng = np.random.default_rng(REPLAY_SEED)
@@ -97,7 +114,7 @@ def average_replays(results, n):
     return {
         "policies": {name: {metric: float(np.mean([row[name][metric] for row in rows]))
                              for metric in rows[0][name]} for name in rows[0]},
-        "learned_minus_uncertainty_cost_per_100": float(paired.mean()),
+        f"{contrast}_cost_per_100": float(paired.mean()),
         "paired_ci95_cost_per_100": np.quantile(boot, [0.025, 0.975]).tolist(),
         "per_seed": dict(zip(SEEDS, rows, strict=True)),
     }
