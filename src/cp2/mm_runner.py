@@ -24,8 +24,9 @@ from .nlp_evaluation import write_json
 from .nlp_cv_bridge import CheckedLoader, NLPCheckedModel, evaluate_cv_model, model_inputs
 from .nlp_runner import make_provenance, model_loss, seed_all, selection_value, tokenizer
 from .operations import GIB, check_checkpoint_disk, check_disk, check_gpu, private_path, require_frozen_protocol, worker_lock
+from .recaption import restore_caption_rows
 from .source_model import QUALITY_WEIGHT, SOURCE_ARMS, SourceDataset, SourceGate, quality_loss
-from .source_noise import noisy_sources
+from .source_noise import noisy_sources, repair_training_captions
 
 
 VARIANTS = PooledMultimodal.VARIANTS + SOURCE_ARMS
@@ -44,6 +45,8 @@ def checked_args(args):
         raise ValueError("Pilot requires one epoch and all data")
     if args.resume and not args.full:
         raise ValueError("Resume only supported for full mode")
+    if (args.variant == "S3") != bool(getattr(args, "repair_captions", None)):
+        raise ValueError("Only S3 requires --repair-captions")
 
 
 def train_epoch_mm(model, loader, optimizer, scheduler, device, accumulation=8):
@@ -77,10 +80,12 @@ def run_training(args):
     workspace, output = private_path(args.workspace), private_path(args.output)
     protocol_sha = None
     if args.full:
-        protocol_sha = (
-            require_frozen_protocol("cp2_source_reliability.json")
-            if args.variant in SOURCE_ARMS else require_frozen_protocol()
-        )
+        if args.variant == "S3":
+            protocol_sha = require_frozen_protocol("cp2_caption_repair.json")
+        elif args.variant in SOURCE_ARMS:
+            protocol_sha = require_frozen_protocol("cp2_source_reliability.json")
+        else:
+            protocol_sha = require_frozen_protocol()
     with worker_lock(workspace):
         return train_run(args, workspace, output, protocol_sha)
 
@@ -96,6 +101,10 @@ def train_run(args, workspace, output, protocol_sha):
     seed_all(args.seed)
     partitions, digest = get_partitions(workspace)
     fit, val = partitions["fit"], partitions["validation"]
+    repair_captions = None
+    if args.variant == "S3":
+        repair_path = private_path(args.repair_captions)
+        repair_captions = restore_caption_rows(repair_path, fit.image_path.astype(str), "fit", digest)
     scope = "full" if args.full else ("pilot_full_data" if args.pilot_full_data else "smoke")
     if scope == "smoke":
         fit = fit.sample(n=min(args.max_train or 32, len(fit)), random_state=args.seed).reset_index(drop=True)
@@ -126,14 +135,17 @@ def train_run(args, workspace, output, protocol_sha):
         "frozen_protocol_sha256": protocol_sha,
         "provenance": provenance,
     }
+    mixed_training = args.variant in ("S1", "S2", "S3")
     if source_arm:
         for name in ("source_model.py", "source_noise.py", "nlp_cv_bridge.py"):
             provenance["multimodal_source_sha256"][name] = sha256_file(Path(__file__).resolve().parent / name)
         config["source_study"] = {
-            "training_noise": args.variant in ("S1", "S2"),
+            "training_noise": mixed_training,
             "quality_loss_weight": QUALITY_WEIGHT if args.variant == "S2" else 0,
             "text_token_budget_per_source": MAX_LENGTH // 2,
         }
+    if repair_captions is not None:
+        config["source_study"]["repair_fit_sha256"] = sha256_file(repair_path)
     cf = out / "config.json"
     if cf.exists() and json.loads(cf.read_text()) != config:
         # An exact byte-for-byte provenance match is expected on resume.
@@ -150,9 +162,10 @@ def train_run(args, workspace, output, protocol_sha):
         if not source_arm:
             return MemeMultimodalDataset(frame, images, tok, processor)
         prepared, quality = noisy_sources(frame, mode, noise_seed)
+        if mode == "mixed" and repair_captions is not None:
+            repair_training_captions(prepared, quality, repair_captions, noise_seed)
         return SourceDataset(prepared, images, tok, processor, quality)
 
-    mixed_training = args.variant in ("S1", "S2")
     fit_ds = None if mixed_training else dataset(fit)
     val_ds = dataset(val)
     val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=0)
@@ -261,6 +274,7 @@ def main():
     p.add_argument("--full", action="store_true")
     p.add_argument("--require-gpu", action="store_true")
     p.add_argument("--resume", action="store_true")
+    p.add_argument("--repair-captions")
     args = p.parse_args()
     run_training(args)
 

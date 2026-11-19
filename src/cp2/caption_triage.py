@@ -24,10 +24,10 @@ class View(NamedTuple):
     predictions: np.ndarray
 
 
-def load_views(directory, split, n_memes, seed, run_id):
+def load_views(directory, split, n_memes, seed, run_id, conditions=CONDITIONS):
     expected_ids = expected_labels = None
     views = {}
-    for condition in CONDITIONS:
+    for condition in conditions:
         frame = pd.read_csv(directory / f"{split}_{condition}_predictions_PRIVATE.csv", dtype={"image_path": str})
         if (set(frame["split"]), set(frame["seed"]), set(frame["run_id"])) != ({split}, {seed}, {run_id}):
             raise ValueError("Unexpected caption view provenance")

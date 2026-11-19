@@ -7,7 +7,7 @@ from .mm_data import MemeMultimodalDataset
 from .nlp_data import MAX_LENGTH, TEXT_MODEL, TEXT_REVISION, VIT_MODEL, VIT_REVISION
 
 
-SOURCE_ARMS = ("S0", "S1", "S2")
+SOURCE_ARMS = ("S0", "S1", "S2", "S3")
 QUALITY_WEIGHT = 0.1
 
 

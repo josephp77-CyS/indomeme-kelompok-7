@@ -1,0 +1,33 @@
+{
+  "status": "FROZEN",
+  "freeze_receipt": "Joseph authorized full caption-repair experiments on 2026-11-19. The official split has been used in the previous study, so all new test analyses are retrospective.",
+  "fit": 3214,
+  "validation": 804,
+  "official_retrospective": 1005,
+  "classifier_seeds": [42, 123, 2026],
+  "captioner": "Qwen/Qwen2-VL-2B-Instruct",
+  "captioner_revision": "895c3a49bc3fa70a340399125c650a463535e71c",
+  "captioner_input": "image only, no dataset metadata",
+  "router": {
+    "model": "standardized Ridge, alpha=10",
+    "features": "raw task probabilities before recaption, with and without the displayed caption, absolute changes and distances from 0.5",
+    "target": "error cost with the displayed caption minus error cost with the generated caption; empty or truncated output keeps the displayed caption",
+    "cost": "2 per missed hate, 1 per false hate, 1 per missed or false inappropriate",
+    "validation": "five-fold out-of-fold predictions grouped by meme, then refit on validation for retrospective test",
+    "primary_contrast": "S1 learned routing minus probability uncertainty, in weighted errors per 100 memes",
+    "secondary": "B2, random and disagreement routing, Macro-F1, task errors, clean-input scenario",
+    "swap_prevalence": 0.2,
+    "routing_budget": 0.2,
+    "replay_seed": 20261119,
+    "replays": 20
+  },
+  "classifier": {
+    "S3": "matched S1 training, with half of the normal assignments offered a usable generated caption",
+    "max_epochs": 5,
+    "early_stop_patience": 2,
+    "checkpoint_selection": "mean raw Macro-F1 on original validation captions",
+    "primary_contrast": "S3 minus S1 on image-only regenerated caption inputs",
+    "secondary": "original captions, synthetic caption swaps, and caption omission"
+  },
+  "interval": "paired bootstrap over memes, conditional on the fixed model seeds and replay assignments"
+}

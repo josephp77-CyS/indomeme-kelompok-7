@@ -30,6 +30,10 @@ def damage_ocr(text, rng):
     return "".join(chars)
 
 
+def mixed_condition(seed, image_id):
+    return rng_for(seed, image_id, "train").choices(CONDITIONS, weights=TRAIN_WEIGHTS, k=1)[0]
+
+
 def noisy_sources(frame, condition, seed):
     """Return an aligned input frame and text-quality targets (-1 missing, 0 altered, 1 original)."""
     if condition not in (*CONDITIONS, "mixed"):
@@ -43,9 +47,7 @@ def noisy_sources(frame, condition, seed):
     ranks = {i: rank for rank, i in enumerate(donors)}
     modified_caption, modified_ocr = captions.copy(), ocr.copy()
     for i, image_id in enumerate(ids):
-        mode = condition
-        if mode == "mixed":
-            mode = rng_for(seed, image_id, "train").choices(CONDITIONS, weights=TRAIN_WEIGHTS, k=1)[0]
+        mode = mixed_condition(seed, image_id) if condition == "mixed" else condition
         if mode == "no_caption" and ocr[i]:
             modified_caption[i] = ""
         elif mode == "caption_swap" and captions[i]:
@@ -66,3 +68,11 @@ def noisy_sources(frame, condition, seed):
         for caption, text, new_caption, new_ocr in zip(captions, ocr, modified_caption, modified_ocr)
     ], dtype=np.int8)
     return data, quality
+
+
+def repair_training_captions(frame, quality, captions, seed):
+    for index, image_id in enumerate(frame.image_path.astype(str)):
+        caption = captions[image_id]
+        if caption and mixed_condition(seed, image_id) == "normal" and rng_for(seed, image_id, "recaption").random() < 0.5:
+            frame.at[index, "caption"] = caption
+            quality[index, 0] = 0
