@@ -2,6 +2,8 @@
 
 Eksperimen mengukur dua hal. Pertama, pemilihan item untuk regenerasi saat kapasitas hanya 20%. Kedua, efek melatih classifier sejak awal dengan campuran caption regenerasi dan caption asli. Metrik klasifikasi adalah rata-rata Macro-F1 raw untuk hate dan inappropriate. Biaya tertimbang per 100 meme menghitung dua untuk hate yang terlewat dan satu untuk kesalahan lain. [Desain eksperimen](caption-repair-study.md)
 
+Full training dan evaluasi selesai pada 20 November 2026 sekitar 00.56 WIB. Tiga seed S3 memakai seluruh 3.214 meme fit. Sebanyak 3.030 caption fit lolos pemeriksaan keluaran. Seed 42, 123, dan 2026 masing-masing menempuh 4, 4, dan 5 epoch sesuai aturan early stopping. Checkpoint dikunci sebelum evaluasi dan dipilih dari Macro-F1 validation pada caption asli. [Log eksperimen A100](https://node580-ai-hub.ub.ac.id/user/josephplase77/lab/tree/kelompok-7-private/cp2-caption-repair-study/pipeline.log)
+
 ## Validation dengan caption donor sintetis
 
 Ringkasan ini mencakup 804 meme, 161 slot regenerasi per replay, 20 replay, dan tiga seed classifier. Caption yang memenuhi pemeriksaan keluaran tersedia untuk 754 meme. Router dan pemeriksaan penerimaan caption memakai prediksi out-of-fold lima lipatan yang dipisahkan berdasarkan ID meme. [Hasil validation agregat](https://node580-ai-hub.ub.ac.id/user/josephplase77/lab/tree/kelompok-7-private/cp2-caption-repair-study/validation_only_ROUTER_PRELIMINARY.json)
@@ -47,8 +49,21 @@ Pada 948 pasangan test yang memiliki caption baru, median panjang keduanya 18 ka
 
 Jika semua caption baru yang tersedia digunakan pada S1, biaya naik 10,32 per 100 meme dibanding caption asli dan turun 8,69 dibanding kondisi semua caption tertukar. Dibanding caption asli, kenaikan tertinggi di antara topik yang dianalisis terjadi pada politik (+30,75, 142 meme) dan individu (+29,85, 134 meme). Pada kelompok sosial, efek terhadap caption tertukar adalah −12,74 per 100 meme (560 meme). Topik dapat bertumpang tindih. Angka ini deskriptif dan membantu memilih kasus untuk audit manusia. [Ringkasan audit caption](https://node580-ai-hub.ub.ac.id/user/josephplase77/lab/tree/kelompok-7-private/cp2-caption-repair-study/caption_audit.json)
 
+## Efek full training S3
+
+| Kondisi pada 1.005 meme test | S1 | S3 | Selisih poin Macro-F1 | IK 95% |
+| --- | ---: | ---: | ---: | ---: |
+| Caption asli | 77,03% | 75,96% | −1,07 | −2,04 hingga −0,08 |
+| Caption dihapus | 73,19% | 73,44% | +0,25 | −0,63 hingga +1,15 |
+| Caption donor sintetis | 68,94% | 72,08% | +3,14 | +1,93 hingga +4,35 |
+| Caption regenerasi Qwen | 72,65% | 74,07% | +1,42 | +0,25 hingga +2,63 |
+
+Pada kondisi regenerasi, ketiga seed S3 mengungguli seed S1 yang dipasangkan di validation dan test. Efek rerata validation adalah +2,34 poin (IK +0,93 hingga +3,74), dan efek test +1,42 poin. Pada kondisi caption asli, ketiga seed S3 turun di test. Caption yang gagal dibuat menggunakan caption asli pada keduanya. [Ringkasan classifier berpasangan](https://node580-ai-hub.ub.ac.id/user/josephplase77/lab/tree/kelompok-7-private/cp2-caption-repair-study/classifier_results.json)
+
+Pada jalur selektif, memakai S3 sebagai pengganti S1 setelah regenerasi mengubah biaya test sebesar +0,43 per 100 meme (IK −0,62 hingga +1,49) pada item dan kuota yang sama. Macro-F1 berubah dari 75,88% ke 75,62%. Untuk simulasi moderasi berkuota ini, hasil mendukung mempertahankan S1 sebagai classifier utama. S3 menunjukkan keuntungan saat seluruh dataset diuji di bawah perubahan sumber caption. [Ringkasan jalur regenerasi S3](https://node580-ai-hub.ub.ac.id/user/josephplase77/lab/tree/kelompok-7-private/cp2-caption-repair-study/specialist_results.json)
+
 ## Narasi presentasi
 
-“Saat kapasitas regenerasi dibatasi, urutan berdasarkan perkiraan manfaat lebih berguna untuk S1 daripada urutan berdasarkan ketidakpastian pada replay test INDOMEME. Kenaikan Macro-F1 terhadap mempertahankan caption hanya sekitar setengah poin. Regenerasi massal merugikan, dan kenaikan positif palsu perlu dipertimbangkan ketika penurunan hate yang terlewat dihargai lebih tinggi.”
+“Saat kapasitas regenerasi dibatasi, urutan berdasarkan perkiraan manfaat lebih berguna untuk S1 daripada urutan berdasarkan ketidakpastian pada replay test INDOMEME. Kenaikan Macro-F1 terhadap mempertahankan caption sekitar setengah poin. Regenerasi massal merugikan, dan kenaikan positif palsu perlu dipertimbangkan ketika penurunan hate yang terlewat dihargai lebih tinggi. Melatih classifier dengan sebagian caption baru membantu saat sumber caption berubah dan menurunkan performa pada caption asli.”
 
-Antrean moderator komunitas Indonesia dapat memakai skor manfaat untuk memilih item yang membutuhkan caption baru. Hasil saat ini berasal dari data INDOMEME yang sudah dipakai dalam penelitian dan gangguan donor sintetis. Uji moderator, kesalahan caption alami, dan transfer lintas domain masih memerlukan data dan anotator.
+Antrean moderator komunitas Indonesia dapat memakai skor manfaat untuk memilih item yang membutuhkan caption baru. Kuota 20% dihitung sebagai permintaan ke captioner. Router memerlukan satu prediksi tambahan tanpa caption untuk tiap item dan inferensi ulang saat caption diganti. Hasil saat ini berasal dari data INDOMEME yang sudah dipakai dalam penelitian dan gangguan donor sintetis. Uji moderator, kesalahan caption alami, dan transfer lintas domain masih memerlukan data dan anotator.
