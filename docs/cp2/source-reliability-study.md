@@ -73,3 +73,21 @@ python -m cp2.reliability_summary --benchmark "$CP2_STUDY_ROOT/official" \
 ## Protokol untuk domain dan anotator baru
 
 Sumber dan anotator eksternal belum tersedia. Siapkan satu domain dengan izin penggunaan dan pisahkan dari INDOMEME maupun template yang hampir identik. Beri setiap item ID privat. Simpan metadata sumber, kondisi input, dua label, dan penilaian kualitas sumber. Dua penilai menulis caption deskriptif atau menandai tidak yakin tanpa melihat prediksi atau label model. Untuk kualitas caption, tandai fakta yang bertentangan, informasi penting yang hilang, dan inferensi yang tidak dapat didukung oleh bukti yang tampak. Catat kesepakatan dan adjudikasi. Simpan sampel asli sesuai izin sumber. Evaluasi held-out lintas domain dan sesi moderator dilakukan setelah data tersedia.
+
+## Pilot verifikasi selektif
+
+Pilot CPU memakai prediksi pasangan normal, tanpa caption, dan caption ditukar dari B2 dan S1 pada tiga seed. Perbedaan prediksi adalah perubahan absolut terbesar pada probabilitas kebencian atau ketidakpantasan setelah caption dihapus. Ketidakpastian pembanding memakai kedekatan probabilitas kedua tugas ke 0,5. Setiap replay mencampur sekitar 20% caption tertukar dan menandai sekitar 20% item. Dua puluh replay per seed memakai campuran dan tie-break yang sama untuk setiap kebijakan. Untuk menguji fallback, prediksi item yang ditandai diganti dengan prediksi tanpa caption.
+
+```bash
+PYTHONPATH=src CUDA_VISIBLE_DEVICES='' python -m cp2.caption_triage \
+  --study "$CP2_STUDY_ROOT" --output "$CP2_STUDY_ROOT/caption_triage_pilot.json"
+```
+
+Pada 1.005 meme official test yang dipakai kembali, kuota setiap replay adalah 201.
+
+| Model | Recall caption tertukar dengan urutan acak | Dengan ketidakpastian | Dengan perbedaan prediksi | Perubahan Macro-F1 saat item terpilih oleh perbedaan prediksi memakai fallback |
+| --- | ---: | ---: | ---: | ---: |
+| B2 | 20,65% | 25,37% | 30,51% | −5,06 poin persentase |
+| S1 | 20,65% | 27,11% | 32,83% | −1,43 poin persentase |
+
+Dalam pembandingan dua versi dari meme yang sama, selisih kemampuan merangking versi tertukar di atas versi bersih terhadap ketidakpastian adalah +3,05 poin untuk B2 (IK 95% −0,53 sampai +6,57) dan +2,92 untuk S1 (−0,27 sampai +6,14). Interval bootstrap mempertahankan tiga seed yang sama dan meresampling meme. Hasil ini eksploratif. Sinyal perbedaan prediksi memberi triase awal yang patut diuji, sementara penghapusan caption otomatis pada item terpilih memperburuk skor kedua model. Pilot memakai perturbasi sintetis dan belum menguji caption yang dibuat ulang, moderator, atau latensi inferensi. [Hasil pilot agregat](https://node580-ai-hub.ub.ac.id/user/josephplase77/lab/tree/kelompok-7-private/cp2-source-noise-study/caption_triage_pilot.json)
