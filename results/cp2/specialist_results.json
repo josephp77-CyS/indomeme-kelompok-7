@@ -1,0 +1,275 @@
+{
+  "scope": "Secondary comparison at 20% identical S1 routes; only the classifier after a usable recaption changes.",
+  "seeds": [
+    42,
+    123,
+    2026
+  ],
+  "source_protocol_sha256": "7579706cee879746e69323283819bd0c7fbe1f74218300fe5277f68268f43dac",
+  "splits": {
+    "validation": {
+      "swap_20pct": {
+        "policies": {
+          "S1_after_recaption": {
+            "macro_f1": 0.7495120290201944,
+            "error_cost_per_100": 57.96849087893864,
+            "missed_hate": 91.43333333333334,
+            "false_hate": 75.18333333333332
+          },
+          "S3_after_recaption": {
+            "macro_f1": 0.7500597313167429,
+            "error_cost_per_100": 57.589137645107805,
+            "missed_hate": 86.53333333333335,
+            "false_hate": 81.51666666666667
+          }
+        },
+        "S3_minus_S1_after_recaption_cost_per_100": -0.3793532338308456,
+        "paired_ci95_cost_per_100": [
+          -1.4635157545605308,
+          0.6198175787728029
+        ],
+        "per_seed": {
+          "42": {
+            "S1_after_recaption": {
+              "macro_f1": 0.7607979183653681,
+              "error_cost_per_100": 55.31716417910447,
+              "missed_hate": 83.15,
+              "false_hate": 75.9
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.7577372497479967,
+              "error_cost_per_100": 55.63432835820896,
+              "missed_hate": 78.4,
+              "false_hate": 85.75
+            }
+          },
+          "123": {
+            "S1_after_recaption": {
+              "macro_f1": 0.7386740204704595,
+              "error_cost_per_100": 60.192786069651746,
+              "missed_hate": 89.1,
+              "false_hate": 88.8
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.7404951325476617,
+              "error_cost_per_100": 59.73880597014926,
+              "missed_hate": 87.75,
+              "false_hate": 89.55
+            }
+          },
+          "2026": {
+            "S1_after_recaption": {
+              "macro_f1": 0.749064148224756,
+              "error_cost_per_100": 58.3955223880597,
+              "missed_hate": 102.05,
+              "false_hate": 60.85
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.7519468116545698,
+              "error_cost_per_100": 57.39427860696519,
+              "missed_hate": 93.45,
+              "false_hate": 69.25
+            }
+          }
+        }
+      },
+      "clean": {
+        "policies": {
+          "S1_after_recaption": {
+            "macro_f1": 0.7645225674249588,
+            "error_cost_per_100": 54.5190713101161,
+            "missed_hate": 87.33333333333333,
+            "false_hate": 67
+          },
+          "S3_after_recaption": {
+            "macro_f1": 0.7638306585877283,
+            "error_cost_per_100": 54.51907131011609,
+            "missed_hate": 84,
+            "false_hate": 73
+          }
+        },
+        "S3_minus_S1_after_recaption_cost_per_100": 2.828030789094926e-16,
+        "paired_ci95_cost_per_100": [
+          -1.2023217247097844,
+          1.1608623548922061
+        ],
+        "per_seed": {
+          "42": {
+            "S1_after_recaption": {
+              "macro_f1": 0.7713325170296982,
+              "error_cost_per_100": 52.860696517412954,
+              "missed_hate": 80,
+              "false_hate": 71
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.7662905588283858,
+              "error_cost_per_100": 53.73134328358209,
+              "missed_hate": 77,
+              "false_hate": 81
+            }
+          },
+          "123": {
+            "S1_after_recaption": {
+              "macro_f1": 0.7602740011969563,
+              "error_cost_per_100": 55.22388059701494,
+              "missed_hate": 83,
+              "false_hate": 77
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.7616510217403204,
+              "error_cost_per_100": 54.97512437810948,
+              "missed_hate": 83,
+              "false_hate": 77
+            }
+          },
+          "2026": {
+            "S1_after_recaption": {
+              "macro_f1": 0.761961184048222,
+              "error_cost_per_100": 55.472636815920396,
+              "missed_hate": 99,
+              "false_hate": 53
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.7635503951944783,
+              "error_cost_per_100": 54.85074626865672,
+              "missed_hate": 92,
+              "false_hate": 61
+            }
+          }
+        }
+      }
+    },
+    "test": {
+      "swap_20pct": {
+        "policies": {
+          "S1_after_recaption": {
+            "macro_f1": 0.7588284449264452,
+            "error_cost_per_100": 56.646766169154226,
+            "missed_hate": 119.39999999999999,
+            "false_hate": 89.23333333333335
+          },
+          "S3_after_recaption": {
+            "macro_f1": 0.7562031764169136,
+            "error_cost_per_100": 57.07960199004975,
+            "missed_hate": 115.91666666666667,
+            "false_hate": 98.3
+          }
+        },
+        "S3_minus_S1_after_recaption_cost_per_100": 0.43283582089552286,
+        "paired_ci95_cost_per_100": [
+          -0.6219320066334987,
+          1.4926202321724702
+        ],
+        "per_seed": {
+          "42": {
+            "S1_after_recaption": {
+              "macro_f1": 0.7623739814854587,
+              "error_cost_per_100": 55.68159203980099,
+              "missed_hate": 110.15,
+              "false_hate": 96.55
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.7545582830201369,
+              "error_cost_per_100": 57.2636815920398,
+              "missed_hate": 107.95,
+              "false_hate": 109.5
+            }
+          },
+          "123": {
+            "S1_after_recaption": {
+              "macro_f1": 0.7556450024742029,
+              "error_cost_per_100": 57.22388059701493,
+              "missed_hate": 117.35,
+              "false_hate": 94
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.7547651314597746,
+              "error_cost_per_100": 57.333333333333336,
+              "missed_hate": 116.7,
+              "false_hate": 95.65
+            }
+          },
+          "2026": {
+            "S1_after_recaption": {
+              "macro_f1": 0.7584663508196741,
+              "error_cost_per_100": 57.03482587064677,
+              "missed_hate": 130.7,
+              "false_hate": 77.15
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.7592861147708291,
+              "error_cost_per_100": 56.641791044776106,
+              "missed_hate": 123.1,
+              "false_hate": 89.75
+            }
+          }
+        }
+      },
+      "clean": {
+        "policies": {
+          "S1_after_recaption": {
+            "macro_f1": 0.7722888021501338,
+            "error_cost_per_100": 53.59867330016584,
+            "missed_hate": 114.33333333333333,
+            "false_hate": 83.33333333333333
+          },
+          "S3_after_recaption": {
+            "macro_f1": 0.7677721087493765,
+            "error_cost_per_100": 54.494195688225545,
+            "missed_hate": 112.33333333333333,
+            "false_hate": 92.33333333333333
+          }
+        },
+        "S3_minus_S1_after_recaption_cost_per_100": 0.8955223880597022,
+        "paired_ci95_cost_per_100": [
+          -0.19900497512437762,
+          2.023217247097845
+        ],
+        "per_seed": {
+          "42": {
+            "S1_after_recaption": {
+              "macro_f1": 0.7710797860624705,
+              "error_cost_per_100": 53.6318407960199,
+              "missed_hate": 106,
+              "false_hate": 95
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.761008483423725,
+              "error_cost_per_100": 55.82089552238805,
+              "missed_hate": 106,
+              "false_hate": 108
+            }
+          },
+          "123": {
+            "S1_after_recaption": {
+              "macro_f1": 0.7742761561572583,
+              "error_cost_per_100": 53.03482587064675,
+              "missed_hate": 111,
+              "false_hate": 83
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.7726830387214635,
+              "error_cost_per_100": 53.33333333333335,
+              "missed_hate": 111,
+              "false_hate": 85
+            }
+          },
+          "2026": {
+            "S1_after_recaption": {
+              "macro_f1": 0.7715104642306727,
+              "error_cost_per_100": 54.12935323383088,
+              "missed_hate": 126,
+              "false_hate": 72
+            },
+            "S3_after_recaption": {
+              "macro_f1": 0.7696248041029409,
+              "error_cost_per_100": 54.32835820895523,
+              "missed_hate": 120,
+              "false_hate": 84
+            }
+          }
+        }
+      }
+    }
+  }
+}

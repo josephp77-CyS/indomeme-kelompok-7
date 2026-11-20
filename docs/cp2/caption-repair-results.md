@@ -64,6 +64,8 @@ Pada jalur selektif, memakai S3 sebagai pengganti S1 setelah regenerasi mengubah
 
 ## Narasi presentasi
 
+Uji lanjutan melengkapi hasil kuota 20%. Router awal mempertahankan biaya hampir sama pada kuota 10% dengan 101 permintaan dibanding 201. Router tiga aksi mengurangi jumlah permintaan di bawah batas 20%, sementara estimasi biaya kesalahannya lebih tinggi daripada router awal. [Perbandingan kuota lengkap](three-actions.md)
+
 “Saat kapasitas regenerasi dibatasi, urutan berdasarkan perkiraan manfaat lebih berguna untuk S1 daripada urutan berdasarkan ketidakpastian pada replay test INDOMEME. Kenaikan Macro-F1 terhadap mempertahankan caption sekitar setengah poin. Regenerasi massal merugikan, dan kenaikan positif palsu perlu dipertimbangkan ketika penurunan hate yang terlewat dihargai lebih tinggi. Melatih classifier dengan sebagian caption baru membantu saat sumber caption berubah dan menurunkan performa pada caption asli.”
 
 Antrean moderator komunitas Indonesia dapat memakai skor manfaat untuk memilih item yang membutuhkan caption baru. Kuota 20% dihitung sebagai permintaan ke captioner. Router memerlukan satu prediksi tambahan tanpa caption untuk tiap item dan inferensi ulang saat caption diganti. Hasil saat ini berasal dari data INDOMEME yang sudah dipakai dalam penelitian dan gangguan donor sintetis. Uji moderator, kesalahan caption alami, dan transfer lintas domain masih memerlukan data dan anotator.

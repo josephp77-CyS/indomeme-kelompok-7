@@ -1,0 +1,1444 @@
+{
+  "scope": "Secondary retrospective S1-only study, frozen validation fit, synthetic corruption",
+  "source_protocol_sha256": "7579706cee879746e69323283819bd0c7fbe1f74218300fe5277f68268f43dac",
+  "seeds": [
+    42,
+    123,
+    2026
+  ],
+  "replays": 20,
+  "split_sizes": {
+    "validation": 804,
+    "test": 1005
+  },
+  "model_parameters": {
+    "42": {
+      "omit": {
+        "mean": [
+          0.33294318217537433,
+          0.4523327093564474,
+          0.3200230343500152,
+          0.42766970904099183,
+          0.11544001782724207,
+          0.12722593586340508,
+          0.3581093158888566,
+          0.3317037688658587,
+          0.36797987717141245,
+          0.3370030960832625
+        ],
+        "scale": [
+          0.3467269899641519,
+          0.3577774460092818,
+          0.3462010823682811,
+          0.3562297323177951,
+          0.13283226922694638,
+          0.13311173091385003,
+          0.14101526096457218,
+          0.14230067178480374,
+          0.12976019264187844,
+          0.1362358484677145
+        ],
+        "coefficients": [
+          -0.16714938315301767,
+          -0.03756578022208346,
+          0.07595261553987162,
+          0.14232411316792645,
+          -0.07165438460236927,
+          0.015141373131576,
+          -0.04000822116997762,
+          -0.03841265394939287,
+          0.038789140234539644,
+          0.09889389367031233
+        ],
+        "intercept": -0.04755452942920209
+      },
+      "recaption": {
+        "mean": [
+          0.33294318217537433,
+          0.4523327093564474,
+          0.3200230343500152,
+          0.42766970904099183,
+          0.11544001782724207,
+          0.12722593586340508,
+          0.3581093158888566,
+          0.3317037688658587,
+          0.36797987717141245,
+          0.3370030960832625
+        ],
+        "scale": [
+          0.3467269899641519,
+          0.3577774460092818,
+          0.3462010823682811,
+          0.3562297323177951,
+          0.13283226922694638,
+          0.13311173091385003,
+          0.14101526096457218,
+          0.14230067178480374,
+          0.12976019264187844,
+          0.1362358484677145
+        ],
+        "coefficients": [
+          -0.21181881457591598,
+          -0.11478479705604237,
+          0.15038287881706708,
+          0.11194537474389354,
+          0.04308723485557599,
+          -0.059120113072867,
+          -0.03433795909630066,
+          -0.08744799597149597,
+          0.08319643072512739,
+          0.04107423344729659
+        ],
+        "intercept": -0.08767177285797391
+      }
+    },
+    "123": {
+      "omit": {
+        "mean": [
+          0.38382057531676556,
+          0.4825932408604233,
+          0.339235416330879,
+          0.4088562249544248,
+          0.13586794599121557,
+          0.13924044405402086,
+          0.27429977958947793,
+          0.23584647174109125,
+          0.28423945782752474,
+          0.2397513010015535
+        ],
+        "scale": [
+          0.28112906278160876,
+          0.2641595223208572,
+          0.26580127746122273,
+          0.25056223099634845,
+          0.13500389984382322,
+          0.13252519084443495,
+          0.1314946370669044,
+          0.12024845223039392,
+          0.12531361089777313,
+          0.11665304539311598
+        ],
+        "coefficients": [
+          -0.2326873799995319,
+          0.04148706819772386,
+          -0.05090817833936442,
+          0.20922602456698006,
+          -0.11983061034305614,
+          0.012421318582600262,
+          -0.21626045307582487,
+          0.033459662128677105,
+          0.06768883689635419,
+          0.14086685657008463
+        ],
+        "intercept": -0.06241816540879781
+      },
+      "recaption": {
+        "mean": [
+          0.38382057531676556,
+          0.4825932408604233,
+          0.339235416330879,
+          0.4088562249544248,
+          0.13586794599121557,
+          0.13924044405402086,
+          0.27429977958947793,
+          0.23584647174109125,
+          0.28423945782752474,
+          0.2397513010015535
+        ],
+        "scale": [
+          0.28112906278160876,
+          0.2641595223208572,
+          0.26580127746122273,
+          0.25056223099634845,
+          0.13500389984382322,
+          0.13252519084443495,
+          0.1314946370669044,
+          0.12024845223039392,
+          0.12531361089777313,
+          0.11665304539311598
+        ],
+        "coefficients": [
+          -0.24628042921040952,
+          0.006808566107029412,
+          -0.038765476581516994,
+          0.18006775527792218,
+          0.04561031508437126,
+          -0.05488275656891428,
+          -0.17109342070796046,
+          -0.0016695683910948605,
+          0.16896223813419944,
+          0.07526862103763395
+        ],
+        "intercept": -0.10385877400823748
+      }
+    },
+    "2026": {
+      "omit": {
+        "mean": [
+          0.30953708168426736,
+          0.3974123625652355,
+          0.31893488793953584,
+          0.39212845388651635,
+          0.10773469430272263,
+          0.12188368382752497,
+          0.3627211274748578,
+          0.33604928870008915,
+          0.36541618429476497,
+          0.33475565572561167
+        ],
+        "scale": [
+          0.3374512283733444,
+          0.3489271718298089,
+          0.3434322219241568,
+          0.3441327873783047,
+          0.13060457712976567,
+          0.14118971336138925,
+          0.13631888521915242,
+          0.13908727533372642,
+          0.13115364316970402,
+          0.13417263793110218
+        ],
+        "coefficients": [
+          -0.2779255855586115,
+          -0.02240728997584384,
+          0.17109560752951838,
+          0.11922679728898264,
+          -0.04892592953062311,
+          0.10938982328595259,
+          0.06214002002175696,
+          -0.07973222867406231,
+          -0.1084504516919329,
+          0.20506521034248615
+        ],
+        "intercept": -0.005356534368607195
+      },
+      "recaption": {
+        "mean": [
+          0.30953708168426736,
+          0.3974123625652355,
+          0.31893488793953584,
+          0.39212845388651635,
+          0.10773469430272263,
+          0.12188368382752497,
+          0.3627211274748578,
+          0.33604928870008915,
+          0.36541618429476497,
+          0.33475565572561167
+        ],
+        "scale": [
+          0.3374512283733444,
+          0.3489271718298089,
+          0.3434322219241568,
+          0.3441327873783047,
+          0.13060457712976567,
+          0.14118971336138925,
+          0.13631888521915242,
+          0.13908727533372642,
+          0.13115364316970402,
+          0.13417263793110218
+        ],
+        "coefficients": [
+          -0.3193922427201268,
+          -0.05632545965931723,
+          0.11128954196723502,
+          0.22107042413356645,
+          0.042767540080569016,
+          0.09463032193199208,
+          0.12401524637090822,
+          -0.12618165376792714,
+          0.02624198222525844,
+          0.16249625260909223
+        ],
+        "intercept": -0.060408619887492826
+      }
+    }
+  },
+  "splits": {
+    "validation": {
+      "swap_20pct": {
+        "5": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.7487661207858999,
+              "error_cost_per_100": 58.391376451077946,
+              "missed_hate": 94.01666666666667,
+              "false_hate": 73.91666666666667,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.7487819846862265,
+              "error_cost_per_100": 57.64925373134327,
+              "missed_hate": 84.08333333333333,
+              "false_hate": 85.06666666666668,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 391.9666666666667
+            },
+            "uncertainty": {
+              "macro_f1": 0.7472523077479364,
+              "error_cost_per_100": 58.74170812603648,
+              "missed_hate": 96.89999999999999,
+              "false_hate": 71.18333333333334,
+              "regeneration_requests": 41.0,
+              "regenerations_applied": 40.083333333333336,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7507347707775275,
+              "error_cost_per_100": 57.84825870646767,
+              "missed_hate": 92.41666666666667,
+              "false_hate": 74.51666666666667,
+              "regeneration_requests": 41.0,
+              "regenerations_applied": 39.25,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7507347707775275,
+              "error_cost_per_100": 57.84825870646767,
+              "missed_hate": 92.41666666666667,
+              "false_hate": 74.51666666666667,
+              "regeneration_requests": 41.0,
+              "regenerations_applied": 39.25,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.748575982150105,
+              "error_cost_per_100": 57.893864013267006,
+              "missed_hate": 87.0,
+              "false_hate": 82.43333333333334,
+              "regeneration_requests": 41.0,
+              "regenerations_applied": 38.50000000000001,
+              "omissions_applied": 365.3666666666666
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": -0.4975124378109451,
+              "ci95_cost_per_100": [
+                -1.71849087893864,
+                0.715174129353234
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": 0.24461028192371456,
+              "ci95_cost_per_100": [
+                -0.4083747927031511,
+                0.9349606135986727
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -0.8478441127694855,
+              "ci95_cost_per_100": [
+                -2.2492226368159196,
+                0.6032338308457714
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": 0.04560530679933689,
+              "ci95_cost_per_100": [
+                -1.1215277777777777,
+                1.1898839137645112
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": 0.04560530679933689,
+              "ci95_cost_per_100": [
+                -1.1215277777777777,
+                1.1898839137645112
+              ]
+            }
+          }
+        },
+        "10": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.7487661207858999,
+              "error_cost_per_100": 58.391376451077946,
+              "missed_hate": 94.01666666666667,
+              "false_hate": 73.91666666666667,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.7487819846862265,
+              "error_cost_per_100": 57.64925373134327,
+              "missed_hate": 84.08333333333333,
+              "false_hate": 85.06666666666668,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 391.9666666666667
+            },
+            "uncertainty": {
+              "macro_f1": 0.7455722459117494,
+              "error_cost_per_100": 58.946932006633496,
+              "missed_hate": 97.71666666666665,
+              "false_hate": 68.86666666666666,
+              "regeneration_requests": 81.0,
+              "regenerations_applied": 77.41666666666667,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7497515112847716,
+              "error_cost_per_100": 57.95812603648425,
+              "missed_hate": 91.55000000000001,
+              "false_hate": 75.35000000000001,
+              "regeneration_requests": 81.0,
+              "regenerations_applied": 77.9,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7497515112847716,
+              "error_cost_per_100": 57.95812603648425,
+              "missed_hate": 91.55000000000001,
+              "false_hate": 75.35000000000001,
+              "regeneration_requests": 81.0,
+              "regenerations_applied": 77.9,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.7483504479001336,
+              "error_cost_per_100": 57.956053067993366,
+              "missed_hate": 87.46666666666665,
+              "false_hate": 81.98333333333333,
+              "regeneration_requests": 81.0,
+              "regenerations_applied": 75.33333333333333,
+              "omissions_applied": 346.68333333333334
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": -0.43532338308457696,
+              "ci95_cost_per_100": [
+                -1.652155887230514,
+                0.7546641791044764
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": 0.30679933665008274,
+              "ci95_cost_per_100": [
+                -0.4893242122719737,
+                1.1235489220563846
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -0.9908789386401322,
+              "ci95_cost_per_100": [
+                -2.56643864013267,
+                0.605358623548922
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": -0.002072968490878697,
+              "ci95_cost_per_100": [
+                -1.1402881426202323,
+                1.11318407960199
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": -0.002072968490878697,
+              "ci95_cost_per_100": [
+                -1.1402881426202323,
+                1.11318407960199
+              ]
+            }
+          }
+        },
+        "20": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.7487661207858999,
+              "error_cost_per_100": 58.391376451077946,
+              "missed_hate": 94.01666666666667,
+              "false_hate": 73.91666666666667,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.7487819846862265,
+              "error_cost_per_100": 57.64925373134327,
+              "missed_hate": 84.08333333333333,
+              "false_hate": 85.06666666666668,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 391.9666666666667
+            },
+            "uncertainty": {
+              "macro_f1": 0.743209435826456,
+              "error_cost_per_100": 59.3200663349917,
+              "missed_hate": 101.51666666666665,
+              "false_hate": 63.583333333333336,
+              "regeneration_requests": 161.0,
+              "regenerations_applied": 152.13333333333335,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7495120290201944,
+              "error_cost_per_100": 57.96849087893864,
+              "missed_hate": 91.43333333333334,
+              "false_hate": 75.18333333333332,
+              "regeneration_requests": 161.0,
+              "regenerations_applied": 152.73333333333332,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7495120290201944,
+              "error_cost_per_100": 57.96849087893864,
+              "missed_hate": 91.43333333333334,
+              "false_hate": 75.18333333333332,
+              "regeneration_requests": 161.0,
+              "regenerations_applied": 152.73333333333332,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.7487334863434055,
+              "error_cost_per_100": 57.87728026533997,
+              "missed_hate": 87.53333333333335,
+              "false_hate": 81.60000000000001,
+              "regeneration_requests": 147.13333333333333,
+              "regenerations_applied": 138.5,
+              "omissions_applied": 302.55
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": -0.5140961857379767,
+              "ci95_cost_per_100": [
+                -1.7247097844112769,
+                0.6985903814262027
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": 0.22802653399668307,
+              "ci95_cost_per_100": [
+                -0.6032338308457715,
+                1.086287313432835
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -1.4427860696517398,
+              "ci95_cost_per_100": [
+                -3.6815920398009934,
+                0.7421745439469328
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": -0.0912106135986731,
+              "ci95_cost_per_100": [
+                -1.146403399668325,
+                0.9349606135986728
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": -0.0912106135986731,
+              "ci95_cost_per_100": [
+                -1.146403399668325,
+                0.9349606135986728
+              ]
+            }
+          }
+        }
+      },
+      "clean": {
+        "5": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.7663984913752023,
+              "error_cost_per_100": 54.2703150912106,
+              "missed_hate": 88.0,
+              "false_hate": 66.0,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.7623900658552124,
+              "error_cost_per_100": 54.64344941956884,
+              "missed_hate": 82.0,
+              "false_hate": 76.33333333333333,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 388.0
+            },
+            "uncertainty": {
+              "macro_f1": 0.7637276662932396,
+              "error_cost_per_100": 54.8922056384743,
+              "missed_hate": 91.33333333333333,
+              "false_hate": 63.333333333333336,
+              "regeneration_requests": 41.0,
+              "regenerations_applied": 40.0,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7671100109650805,
+              "error_cost_per_100": 54.06301824212272,
+              "missed_hate": 87.33333333333333,
+              "false_hate": 66.66666666666667,
+              "regeneration_requests": 41.0,
+              "regenerations_applied": 39.666666666666664,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7671100109650805,
+              "error_cost_per_100": 54.06301824212272,
+              "missed_hate": 87.33333333333333,
+              "false_hate": 66.66666666666667,
+              "regeneration_requests": 41.0,
+              "regenerations_applied": 39.666666666666664,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.7623301636527068,
+              "error_cost_per_100": 54.809286898839126,
+              "missed_hate": 84.33333333333333,
+              "false_hate": 74.0,
+              "regeneration_requests": 41.0,
+              "regenerations_applied": 38.666666666666664,
+              "omissions_applied": 366.0
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": 0.5389718076285243,
+              "ci95_cost_per_100": [
+                -0.7462686567164176,
+                1.8242122719734666
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": 0.16583747927031492,
+              "ci95_cost_per_100": [
+                -0.6218905472636818,
+                0.9535655058043118
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -0.08291873963515665,
+              "ci95_cost_per_100": [
+                -1.6583747927031502,
+                1.5339966832504153
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": 0.7462686567164182,
+              "ci95_cost_per_100": [
+                -0.580431177446103,
+                2.0315091210613603
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": 0.7462686567164182,
+              "ci95_cost_per_100": [
+                -0.580431177446103,
+                2.0315091210613603
+              ]
+            }
+          }
+        },
+        "10": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.7663984913752023,
+              "error_cost_per_100": 54.2703150912106,
+              "missed_hate": 88.0,
+              "false_hate": 66.0,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.7623900658552124,
+              "error_cost_per_100": 54.64344941956884,
+              "missed_hate": 82.0,
+              "false_hate": 76.33333333333333,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 388.0
+            },
+            "uncertainty": {
+              "macro_f1": 0.7594852783580422,
+              "error_cost_per_100": 55.63847429519072,
+              "missed_hate": 92.66666666666667,
+              "false_hate": 61.666666666666664,
+              "regeneration_requests": 81.0,
+              "regenerations_applied": 76.66666666666667,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7653438118306347,
+              "error_cost_per_100": 54.35323383084576,
+              "missed_hate": 87.0,
+              "false_hate": 67.0,
+              "regeneration_requests": 81.0,
+              "regenerations_applied": 77.33333333333333,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7653438118306347,
+              "error_cost_per_100": 54.35323383084576,
+              "missed_hate": 87.0,
+              "false_hate": 67.0,
+              "regeneration_requests": 81.0,
+              "regenerations_applied": 77.33333333333333,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.7618334602464135,
+              "error_cost_per_100": 54.93366500829188,
+              "missed_hate": 84.66666666666667,
+              "false_hate": 74.33333333333333,
+              "regeneration_requests": 81.0,
+              "regenerations_applied": 75.33333333333333,
+              "omissions_applied": 345.6666666666667
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": 0.6633499170812606,
+              "ci95_cost_per_100": [
+                -0.6218905472636814,
+                1.9900497512437814
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": 0.29021558872305125,
+              "ci95_cost_per_100": [
+                -0.5389718076285244,
+                1.1608623548922057
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -0.7048092868988381,
+              "ci95_cost_per_100": [
+                -2.4875621890547253,
+                1.1194029850746277
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": 0.5804311774461031,
+              "ci95_cost_per_100": [
+                -0.7048092868988389,
+                1.8656716417910448
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": 0.5804311774461031,
+              "ci95_cost_per_100": [
+                -0.7048092868988389,
+                1.8656716417910448
+              ]
+            }
+          }
+        },
+        "20": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.7663984913752023,
+              "error_cost_per_100": 54.2703150912106,
+              "missed_hate": 88.0,
+              "false_hate": 66.0,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.7623900658552124,
+              "error_cost_per_100": 54.64344941956884,
+              "missed_hate": 82.0,
+              "false_hate": 76.33333333333333,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 388.0
+            },
+            "uncertainty": {
+              "macro_f1": 0.7520084560458722,
+              "error_cost_per_100": 57.25538971807629,
+              "missed_hate": 99.0,
+              "false_hate": 57.333333333333336,
+              "regeneration_requests": 161.0,
+              "regenerations_applied": 152.66666666666666,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7645225674249588,
+              "error_cost_per_100": 54.5190713101161,
+              "missed_hate": 87.33333333333333,
+              "false_hate": 67.0,
+              "regeneration_requests": 161.0,
+              "regenerations_applied": 152.66666666666666,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7645225674249588,
+              "error_cost_per_100": 54.5190713101161,
+              "missed_hate": 87.33333333333333,
+              "false_hate": 67.0,
+              "regeneration_requests": 161.0,
+              "regenerations_applied": 152.66666666666666,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.7622295473394073,
+              "error_cost_per_100": 54.8507462686567,
+              "missed_hate": 84.66666666666667,
+              "false_hate": 74.0,
+              "regeneration_requests": 145.0,
+              "regenerations_applied": 136.0,
+              "omissions_applied": 301.6666666666667
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": 0.580431177446103,
+              "ci95_cost_per_100": [
+                -0.7048092868988393,
+                1.907131011608624
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": 0.2072968490878937,
+              "ci95_cost_per_100": [
+                -0.6633499170812608,
+                1.1194029850746268
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -2.404643449419567,
+              "ci95_cost_per_100": [
+                -4.976160862354891,
+                0.1658374792703167
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": 0.3316749585406305,
+              "ci95_cost_per_100": [
+                -0.8291873963515752,
+                1.4510779436152577
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": 0.3316749585406305,
+              "ci95_cost_per_100": [
+                -0.8291873963515752,
+                1.4510779436152577
+              ]
+            }
+          }
+        }
+      }
+    },
+    "test": {
+      "swap_20pct": {
+        "5": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.753788967633623,
+              "error_cost_per_100": 58.013266998341614,
+              "missed_hate": 123.95,
+              "false_hate": 88.21666666666665,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.752418111995948,
+              "error_cost_per_100": 57.5787728026534,
+              "missed_hate": 112.11666666666667,
+              "false_hate": 107.98333333333333,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 507.43333333333334
+            },
+            "uncertainty": {
+              "macro_f1": 0.7508475715422737,
+              "error_cost_per_100": 58.606965174129336,
+              "missed_hate": 127.0,
+              "false_hate": 85.55,
+              "regeneration_requests": 51.0,
+              "regenerations_applied": 49.300000000000004,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7569939680664609,
+              "error_cost_per_100": 57.11940298507462,
+              "missed_hate": 120.31666666666668,
+              "false_hate": 89.48333333333335,
+              "regeneration_requests": 51.0,
+              "regenerations_applied": 47.73333333333333,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7569939680664609,
+              "error_cost_per_100": 57.11940298507462,
+              "missed_hate": 120.31666666666668,
+              "false_hate": 89.48333333333335,
+              "regeneration_requests": 51.0,
+              "regenerations_applied": 47.73333333333333,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.7551771648584191,
+              "error_cost_per_100": 57.04145936981758,
+              "missed_hate": 113.08333333333333,
+              "false_hate": 102.8,
+              "regeneration_requests": 51.0,
+              "regenerations_applied": 47.73333333333333,
+              "omissions_applied": 475.2833333333333
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": -0.9718076285240461,
+              "ci95_cost_per_100": [
+                -2.200746268656716,
+                0.2471393034825871
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": -0.537313432835821,
+              "ci95_cost_per_100": [
+                -1.112810945273632,
+                0.034825870646766025
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -1.5655058043117738,
+              "ci95_cost_per_100": [
+                -2.938723051409618,
+                -0.24373963515754532
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": -0.07794361525704781,
+              "ci95_cost_per_100": [
+                -1.1393449419568822,
+                0.9586650082918726
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": -0.07794361525704781,
+              "ci95_cost_per_100": [
+                -1.1393449419568822,
+                0.9586650082918726
+              ]
+            }
+          }
+        },
+        "10": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.753788967633623,
+              "error_cost_per_100": 58.013266998341614,
+              "missed_hate": 123.95,
+              "false_hate": 88.21666666666665,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.752418111995948,
+              "error_cost_per_100": 57.5787728026534,
+              "missed_hate": 112.11666666666667,
+              "false_hate": 107.98333333333333,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 507.43333333333334
+            },
+            "uncertainty": {
+              "macro_f1": 0.7508422842706665,
+              "error_cost_per_100": 58.43449419568824,
+              "missed_hate": 127.88333333333333,
+              "false_hate": 81.45,
+              "regeneration_requests": 101.0,
+              "regenerations_applied": 96.41666666666667,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7589348418104377,
+              "error_cost_per_100": 56.65505804311774,
+              "missed_hate": 119.53333333333335,
+              "false_hate": 89.51666666666667,
+              "regeneration_requests": 101.0,
+              "regenerations_applied": 94.71666666666665,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7589348418104377,
+              "error_cost_per_100": 56.65505804311774,
+              "missed_hate": 119.53333333333335,
+              "false_hate": 89.51666666666667,
+              "regeneration_requests": 101.0,
+              "regenerations_applied": 94.71666666666665,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.756299120763877,
+              "error_cost_per_100": 56.807628524046436,
+              "missed_hate": 113.35000000000001,
+              "false_hate": 100.40000000000002,
+              "regeneration_requests": 101.0,
+              "regenerations_applied": 95.48333333333333,
+              "omissions_applied": 450.68333333333334
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": -1.2056384742951907,
+              "ci95_cost_per_100": [
+                -2.4196102819237146,
+                -0.04639303482587093
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": -0.7711442786069654,
+              "ci95_cost_per_100": [
+                -1.4809286898839142,
+                -0.07794361525704818
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -1.6268656716417902,
+              "ci95_cost_per_100": [
+                -3.2007462686567156,
+                -0.1425787728026531
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": 0.15257048092869013,
+              "ci95_cost_per_100": [
+                -0.8606965174129351,
+                1.1044776119402988
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": 0.15257048092869013,
+              "ci95_cost_per_100": [
+                -0.8606965174129351,
+                1.1044776119402988
+              ]
+            }
+          }
+        },
+        "20": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.753788967633623,
+              "error_cost_per_100": 58.013266998341614,
+              "missed_hate": 123.95,
+              "false_hate": 88.21666666666665,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.752418111995948,
+              "error_cost_per_100": 57.5787728026534,
+              "missed_hate": 112.11666666666667,
+              "false_hate": 107.98333333333333,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 507.43333333333334
+            },
+            "uncertainty": {
+              "macro_f1": 0.7474745349429904,
+              "error_cost_per_100": 59.056384742951906,
+              "missed_hate": 133.23333333333335,
+              "false_hate": 75.38333333333333,
+              "regeneration_requests": 201.0,
+              "regenerations_applied": 189.5666666666667,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7588284449264452,
+              "error_cost_per_100": 56.646766169154226,
+              "missed_hate": 119.39999999999999,
+              "false_hate": 89.23333333333335,
+              "regeneration_requests": 201.0,
+              "regenerations_applied": 190.08333333333334,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7588284449264452,
+              "error_cost_per_100": 56.646766169154226,
+              "missed_hate": 119.39999999999999,
+              "false_hate": 89.23333333333335,
+              "regeneration_requests": 201.0,
+              "regenerations_applied": 190.08333333333334,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.7553577467791307,
+              "error_cost_per_100": 57.0480928689884,
+              "missed_hate": 114.25,
+              "false_hate": 100.01666666666665,
+              "regeneration_requests": 184.9333333333333,
+              "regenerations_applied": 175.4333333333333,
+              "omissions_applied": 395.4666666666667
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": -0.9651741293532337,
+              "ci95_cost_per_100": [
+                -2.175787728026534,
+                0.18246268656716408
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": -0.5306799336650084,
+              "ci95_cost_per_100": [
+                -1.3366915422885572,
+                0.2753316749585399
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -2.0082918739635143,
+              "ci95_cost_per_100": [
+                -4.000165837479268,
+                -0.061276948590381464
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": 0.4013266998341628,
+              "ci95_cost_per_100": [
+                -0.5406716417910449,
+                1.3051824212271974
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": 0.4013266998341628,
+              "ci95_cost_per_100": [
+                -0.5406716417910449,
+                1.3051824212271974
+              ]
+            }
+          }
+        }
+      },
+      "clean": {
+        "5": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.7703098549802972,
+              "error_cost_per_100": 54.1625207296849,
+              "missed_hate": 116.0,
+              "false_hate": 82.66666666666667,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.7640203471282767,
+              "error_cost_per_100": 54.95854063018245,
+              "missed_hate": 108.33333333333333,
+              "false_hate": 101.66666666666667,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 500.6666666666667
+            },
+            "uncertainty": {
+              "macro_f1": 0.7653073840999625,
+              "error_cost_per_100": 55.25704809286899,
+              "missed_hate": 120.33333333333333,
+              "false_hate": 79.66666666666667,
+              "regeneration_requests": 51.0,
+              "regenerations_applied": 49.666666666666664,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7724684077067424,
+              "error_cost_per_100": 53.59867330016582,
+              "missed_hate": 114.33333333333333,
+              "false_hate": 84.0,
+              "regeneration_requests": 51.0,
+              "regenerations_applied": 47.333333333333336,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7724684077067424,
+              "error_cost_per_100": 53.59867330016582,
+              "missed_hate": 114.33333333333333,
+              "false_hate": 84.0,
+              "regeneration_requests": 51.0,
+              "regenerations_applied": 47.333333333333336,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.766114295608214,
+              "error_cost_per_100": 54.56053067993366,
+              "missed_hate": 109.33333333333333,
+              "false_hate": 96.66666666666667,
+              "regeneration_requests": 51.0,
+              "regenerations_applied": 47.0,
+              "omissions_applied": 473.6666666666667
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": 0.39800995024875657,
+              "ci95_cost_per_100": [
+                -0.8623548922056385,
+                1.6252072968490885
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": -0.39800995024875646,
+              "ci95_cost_per_100": [
+                -1.0613598673300169,
+                0.265339966832504
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -0.6965174129353227,
+              "ci95_cost_per_100": [
+                -2.1558872305140957,
+                0.6965174129353245
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": 0.9618573797678279,
+              "ci95_cost_per_100": [
+                -0.13266998341625177,
+                2.0563847429519075
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": 0.9618573797678279,
+              "ci95_cost_per_100": [
+                -0.13266998341625177,
+                2.0563847429519075
+              ]
+            }
+          }
+        },
+        "10": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.7703098549802972,
+              "error_cost_per_100": 54.1625207296849,
+              "missed_hate": 116.0,
+              "false_hate": 82.66666666666667,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.7640203471282767,
+              "error_cost_per_100": 54.95854063018245,
+              "missed_hate": 108.33333333333333,
+              "false_hate": 101.66666666666667,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 500.6666666666667
+            },
+            "uncertainty": {
+              "macro_f1": 0.7627188131401893,
+              "error_cost_per_100": 55.65505804311775,
+              "missed_hate": 122.0,
+              "false_hate": 76.33333333333333,
+              "regeneration_requests": 101.0,
+              "regenerations_applied": 96.0,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7730544669848739,
+              "error_cost_per_100": 53.46600331674958,
+              "missed_hate": 114.33333333333333,
+              "false_hate": 83.33333333333333,
+              "regeneration_requests": 101.0,
+              "regenerations_applied": 93.66666666666667,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7730544669848739,
+              "error_cost_per_100": 53.46600331674958,
+              "missed_hate": 114.33333333333333,
+              "false_hate": 83.33333333333333,
+              "regeneration_requests": 101.0,
+              "regenerations_applied": 93.66666666666667,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.7667901136559637,
+              "error_cost_per_100": 54.42786069651743,
+              "missed_hate": 109.66666666666667,
+              "false_hate": 95.0,
+              "regeneration_requests": 101.0,
+              "regenerations_applied": 95.0,
+              "omissions_applied": 448.3333333333333
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": 0.2653399668325044,
+              "ci95_cost_per_100": [
+                -0.9618573797678274,
+                1.4262023217247104
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": -0.5306799336650085,
+              "ci95_cost_per_100": [
+                -1.2935323383084583,
+                0.2321724709784408
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -1.2271973466003305,
+              "ci95_cost_per_100": [
+                -2.919568822553896,
+                0.4311774461028203
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": 0.9618573797678278,
+              "ci95_cost_per_100": [
+                -0.09950248756218863,
+                1.9900497512437818
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": 0.9618573797678278,
+              "ci95_cost_per_100": [
+                -0.09950248756218863,
+                1.9900497512437818
+              ]
+            }
+          }
+        },
+        "20": {
+          "policies": {
+            "keep": {
+              "macro_f1": 0.7703098549802972,
+              "error_cost_per_100": 54.1625207296849,
+              "missed_hate": 116.0,
+              "false_hate": 82.66666666666667,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 0.0
+            },
+            "omit_only": {
+              "macro_f1": 0.7640203471282767,
+              "error_cost_per_100": 54.95854063018245,
+              "missed_hate": 108.33333333333333,
+              "false_hate": 101.66666666666667,
+              "regeneration_requests": 0.0,
+              "regenerations_applied": 0.0,
+              "omissions_applied": 500.6666666666667
+            },
+            "uncertainty": {
+              "macro_f1": 0.756342581335037,
+              "error_cost_per_100": 57.048092868988384,
+              "missed_hate": 130.0,
+              "false_hate": 70.0,
+              "regeneration_requests": 201.0,
+              "regenerations_applied": 188.66666666666666,
+              "omissions_applied": 0.0
+            },
+            "original_router": {
+              "macro_f1": 0.7722888021501338,
+              "error_cost_per_100": 53.59867330016584,
+              "missed_hate": 114.33333333333333,
+              "false_hate": 83.33333333333333,
+              "regeneration_requests": 201.0,
+              "regenerations_applied": 189.66666666666666,
+              "omissions_applied": 0.0
+            },
+            "positive_repair": {
+              "macro_f1": 0.7722888021501338,
+              "error_cost_per_100": 53.59867330016584,
+              "missed_hate": 114.33333333333333,
+              "false_hate": 83.33333333333333,
+              "regeneration_requests": 201.0,
+              "regenerations_applied": 189.66666666666666,
+              "omissions_applied": 0.0
+            },
+            "three_actions": {
+              "macro_f1": 0.7659864046320606,
+              "error_cost_per_100": 54.6268656716418,
+              "missed_hate": 110.33333333333333,
+              "false_hate": 94.66666666666667,
+              "regeneration_requests": 181.66666666666666,
+              "regenerations_applied": 171.33333333333334,
+              "omissions_applied": 394.0
+            }
+          },
+          "three_actions_minus": {
+            "keep": {
+              "delta_cost_per_100": 0.4643449419568826,
+              "ci95_cost_per_100": [
+                -0.7628524046434491,
+                1.5928689883913654
+              ]
+            },
+            "omit_only": {
+              "delta_cost_per_100": -0.33167495854063045,
+              "ci95_cost_per_100": [
+                -1.160862354892206,
+                0.49751243781094506
+              ]
+            },
+            "uncertainty": {
+              "delta_cost_per_100": -2.421227197346598,
+              "ci95_cost_per_100": [
+                -4.643449419568821,
+                -0.23217247097843938
+              ]
+            },
+            "original_router": {
+              "delta_cost_per_100": 1.028192371475954,
+              "ci95_cost_per_100": [
+                2.813890635149456e-16,
+                1.990049751243782
+              ]
+            },
+            "positive_repair": {
+              "delta_cost_per_100": 1.028192371475954,
+              "ci95_cost_per_100": [
+                2.813890635149456e-16,
+                1.990049751243782
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "original_router_budget_10_minus_20_posthoc": {
+    "validation": {
+      "swap_20pct": {
+        "delta_cost_per_100": -0.010364842454394705,
+        "ci95_cost_per_100": [
+          -0.3296019900497513,
+          0.3089241293532332
+        ]
+      },
+      "clean": {
+        "delta_cost_per_100": -0.16583747927031506,
+        "ci95_cost_per_100": [
+          -0.6633499170812602,
+          0.24875621890547278
+        ]
+      }
+    },
+    "test": {
+      "swap_20pct": {
+        "delta_cost_per_100": 0.008291873963515715,
+        "ci95_cost_per_100": [
+          -0.23217247097844115,
+          0.25870646766169153
+        ]
+      },
+      "clean": {
+        "delta_cost_per_100": -0.1326699834162521,
+        "ci95_cost_per_100": [
+          -0.39800995024875635,
+          0.09950248756218909
+        ]
+      }
+    }
+  }
+}

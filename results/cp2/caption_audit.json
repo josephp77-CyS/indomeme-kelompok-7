@@ -1,0 +1,121 @@
+{
+  "scope": "Descriptive S1 audit; apply available generated captions to all items; shared meme tags overlap.",
+  "manifest_sha256": "4368e5767d73dfe988f9734dde59a146e125a0cda82c2783ee8eff46acab1a39",
+  "seeds": [
+    42,
+    123,
+    2026
+  ],
+  "splits": {
+    "validation": {
+      "lexical": {
+        "paired_lexical_n": 754,
+        "paired_nonempty_ocr_n": 754,
+        "median_distinct_words_original": 18,
+        "median_distinct_words_generated": 18,
+        "mean_share_of_original_caption_words_also_in_ocr": 0.12527408687902208,
+        "mean_share_of_generated_caption_words_also_in_ocr": 0.35192802628749065
+      },
+      "coverage": 754,
+      "groups": {
+        "overall": {
+          "n": 804,
+          "n_usable_generated_captions": 754,
+          "cost_delta_per_100_vs_normal": 13.598673300165837,
+          "cost_delta_per_100_vs_caption_swap": -6.011608623548922
+        },
+        "gender": {
+          "n": 152,
+          "n_usable_generated_captions": 143,
+          "cost_delta_per_100_vs_normal": 16.228070175438596,
+          "cost_delta_per_100_vs_caption_swap": 5.921052631578947
+        },
+        "individual": {
+          "n": 96,
+          "n_usable_generated_captions": 88,
+          "cost_delta_per_100_vs_normal": 23.61111111111111,
+          "cost_delta_per_100_vs_caption_swap": 7.638888888888889
+        },
+        "institutions": {
+          "n": 65,
+          "n_usable_generated_captions": 60,
+          "cost_delta_per_100_vs_normal": 30.256410256410255,
+          "cost_delta_per_100_vs_caption_swap": 3.5897435897435894
+        },
+        "national origin": {
+          "n": 61,
+          "n_usable_generated_captions": 56,
+          "cost_delta_per_100_vs_normal": 30.601092896174865,
+          "cost_delta_per_100_vs_caption_swap": -2.185792349726776
+        },
+        "political": {
+          "n": 100,
+          "n_usable_generated_captions": 91,
+          "cost_delta_per_100_vs_normal": 22.666666666666664,
+          "cost_delta_per_100_vs_caption_swap": 1
+        },
+        "social sub-groups": {
+          "n": 463,
+          "n_usable_generated_captions": 437,
+          "cost_delta_per_100_vs_normal": 7.127429805615551,
+          "cost_delta_per_100_vs_caption_swap": -11.879049676025918
+        }
+      }
+    },
+    "test": {
+      "lexical": {
+        "paired_lexical_n": 948,
+        "paired_nonempty_ocr_n": 948,
+        "median_distinct_words_original": 18,
+        "median_distinct_words_generated": 18,
+        "mean_share_of_original_caption_words_also_in_ocr": 0.12299939121477321,
+        "mean_share_of_generated_caption_words_also_in_ocr": 0.350160220261849
+      },
+      "coverage": 948,
+      "groups": {
+        "overall": {
+          "n": 1005,
+          "n_usable_generated_captions": 948,
+          "cost_delta_per_100_vs_normal": 10.315091210613598,
+          "cost_delta_per_100_vs_caption_swap": -8.689883913764511
+        },
+        "gender": {
+          "n": 159,
+          "n_usable_generated_captions": 149,
+          "cost_delta_per_100_vs_normal": 10.482180293501047,
+          "cost_delta_per_100_vs_caption_swap": -3.1446540880503147
+        },
+        "individual": {
+          "n": 134,
+          "n_usable_generated_captions": 125,
+          "cost_delta_per_100_vs_normal": 29.850746268656714,
+          "cost_delta_per_100_vs_caption_swap": -1.7412935323383085
+        },
+        "institutions": {
+          "n": 92,
+          "n_usable_generated_captions": 85,
+          "cost_delta_per_100_vs_normal": 20.652173913043477,
+          "cost_delta_per_100_vs_caption_swap": -4.3478260869565215
+        },
+        "national origin": {
+          "n": 68,
+          "n_usable_generated_captions": 63,
+          "cost_delta_per_100_vs_normal": 16.176470588235293,
+          "cost_delta_per_100_vs_caption_swap": -3.431372549019608
+        },
+        "political": {
+          "n": 142,
+          "n_usable_generated_captions": 132,
+          "cost_delta_per_100_vs_normal": 30.751173708920188,
+          "cost_delta_per_100_vs_caption_swap": -1.643192488262911
+        },
+        "social sub-groups": {
+          "n": 560,
+          "n_usable_generated_captions": 536,
+          "cost_delta_per_100_vs_normal": 3.3333333333333335,
+          "cost_delta_per_100_vs_caption_swap": -12.738095238095237
+        }
+      }
+    }
+  }
+}

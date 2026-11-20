@@ -1,0 +1,30 @@
+{
+  "archive": "INDOMEME_CP2_B2_seed42.tar",
+  "archive_sha256": "e9bbdc5f995613f3401372f59319812e32e243cf54e0733a25fa799b3a62b20e",
+  "archive_bytes": 797009920,
+  "files_sha256": {
+    "README.md": "45809b2a9535e2fbc4679fe0acf14c9b35fb748decab007177b23ca05c165c72",
+    "best.pt": "71dbdb3c538410b860ffb63dd2632b1af8fecf6c730c91431c33b02db008ef99",
+    "config.json": "b277814b78a12d0a19dea6bd1eea44bd4537c13cba813c7856780c353b82e17e",
+    "label_map.json": "eea9c8c1e932c8479e7a88a4534275dbb95883f4a373941c788d4a3d05716d85",
+    "validation_metrics.json": "0abdff0e93a09b6bb8b29561e867e732d11c016c5bb3b81e6c024ddc3c0159d3",
+    "official_metrics.json": "456a21e00ec5d67a36490f14cbfaa7f7b5a5c825fc2d97f75e10483603480e08",
+    "provenance.json": "9457fa593d9b2f4ceb15646e7dbcf8f8f7d7c72c0f29eb955d690889cdd252fa"
+  },
+  "provenance": {
+    "run_id": "B2_full_seed42",
+    "selection_split": "validation",
+    "normal_validation_macro_f1": 0.7887196379434981,
+    "checkpoint_sha256": "71dbdb3c538410b860ffb63dd2632b1af8fecf6c730c91431c33b02db008ef99",
+    "config_sha256": "b277814b78a12d0a19dea6bd1eea44bd4537c13cba813c7856780c353b82e17e",
+    "official_lock_sha256": "ce7c50e60f8f34722ca71232bd758355217db75b328d876b5e85cdb28cc48af7",
+    "official_test_n": 1005,
+    "deduplicated_test_n": 1003
+  },
+  "cpu_smoke": {
+    "split": "validation",
+    "memes": 4,
+    "matched_raw_predictions": 8,
+    "max_probability_deviation": 0.00035474
+  }
+}

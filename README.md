@@ -7,16 +7,25 @@ Jika meme menggabungkan gambar dan teks, apakah tambahan gambar selalu membantu 
 
 Delapan konfigurasi inti menghasilkan sepuluh hasil tugas. Pada satu seed yang digunakan, fusi lebih baik untuk ketidakpantasan, sedangkan deteksi kebencian tidak membaik terhadap model teks. Teks sudah memuat OCR, deskripsi gambar, dan topik anotasi; hasil ini tidak membuktikan gambar tidak penting.
 
-**Checkpoint 2**
+## Checkpoint 2
 
-CP2 membandingkan enam model dengan dua keluaran, kebencian dan ketidakpantasan. B0 telah dilatih penuh pada seed 42 dan 123; B1/B2 telah menjalani pilot satu epoch. Jalur M1–M3 sudah tersedia di integrasi CV/NLP; hasil training penuh multimodal dan official test CP2 belum tersedia.
+CP2 menggunakan gambar, OCR, dan caption untuk mendeteksi kebencian dan ketidakpantasan. Anotasi topik dipakai untuk audit per kelompok setelah inferensi. Semua varian utama selesai dievaluasi pada split historis 3.214 fit, 804 validation, dan 1.005 official test.
+
+| Hasil | Temuan |
+| --- | --- |
+| **Weight pengumpulan B2 seed 42** | Macro-F1 raw rata-rata **78,87%** pada validation dan **77,37%** pada official test. Skor test per tugas **77,74%** hate dan **77,00%** inappropriate. |
+| **Ketahanan terhadap caption donor sintetis** | S1 unggul **4,73 poin Macro-F1** atas S0 pada tiga seed. IK 95% **+3,57 hingga +5,85**. |
+| **Regenerasi caption selektif** | Router S1 pada kuota 20% mencapai **75,88%** Macro-F1 dibanding **74,75%** untuk ketidakpastian. Biaya kesalahan turun **2,41 per 100 meme** pada replay dengan 20% caption donor sintetis. |
+| **Sensitivitas kuota** | Pada replay yang sama, kuota 10% dan 20% memakai **101 dan 201** permintaan. Selisih biaya per 100 meme **+0,008** (IK 95% **−0,23 hingga +0,26**) adalah estimasi eksploratif. |
+
+[Panduan pengumpulan dan verifikasi model](docs/cp2/submission.md) · [Hasil lengkap dan grafik](docs/cp2/caption-repair-results.md) · [Uji kuota dan router tiga aksi](docs/cp2/three-actions.md)
 
 - [Rancangan model dan kalibrasi CV01](docs/cp2/cv-design.md)
 - [Status, keputusan review, dan langkah operator CP2](docs/cp2/mulai-cp2.md)
 - [Penjelasan sederhana untuk diskusi](docs/cp2/laporan-sederhana.md) · [Word](docs/cp2/laporan-sederhana.docx)
 - [Contoh hasil dan serah terima NLP](docs/cp2/contoh-hasil-nlp.md) — panduan, belum menjadi hasil pekerjaan Rafa
 
-## Mulai membaca
+## Materi Checkpoint 1
 
 - [Presentasi utama tim](docs/INDOMEME_Checkpoint1_PitchDeck.pptx)
 - [Ringkasan dengan bahasa sederhana](docs/ringkasan.md)
@@ -28,7 +37,7 @@ CP2 membandingkan enam model dengan dua keluaran, kebencian dan ketidakpantasan.
 
 Dataset rilis → audit dan preprocessing → latihan 3.214 meme → pemilihan checkpoint dengan 804 meme validation → evaluasi 1.005 meme test → analisis hasil dan kesalahan.
 
-## Hasil utama
+## Hasil reproduksi Checkpoint 1
 
 Semua angka berikut adalah **Macro-F1 pada test**, bukan persentase jawaban benar. Kelas 1 pada tugas internal `appropriate` berarti **inappropriate**. Angka ketidakpantasan multitask memakai aturan constrained.
 
@@ -57,7 +66,7 @@ Jalankan `python verify_submission.py` dari root repo untuk memeriksa hasil agre
 
 Untuk menjalankan ulang analisis, ikuti [panduan reproduksi](docs/panduan_reproduksi.md). Gambar dataset, CSV prediksi dan ID individual, environment, serta checkpoint besar tidak dimasukkan ke GitHub. Paket analisis pendamping tersedia melalui [Google Drive](https://drive.google.com/drive/folders/1c7cuGs_ij6ghZxLF21D6GZ1Hk3a8nplH); [arsip model](https://drive.google.com/drive/folders/1xXrSuGL89PohMh4soz6Nt7KnNNVnWxJo) terpisah.
 
-## Status dan batas kesimpulan
+## Batas kesimpulan reproduksi Checkpoint 1
 
 Delapan konfigurasi inti dan notebook analisis telah selesai. Notebook memuat 52 sel kode dengan keluaran dari lab. Baseline, hasil historis tambahan, proses parsial, kalibrasi, dan kegagalan ditandai terpisah. RQ3 lengkap dan metode baru belum selesai dalam cakupan ini.
 
