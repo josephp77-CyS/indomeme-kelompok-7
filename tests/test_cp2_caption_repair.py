@@ -8,6 +8,7 @@ from cp2.caption_triage import View
 from cp2.recaption import MAX_NEW_TOKENS, MAX_PIXELS, MIN_PIXELS, PROMPT, REVISION, restore_caption_rows
 from cp2.repair_router import error_cost, fit_router, replay
 from cp2.repair_specialist import compare_at_fixed_routing
+from cp2.repair_three_actions import actions
 from cp2.source_noise import mixed_condition, noisy_sources, repair_training_captions
 
 
@@ -66,3 +67,13 @@ def test_router_targets_action_gain_and_keeps_unavailable_replacements():
     specialist, contrast = compare_at_fixed_routing(truth, available, views, noisy_replacement, cross_fit_rank, 0.2)
     assert not contrast.any()
     assert specialist["S1_after_recaption"]["macro_f1"] == results["learned"]["macro_f1"]
+
+
+def test_three_actions_rank_regeneration_against_the_cheaper_action():
+    omit = np.array([2.0, -1.0, 1.0, 0.0])
+    repair = np.array([2.4, 0.7, 0.1, 0.0])
+    tie = np.arange(4)
+    cheap, requested = actions(omit, repair, tie, 1)
+    assert cheap.tolist() == [True, False, True, False]
+    assert requested.tolist() == [1]
+    assert actions(omit, repair, tie, 4)[1].tolist() == [1, 0]

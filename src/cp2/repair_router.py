@@ -36,13 +36,17 @@ def confirmation_features(displayed, masked, alternate):
                            alternate.probabilities - displayed.probabilities), axis=1)
 
 
-def fit_router(truth, available, views, *, confirm=False):
+def fit_router(truth, available, views, *, confirm=False, omit=False):
+    if confirm and omit:
+        raise ValueError("An omission router runs before generation")
     clean, masked, swapped, alternate = (views[name] for name in (*CONDITIONS, "recaption"))
     cases = (clean, swapped)
     design = np.concatenate([confirmation_features(view, masked, alternate) if confirm else features(view, masked)
                              for view in cases])
+    action = masked if omit else alternate
+    usable = np.ones(len(truth), dtype=bool) if omit else available
     targets = np.concatenate([
-        np.where(available, error_cost(truth, view.predictions) - error_cost(truth, alternate.predictions), 0)
+        np.where(usable, error_cost(truth, view.predictions) - error_cost(truth, action.predictions), 0)
         for view in cases
     ])
     count = len(truth)
