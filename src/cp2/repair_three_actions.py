@@ -121,8 +121,10 @@ def summarize(study, job):
                             raise ValueError("Control differs from the frozen 20% experiment")
                 results.append(result)
     splits = {}
+    budget_comparison = {}
     for split, n in SPLITS.items():
         splits[split] = {name: {} for name in SCENARIOS}
+        budget_comparison[split] = {}
         for (name, cap), results in cases[split].items():
             policies = average_replays([(metrics, paired["keep"]) for metrics, paired in results], n)["policies"]
             contrasts = {}
@@ -133,10 +135,23 @@ def summarize(study, job):
                     "ci95_cost_per_100": comparison["paired_ci95_cost_per_100"],
                 }
             splits[split][name][str(round(100 * cap))] = {"policies": policies, "three_actions_minus": contrasts}
+        for name in SCENARIOS:
+            pairs = []
+            for ten, twenty in zip(cases[split][name, 0.10], cases[split][name, 0.20], strict=True):
+                # Both budget runs share memes, ranks, replay order, and the keep prediction.
+                ten_minus_keep = ten[1]["keep"] - ten[1]["original_router"]
+                twenty_minus_keep = twenty[1]["keep"] - twenty[1]["original_router"]
+                pairs.append((ten[0], ten_minus_keep - twenty_minus_keep))
+            outcome = average_replays(pairs, n, "ten_minus_twenty")
+            budget_comparison[split][name] = {
+                "delta_cost_per_100": outcome["ten_minus_twenty_cost_per_100"],
+                "ci95_cost_per_100": outcome["paired_ci95_cost_per_100"],
+            }
     return {
         "scope": "Secondary retrospective S1-only study, frozen validation fit, synthetic corruption",
         "source_protocol_sha256": original["protocol_sha256"],
         "seeds": SEEDS, "replays": 20, "split_sizes": SPLITS, "model_parameters": coefficients, "splits": splits,
+        "original_router_budget_10_minus_20_posthoc": budget_comparison,
     }
 
 
@@ -144,9 +159,10 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--study", required=True)
     p.add_argument("--job", required=True)
+    p.add_argument("--output", help="New aggregate result path. Defaults to the study directory.")
     args = p.parse_args()
     study, job = map(private_path, (args.study, args.job))
-    output = job / "three_actions_results.json"
+    output = private_path(args.output) if args.output else job / "three_actions_results.json"
     if output.exists():
         raise FileExistsError(output)
     write_json(output, summarize(study, job))
